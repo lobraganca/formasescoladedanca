@@ -1,14 +1,13 @@
 /* ============================================================
    FORMAS · A CAIXINHA DE MÚSICA (three.js) — seção antes da Irene
    Uma caixinha laqueada rosa com arabescos dourados, forro de
-   veludo e espelho oval na tampa. Ao abrir, a bailarina sobe no
+   veludo e medalhão acolchoado na tampa. Ao abrir, a bailarina sobe no
    pedestal e gira; depois dança os passos clássicos: plié,
    relevé, arabesque e pirouette. A chavinha dá corda.
    ============================================================ */
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
-import { Reflector } from "three/addons/objects/Reflector.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
@@ -103,28 +102,9 @@ table.rotation.x = -Math.PI / 2; table.position.y = -1.71 * SC; scene.add(table)
 
 /* ---------- profundidade: sombra de contato sob a caixinha ---------- */
 {
-  const t = canvasTex(256, 256, (g) => { const gr = g.createRadialGradient(128, 128, 10, 128, 128, 128); gr.addColorStop(0, "rgba(60,20,40,.75)"); gr.addColorStop(.45, "rgba(60,20,40,.38)"); gr.addColorStop(1, "rgba(60,20,40,0)"); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); }, false);
+  const t = canvasTex(256, 256, (g) => { const gr = g.createRadialGradient(128, 128, 10, 128, 128, 128); gr.addColorStop(0, "rgba(50,14,34,.85)"); gr.addColorStop(.45, "rgba(50,14,34,.45)"); gr.addColorStop(1, "rgba(60,20,40,0)"); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); }, false);
   const cs = new THREE.Mesh(new THREE.PlaneGeometry(6.4 * SC, 4.8 * SC), new THREE.MeshBasicMaterial({ map: t, transparent: true, depthWrite: false, toneMapped: false }));
   cs.rotation.x = -Math.PI / 2; cs.position.y = -1.71 * SC + .004; cs.renderOrder = -1; scene.add(cs);
-}
-/* ---------- profundidade: a penteadeira ao fundo (some na névoa) ---------- */
-{
-  const back = new THREE.Group(); back.position.set(0, -1.71 * SC, -7.5); scene.add(back);
-  const glass = phys({ color: 0xFFE6F0, roughness: .08, clearcoat: 1, transparent: true, opacity: .62, depthWrite: false });
-  // espelho grande oval, com moldura dourada
-  const mg = new THREE.CircleGeometry(1, 64); mg.scale(2.2, 2.9, 1);
-  const bm = new THREE.Mesh(mg, phys({ color: 0xF4E3EA, metalness: 1, roughness: .12, envMapIntensity: 1.1 })); bm.position.set(0, 3.6, -.6); back.add(bm);
-  const bfG = new THREE.TorusGeometry(1, .07, 12, 120); bfG.scale(2.2, 2.9, 1);
-  const bf = new THREE.Mesh(bfG, M.gold); bf.position.copy(bm.position); back.add(bf);
-  // frascos de perfume
-  for (const [x, z, h, c] of [[-3.1, .3, 1.1, 0xF7B5CC], [-2.4, .8, .8, 0xD7C2F2], [2.7, .5, 1.25, 0xFFD9A8]]) {
-    const b = lathe([[0, 0], [.32, 0], [.36, .1], [.36, h * .7], [.2, h * .85], [.09, h * .9], [.09, h], [0, h]], glass, 32); b.position.set(x, 0, z); b.material = glass.clone(); b.material.color.set(c); back.add(b);
-    const cap = sphere(.16, M.gold, 20, 14); cap.position.set(x, h + .1, z); back.add(cap);
-  }
-  // vaso com rosas
-  const vase = lathe([[0, 0], [.28, 0], [.4, .4], [.3, .9], [.22, 1.1], [.26, 1.2], [0, 1.2]], M.ivory, 32); vase.position.set(3.6, 0, -.2); back.add(vase);
-  const RC = [0xE8456F, 0xF28CA8, 0xFFD1DC, 0xC2185B, 0xF7A8BD];
-  for (let i = 0; i < 9; i++) { const r = sphere(.2, phys({ color: RC[i % 5], roughness: .5, sheen: 1 }), 14, 10); r.position.set(3.6 + (rnd() - .5) * .8, 1.35 + rnd() * .6, -.2 + (rnd() - .5) * .5); back.add(r); }
 }
 /* ---------- profundidade: brilhos desfocados em primeiro plano ---------- */
 const fgBokeh = [];
@@ -169,6 +149,9 @@ function scroll(g, x, y, s, dir) { g.beginPath(); g.moveTo(x, y); g.bezierCurveT
     const a = SH(new THREE.Mesh(new THREE.PlaneGeometry(IW, .32), M.velvet), false, true); a.position.set(0, -.25, s * (ID / 2 - .002)); a.rotation.y = s > 0 ? Math.PI : 0; stage.add(a);
     const b = SH(new THREE.Mesh(new THREE.PlaneGeometry(ID, .32), M.velvet), false, true); b.position.set(s * (IW / 2 - .002), -.25, 0); b.rotation.y = -s * Math.PI / 2; stage.add(b);
   }
+  // sombra interna: escurece o veludo junto às paredes (dá fundo à caixinha)
+  { const t = canvasTex(512, 352, (g, w, h) => { g.clearRect(0, 0, w, h); const e = 70; const add = (x0, y0, x1, y1) => { const gr = g.createLinearGradient(x0, y0, x1, y1); gr.addColorStop(0, "rgba(30,4,18,.7)"); gr.addColorStop(1, "rgba(30,4,18,0)"); g.fillStyle = gr; g.fillRect(0, 0, w, h); }; add(0, 0, e, 0); add(w, 0, w - e, 0); add(0, 0, 0, e); add(0, h, 0, h - e); }, false);
+    const ao = new THREE.Mesh(new THREE.PlaneGeometry(IW, ID), new THREE.MeshBasicMaterial({ map: t, transparent: true, depthWrite: false, toneMapped: false })); ao.rotation.x = -Math.PI / 2; ao.position.y = -.38; stage.add(ao); }
   // pezinhos dourados
   for (const x of [-1, 1]) for (const z of [-1, 1]) {
     const ft = sphere(.15, M.gold, 24, 16); ft.scale.y = .75; ft.position.set(x * (BW / 2 - .05), -1.6, z * (BD / 2 - .05)); stage.add(ft);
@@ -194,7 +177,7 @@ function scroll(g, x, y, s, dir) { g.beginPath(); g.moveTo(x, y); g.bezierCurveT
   const ring = SH(new THREE.Mesh(new THREE.TorusGeometry(.1, .022, 12, 40), M.gold)); ring.position.set(1.35, -.3, .75); ring.rotation.set(-1.2, 0, .3); stage.add(ring);
   const gem = sphere(.045, M.gem, 16, 12); gem.position.set(1.35, -.2, .79); stage.add(gem);
 }
-// a tampa (dobradiça atrás) com espelho oval
+// a tampa (dobradiça atrás) com medalhão de veludo
 const lid = new THREE.Group(); lid.position.set(0, -.1, -BD / 2); stage.add(lid);
 let mirror;
 {
@@ -211,11 +194,17 @@ let mirror;
   })); td.rotation.x = -Math.PI / 2; td.position.set(0, .322, BD / 2); lid.add(td);
   const clasp = rbox(.34, .2, .06, .02, M.gold); clasp.position.set(0, .12, BD + .05); lid.add(clasp);
   const cg = sphere(.05, M.gem, 16, 12); cg.position.set(0, .12, BD + .085); lid.add(cg);
-  // forro de veludo e espelho
+  // forro de veludo
   const lin = new THREE.Mesh(new THREE.PlaneGeometry(BW - .1, BD - .1), M.velvet); lin.rotation.x = Math.PI / 2; lin.position.set(0, -.008, BD / 2); lid.add(lin);
   const og = new THREE.CircleGeometry(1, 72); og.scale(1.5, 1.08, 1);
-  if (!MOB) { mirror = new Reflector(og, { textureWidth: 1024, textureHeight: 768, color: 0xB9AAB4, clipBias: .003 }); }
-  else mirror = new THREE.Mesh(og, phys({ color: 0xEADFE6, metalness: 1, roughness: .05, envMapIntensity: 1.3 }));
+  // sem espelho: um medalhão de veludo acolchoado com a letra F bordada
+  const quilt = canvasTex(1024, 768, (g, w, h) => {
+    const gr = g.createRadialGradient(w / 2, h / 2, 40, w / 2, h / 2, w / 2); gr.addColorStop(0, "#C2457A"); gr.addColorStop(1, "#6E1A45"); g.fillStyle = gr; g.fillRect(0, 0, w, h);
+    g.strokeStyle = "rgba(255,210,230,.22)"; g.lineWidth = 3; for (let k = -h; k < w; k += 64) { g.beginPath(); g.moveTo(k, 0); g.lineTo(k + h, h); g.stroke(); g.beginPath(); g.moveTo(k + h, 0); g.lineTo(k, h); g.stroke(); }
+    g.fillStyle = "rgba(255,236,210,.9)"; for (let x = 0; x < w + 64; x += 64) for (let y = 0; y < h + 64; y += 64) { const ox = (Math.round(y / 64) % 2) * 32; g.beginPath(); g.arc(x + ox, y, 3.5, 0, 7); g.fill(); }
+    g.font = "italic 400 300px 'Bodoni Moda', Didot, Georgia, serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "rgba(246,221,168,.95)"; g.fillText("F", w / 2, h / 2 + 10);
+  });
+  mirror = SH(new THREE.Mesh(og, phys({ map: quilt, roughness: .9, sheen: 1, sheenRoughness: .5, sheenColor: new THREE.Color(0xFFB7CF) })), false, true);
   mirror.rotation.x = Math.PI / 2; mirror.position.set(0, -.02, BD / 2); lid.add(mirror);
   const frameG = new THREE.TorusGeometry(1, .05, 14, 140); frameG.scale(1.5, 1.08, 1);
   const frame = SH(new THREE.Mesh(frameG, M.gold)); frame.rotation.x = Math.PI / 2; frame.position.set(0, -.04, BD / 2); lid.add(frame);

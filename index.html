@@ -1252,6 +1252,19 @@ html.shop .nav .menu-b{margin-left:auto!important}
 @keyframes ldkey{to{transform:rotate(360deg)}}
 .ld-hi{font-family:var(--hand);font-size:26px;color:#fff;margin-top:-6px;text-shadow:0 2px 10px rgba(90,40,120,.35)}
 @media (prefers-reduced-motion:reduce){.ld-note,.ld-key{animation:none}}
+/* o Camarim agora vive só em /camarim */
+html:not(.shop) #camarim{display:none!important}
+/* Irene: mais curta */
+#irene.sec{padding-block:56px!important}
+.irx{gap:clamp(26px,5vw,64px)}
+.irx-pol{max-width:340px;padding:10px 10px 0}
+.irx-pol figcaption{font-size:20px;padding:8px 0 10px}
+.irx-name{font-size:clamp(46px,5.4vw,72px)!important;margin:10px 0 2px}
+.irx-role{margin-bottom:14px}
+.irx-bio{gap:10px}
+.irx-bio p:first-child{font-size:clamp(18px,1.7vw,21px)}
+.irx-cta{margin-top:20px}
+@media (max-width:860px){.irx{grid-template-columns:120px 1fr;gap:16px 18px;align-items:start}.irx-pol{max-width:none;padding:6px 6px 0;transform:rotate(-3deg)}.irx-pol figcaption{display:none}.irx-tape{width:60px;height:18px;top:-9px}.irx-txt{display:contents}.irx-txt .eyebrow{grid-column:1/-1;grid-row:1}.irx-pol{grid-column:1;grid-row:2/4}.irx-name{grid-column:2;grid-row:2;align-self:end;font-size:42px!important;margin:0}.irx-role{grid-column:2;grid-row:3;align-self:start;margin:6px 0 0;font-size:10.5px;letter-spacing:.16em}.irx-bio,.irx-cta{grid-column:1/-1}.irx-sig{font-size:34px}}
 </style>
 </head>
 <body>
@@ -1298,14 +1311,14 @@ html.shop .nav .menu-b{margin-left:auto!important}
 <header class="top" id="top">
   <div class="wrap nav">
     <a class="brand" href="#reino" aria-label="Formas Escola de Dança, início"><img src="logo-ink.png" alt="Formas Escola de Dança" width="728" height="536"></a>
-    <nav class="links" aria-label="Seções"><a href="#caixa-sec">Caixinha</a><a href="#turmas">Turmas</a><a href="#espetaculos">Espetáculos</a><a href="#fotos">Fotos</a><a href="#irene">A Irene</a><a href="#camarim">Camarim</a></nav>
+    <nav class="links" aria-label="Seções"><a href="#caixa-sec">Caixinha</a><a href="#turmas">Turmas</a><a href="#espetaculos">Espetáculos</a><a href="#fotos">Fotos</a><a href="#irene">A Irene</a><a href="/camarim">Camarim</a></nav>
     <a class="ped-b" href="/camarim"><span aria-hidden="true">🩰</span> Pedidos dos alunos</a>
     <a class="btn goldb" href="#turmas">Ver vagas</a>
     <button class="menu-b" id="menu-b" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span></button>
   </div>
 </header>
 <nav class="mnav" id="mnav" aria-label="Menu">
-  <a href="#caixa-sec">A <em>caixinha</em></a><a href="#turmas">As <em>turmas</em></a><a href="#espetaculos"><em>Espetáculos</em></a><a href="#fotos"><em>Fotos</em></a><a href="#irene">A <em>Irene</em></a><a href="#camarim">O <em>Camarim</em></a><a href="#duvidas">Dúvidas</a>
+  <a href="#caixa-sec">A <em>caixinha</em></a><a href="#turmas">As <em>turmas</em></a><a href="#espetaculos"><em>Espetáculos</em></a><a href="#fotos"><em>Fotos</em></a><a href="#irene">A <em>Irene</em></a><a href="/camarim">O <em>Camarim</em></a><a href="#duvidas">Dúvidas</a>
   <a class="btn goldb" href="/camarim" style="margin-top:14px">🩰 Pedidos dos alunos</a>
   <a class="btn wa js-wa" data-msg="Olá, Irene! Vim pelo site da Formas e gostaria de mais informações." target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#wa"/></svg>Falar com a Irene</a>
 </nav>
@@ -1456,7 +1469,7 @@ html.shop .nav .menu-b{margin-left:auto!important}
     <div class="sec-h rv">
       <span class="eyebrow"><b class="n">04</b>A caixinha de música</span>
       <h2>Dê corda na <em>caixinha</em></h2>
-      <p>Abra a tampa e veja a bailarina subir girando com a música. Gire a chavinha dourada, toque no espelho e nas pérolas.</p>
+      <p>Abra a tampa e veja a bailarina subir girando com a música. Gire a chavinha dourada, toque no medalhão da tampa e nas pérolas.</p>
     </div>
     <div class="cx-card rv" id="caixa">
       <canvas id="c3dbox" aria-label="Caixinha de música em 3D com uma bailarina" role="img"></canvas>
@@ -1510,7 +1523,7 @@ html.shop .nav .menu-b{margin-left:auto!important}
 
 <section class="sec light" id="duvidas">
   <div class="wrap">
-    <div class="sec-h rv"><span class="eyebrow"><b class="n">07</b>Dúvidas</span><h2>Perguntas das <em>famílias</em></h2></div>
+    <div class="sec-h rv"><span class="eyebrow"><b class="n">06</b>Dúvidas</span><h2>Perguntas das <em>famílias</em></h2></div>
     <div class="faq" id="faq"></div>
   </div>
 </section>
@@ -1518,7 +1531,7 @@ html.shop .nav .menu-b{margin-left:auto!important}
 <section class="sec final stars" id="contato">
   <div class="wrap">
     <div class="rv">
-      <span class="eyebrow"><b class="n">08</b>Vamos dançar?</span>
+      <span class="eyebrow"><b class="n">07</b>Vamos dançar?</span>
       <h2 style="margin-top:18px">A primeira <em>révérence</em> a gente nunca esquece.</h2>
       <p class="lead">Antes de falar com a Irene, preencha os dados da bailarina. Assim ela já recebe tudo certinho e responde mais rápido.</p>
       <ol class="cta-steps">
@@ -1551,7 +1564,7 @@ html.shop .nav .menu-b{margin-left:auto!important}
             <li><a href="#turmas">Turmas e vagas</a></li>
             <li><a href="#espetaculos">Espetáculos</a></li>
             <li><a href="#fotos">Fotos</a></li>
-            <li><a href="#camarim">Camarim</a></li>
+            <li><a href="/camarim">Camarim</a></li>
             <li><a href="#duvidas">Dúvidas</a></li>
           </ol>
         </nav>
@@ -1598,7 +1611,7 @@ window.fairyAt=function(){};
 var API=(/^https?:$/.test(location.protocol)&&!/claude|anthropic|usercontent|localhost|127\.0\.0\.1/.test(location.host))?"/api":"";
 var DEFAULT_SITE={
   whatsapp:"31984552588",instagram:"formasescoladedanca",endereco:"",horario:"",
-  sobre:"Na Formas, quem conduz cada aula é a professora e diretora artística Irene Melillo. É ela quem recebe as famílias na porta, cuida das turmas e conhece cada pequena bailarina e cada pequeno bailarino pelo nome, pelo jeito e pelo sorriso.\nPara a Irene, o balé começa muito antes do primeiro plié. Começa no olhar de quem chega tímida e, aos poucos, se solta; na criança que descobre que o corpo também conta histórias; no aplauso da família na primeira apresentação.\nA técnica clássica está lá, com rigor e carinho, mas nunca sozinha: caminha junto com a brincadeira, a música e o respeito pelo tempo de cada criança. Ninguém precisa caber num molde.\nPor isso a escola se chama Formas. Cada criança encontra a sua forma de dançar, e a Irene acompanha esse caminho de perto, da primeira sapatilha ao palco dos espetáculos.",
+  sobre:"Irene Melillo conduz cada aula de perto, conhece cada bailarina pelo nome e recebe as famílias como parte da escola.\nNa sala dela, a técnica do balé caminha junto com a brincadeira, a música e o respeito pelo tempo de cada criança. Cada uma encontra a sua forma de dançar.",
   turmas:[
     {id:"baby",nome:"Baby Class",idadeMin:3,idadeMax:4,desc:"O primeiro contato com a dança: música, imaginação e coordenação.",dias:[],hIni:"",hFim:"",status:"consultar",site:true},
     {id:"pre",nome:"Pré-Ballet",idadeMin:5,idadeMax:6,desc:"Os primeiros passos do balé, com postura, ritmo e muita diversão.",dias:[],hIni:"",hFim:"",status:"consultar",site:true},
@@ -2137,7 +2150,7 @@ hit("view");
   addEventListener("caixa-chime",function(e){var k=e.detail.k;
     if(k==="abrir"){playMusic(9);msg("A tampa abriu… olha ela subindo! ✦")}
     else if(k==="corda"){playMusic(8);msg("Tric, tric, tric… você deu corda! Ela gira enquanto a música toca ✦")}
-    else if(k==="espelho"){chime([84,88,91,96],.09);msg("Espelho, espelho meu… existe bailarina mais linda? ✦")}
+    else if(k==="espelho"){chime([84,88,91,96],.09);msg("O F de Formas, bordado no veludo ✦")}
     else if(k==="perolas"){chime([88,91,93],.08);msg("O colar de pérolas da bailarina ✦")}
     else if(k==="fechar"){stopMusic();msg("A caixinha fechou. Toque nela para abrir de novo ✦")}
     setTimeout(sync,60)});
@@ -2145,7 +2158,7 @@ hit("view");
     new IntersectionObserver(function(es,ob){if(es[0].isIntersecting){ob.disconnect();setTimeout(function(){if(C()&&!C().isOpen())open()},700)}},{threshold:.55}).observe($("caixa"))});
 })();
 /* fita de progresso: em que "ato" do site a família está */
-(function(){var el=$("ato"),t=$("ato-t");if(!el)return;var S=[["turmas","1º ato · vagas",0],["espetaculos","2º ato · espetáculos",0],["fotos","3º ato · álbum",0],["caixa-sec","4º ato · caixinha",0],["irene","5º ato · a Irene",1],["camarim","6º ato · camarim",0],["duvidas","7º ato · dúvidas",0],["contato","Grand finale ✦",1]];
+(function(){var el=$("ato"),t=$("ato-t");if(!el)return;var S=[["turmas","1º ato · vagas",0],["espetaculos","2º ato · espetáculos",0],["fotos","3º ato · álbum",0],["caixa-sec","4º ato · caixinha",0],["irene","5º ato · a Irene",1],["duvidas","6º ato · dúvidas",0],["contato","Grand finale ✦",1]];
   function up(){var y=scrollY,H=document.documentElement.scrollHeight-innerHeight,st=$("turmas").offsetTop-innerHeight*.5;el.classList.toggle("on",y>st);var p=Math.max(0,Math.min(1,(y-st)/(H-st)));el.style.setProperty("--p",(p*100).toFixed(1)+"%");
     var cur=S[0];S.forEach(function(s){var e=$(s[0]);if(e&&e.offsetTop-innerHeight*.5<=y)cur=s});t.textContent=cur[1];el.classList.toggle("dk",!!cur[2])}
   addEventListener("scroll",up,{passive:true});addEventListener("resize",up);up()})();
