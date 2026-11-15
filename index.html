@@ -1218,24 +1218,65 @@ html.shop .ped-b{background:var(--ink);color:#fff;border-color:var(--ink)}
 .irx-cta .btn.dark{background:var(--ink)!important;color:#fff!important}
 .irx-sig{font-family:var(--hand);font-size:44px;color:#B8577A;transform:rotate(-6deg);line-height:1}
 @media (max-width:860px){.irx{grid-template-columns:1fr}.irx-pol{max-width:320px}.irx-txt{text-align:left}}
+/* faixa: bailarinas paradas na barra (sem passar de lado) */
+.sb-track{animation:none!important;transform:none!important;gap:clamp(14px,3vw,46px);padding-left:clamp(16px,4vw,60px)}
+.sb-track{width:auto!important;right:calc(max(22px,calc((100vw - 1220px)/2 + 22px)) + 128px);overflow:hidden;justify-content:space-evenly;padding-left:8px}
+.sb-track .bl{flex:none}
+@media (max-width:760px){.sb-track{right:96px;gap:6px;justify-content:flex-start}}
+.sband .bl.jump svg{animation:sbhop 1s cubic-bezier(.3,.7,.3,1)}
+@keyframes sbbd{0%{transform:translateY(0)}10%{transform:translateY(5px)}22%{transform:translateY(-22px)}32%{transform:translateY(0)}42%,58%{transform:translateY(-4px)}64%,84%{transform:translateY(-6px)}92%{transform:translateY(2px) rotate(-5deg)}100%{transform:translateY(0)}}
+@keyframes sbhop{40%{transform:translateY(-34px)}100%{transform:none}}
+/* loja: botão de voltar abaixo do topo, sem encostar nele */
+html.shop .shop-back{display:inline-flex;align-items:center;gap:8px;margin:0 0 22px;text-decoration:none;font-weight:800;font-size:14.5px;color:var(--ink);padding:11px 18px;border-radius:999px;background:#fff;border:1.5px solid rgba(58,40,80,.16);box-shadow:0 8px 20px -14px rgba(60,20,80,.5)}
+html.shop .shop-back:hover{border-color:var(--amber)}
+html.shop #camarim{padding-top:calc(118px + env(safe-area-inset-top,0px))!important}
+html.shop .ped-b{display:none!important}
+html.shop .menu-b{margin-left:auto}
+/* loja: menu volta para a direita */
+html.shop .nav .menu-b{margin-left:auto!important}
+/* faixa: o balão sai da Irene e fica acima das bailarinas */
+.sband{height:258px!important}
+.sb-say{top:12px!important;right:calc(max(22px,calc((100vw - 1220px)/2 + 22px)) + 30px)!important;border-radius:18px!important;max-width:min(420px,calc(100% - 60px))}
+.sb-say::after{content:"";position:absolute;right:16px;bottom:-11px;border:11px solid transparent;border-top-color:#fff;border-bottom:0;border-right-width:4px;filter:drop-shadow(0 3px 2px rgba(60,20,80,.12))}
+@media (max-width:760px){.sband{height:236px!important}.sb-say{top:10px!important;right:26px!important;font-size:17px!important;max-width:calc(100% - 40px)}.sb-say::after{right:14px}}
+.sb-curt::after{top:auto!important;bottom:96px}
+@media (max-width:760px){.sb-curt::after{bottom:78px}}
+/* abertura: a bonequinha da professora Irene numa caixinha de música */
+.ld-stage{width:190px;height:250px}
+.ld-pir{animation:ldpir 2.6s cubic-bezier(.5,0,.4,1) infinite}
+.ld-base{position:absolute;bottom:31px;left:50%;width:120px;height:30px;margin-left:-60px;z-index:1}
+.ld-note{position:absolute;z-index:3;font-size:18px;color:#fff;opacity:0;animation:ldnote 2.6s ease-out infinite;text-shadow:0 0 8px rgba(255,255,255,.8)}
+.ld-note.n1{left:18%;bottom:40%}.ld-note.n2{right:16%;bottom:52%;animation-delay:-.9s;font-size:14px}.ld-note.n3{left:30%;bottom:66%;animation-delay:-1.7s;font-size:12px;color:#FFE3A6}
+@keyframes ldnote{0%{opacity:0;transform:translateY(10px) rotate(-10deg)}25%{opacity:1}100%{opacity:0;transform:translateY(-46px) rotate(12deg)}}
+.ld-key{transform-origin:107px 214px;animation:ldkey 1.3s linear infinite}
+@keyframes ldkey{to{transform:rotate(360deg)}}
+.ld-hi{font-family:var(--hand);font-size:26px;color:#fff;margin-top:-6px;text-shadow:0 2px 10px rgba(90,40,120,.35)}
+@media (prefers-reduced-motion:reduce){.ld-note,.ld-key{animation:none}}
 </style>
 </head>
 <body>
 <div class="loader" id="loader" aria-hidden="true"><div class="lg">
   <div class="ld-stage"><span class="ld-glow"></span><span class="ld-spk s1">✦</span><span class="ld-spk s2">✧</span><span class="ld-spk s3">✦</span>
-    <div class="ld-pir"><svg viewBox="0 0 120 200" width="120" height="200"><defs><linearGradient id="ldtu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE3EE"/><stop offset="1" stop-color="#F29BBE"/></linearGradient></defs>
-      <path d="M53 61C41 44 45 17 60 13C75 17 79 44 67 61" fill="none" stroke="#fff" stroke-width="4.2" stroke-linecap="round"/>
-      <circle cx="60" cy="21" r="6.5" fill="#3A2015"/><ellipse cx="60" cy="35" rx="9.5" ry="10.5" fill="#fff"/><path d="M50.8 33Q51 24.5 60 24.5Q69 24.5 69.2 33Q65 28 60 28Q55 28 50.8 33Z" fill="#3A2015"/>
-      <rect x="57.3" y="44" width="5.4" height="9" rx="2.5" fill="#fff"/>
-      <path d="M51.5 57Q60 52.5 68.5 57L65.5 87Q60 90 54.5 87Z" fill="#F6C6D8"/>
-      <path d="M60 95L60.8 176L58.6 186L57.4 186L57.6 176L56.4 98Z" fill="#fff"/>
-      <path d="M61 99C70 106 79 116 80 126C76 134 68 139 61.5 141" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M22 93Q60 70 98 93Q91 103 82 97Q73 107 60 101Q47 107 38 97Q29 103 22 93Z" fill="url(#ldtu)"/>
-      <path d="M30 91Q60 77 90 91" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1.6"/>
+    <span class="ld-note n1">♪</span><span class="ld-note n2">♫</span><span class="ld-note n3">♪</span>
+    <div class="ld-pir"><svg viewBox="0 0 120 210" width="124" height="216"><defs><radialGradient id="ldck" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F28CA8" stop-opacity=".75"/><stop offset="1" stop-color="#F28CA8" stop-opacity="0"/></radialGradient></defs>
+      <path d="M50 76C37 57 41 30 60 25C79 30 83 57 70 76" fill="none" stroke="#EDC3A6" stroke-width="5.2" stroke-linecap="round"/>
+      <path d="M59.5 120L60.5 182" stroke="#231A26" stroke-width="7.5" stroke-linecap="round"/><path d="M60.5 182L59.6 193" stroke="#F4A9BE" stroke-width="6.5" stroke-linecap="round"/>
+      <path d="M62 122C74 129 83 139 81 147C75 154 68 156 62 158" fill="none" stroke="#2B2030" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M48.5 73Q60 67 71.5 73L69.5 103Q67 119 60 122Q53 119 50.5 103Z" fill="#231A26"/>
+      <path d="M53 72.5Q60 80 67 72.5" fill="#EDC3A6"/><path d="M52 98Q60 101 68 98" stroke="#F4A9BE" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <rect x="56.5" y="59" width="7" height="10" rx="3.5" fill="#EDC3A6"/>
+      <circle cx="60" cy="46" r="15.5" fill="#EDC3A6"/>
+      <path d="M44 48C43 33 51 27 60 27C69 27 77 33 76 48C74 40 68 35.5 60 35.5C52 35.5 46 40 44 48Z" fill="#4A2F22"/>
+      <path d="M44.5 46C42 52 43 58 46 61M75.5 46C78 52 77 58 74 61" stroke="#4A2F22" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <circle cx="60" cy="25" r="8" fill="#4A2F22"/><path d="M53.5 24.5Q60 20 66.5 24.5" stroke="#6B4632" stroke-width="1.4" fill="none"/>
+      <path d="M52.5 47.5q2.6 2.2 5.2 0M62.3 47.5q2.6 2.2 5.2 0" stroke="#3A2030" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <circle cx="51" cy="53.5" r="4" fill="url(#ldck)"/><circle cx="69" cy="53.5" r="4" fill="url(#ldck)"/>
+      <path d="M56.5 55.5q3.5 2.6 7 0" stroke="#B5466F" stroke-width="1.6" fill="none" stroke-linecap="round"/>
     </svg></div>
+    <svg class="ld-base" viewBox="0 0 120 30" aria-hidden="true"><ellipse cx="60" cy="9" rx="44" ry="7" fill="#F6DDA8"/><path d="M16 9v9c0 4 20 8 44 8s44-4 44-8V9c0 4-20 8-44 8S16 13 16 9Z" fill="#D9A867"/><ellipse cx="60" cy="9" rx="44" ry="7" fill="none" stroke="#fff" stroke-opacity=".6"/><g class="ld-key" style="transform-origin:107px 16px"><path d="M104 16h7" stroke="#C9974F" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="114" cy="12.5" rx="2.6" ry="3.4" fill="none" stroke="#C9974F" stroke-width="1.8"/><ellipse cx="114" cy="19.5" rx="2.6" ry="3.4" fill="none" stroke="#C9974F" stroke-width="1.8"/></g></svg>
     <span class="ld-shadow"></span>
   </div>
-  <img class="ld-logo" src="logo-ink.png" alt=""><span>Dando corda na caixinha</span><i><b></b></i></div></div>
+  <p class="ld-hi">a professora Irene já vem…</p><img class="ld-logo" src="logo-ink.png" alt=""><span>Dando corda na caixinha</span><i><b></b></i></div></div>
 <canvas id="trail" aria-hidden="true"></canvas>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -1451,6 +1492,7 @@ html.shop .ped-b{background:var(--ink);color:#fff;border-color:var(--ink)}
 
 <section class="sec stars" id="camarim">
   <div class="wrap">
+    <a class="shop-back" href="/"><span aria-hidden="true">←</span> Voltar ao site</a>
     <div class="cm-top">
       <div class="sec-h rv">
         <span class="eyebrow"><b class="n">06</b>O Camarim encantado</span>
@@ -1458,7 +1500,6 @@ html.shop .ped-b{background:var(--ink);color:#fff;border-color:var(--ink)}
         <p>Veja o que falta no uniforme, ponha quantas peças quiser na sacolinha e mande um pedido só pelo WhatsApp. A Irene separa e combina a entrega com você.</p>
       </div>
       <div class="cm-how rv d1"><span>Escolha as peças</span><span>Ponha na sacolinha</span><span>Envie tudo no WhatsApp</span></div>
-      <a class="shop-back" href="/">← Voltar ao site</a>
     </div>
     <div class="pfilt" id="pfilt" role="group" aria-label="Filtrar peças" hidden></div>
     <div class="pgrid" id="pgrid"></div>
@@ -1881,7 +1922,7 @@ document.addEventListener("click",function(e){if(!e.target.closest("#cta-fill"))
       '<path d="M40.5 50 q1.6 1.4 3.2 0 M46.3 50 q1.6 1.4 3.2 0" stroke="#3A2030" stroke-width="1.1" fill="none" stroke-linecap="round"/><circle cx="40" cy="53.5" r="1.8" fill="#F28CA8" opacity=".55"/><circle cx="50" cy="53.5" r="1.8" fill="#F28CA8" opacity=".55"/><path d="M43.4 54.6 q1.6 1.2 3.2 0" stroke="#B5466F" stroke-width="1.1" fill="none" stroke-linecap="round"/>'+
       '<path d="M38 41 L41 37 L45 40 L49 37 L52 41" stroke="#E8C27A" stroke-width="1.6" fill="none" stroke-linejoin="round"/>'+
       '</g></svg></button>'}
-  var h="";for(var i=0;i<9;i++)h+=dancer(i);tr.innerHTML=h+h;
+  var h="";for(var i=0;i<9;i++)h+=dancer(i);tr.innerHTML=h;
   var LINES=["E um, e dois, e três…","Pliééé… joelhos pra fora!","Saltinho leve! Sauté!","Braço lá na frente: arabesque!","Agora a pirouette!","Ponta esticada, bailarinas!","Sorriso no rosto ✦","Révérence! Que lindas! 👏"],li=0,say=$("sb-say");
   var vis=false;new IntersectionObserver(function(es){vis=es[0].isIntersecting;$("sband").classList.toggle("run",vis)}).observe($("sband"));
   setInterval(function(){if(!vis)return;say.classList.add("off");setTimeout(function(){say.textContent=LINES[li=(li+1)%LINES.length];say.classList.remove("off")},260)},3200);
