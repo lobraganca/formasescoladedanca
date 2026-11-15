@@ -65,8 +65,9 @@ const M = {
   gem: new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xFFE7C2, emissiveIntensity: 2.4, roughness: .1 }),
 };
 /* ============================================================
-   A MAQUETE: um palco redondo flutuando no céu
-   (como a serra dos Leopardos, mas é o palco da Formas)
+   A MAQUETE: um palco de teatro flutuando no céu
+   Tablado com proscênio curvo, saia de veludo, boca de cena
+   com cortinas presas e bambolina, como num teatro de verdade.
    ============================================================ */
 const stage = new THREE.Group(); stage.scale.setScalar(.8); scene.add(stage);
 const woodTex = canvasTex(1024, 1024, (g, w, h) => {
@@ -84,31 +85,107 @@ const woodTex = canvasTex(1024, 1024, (g, w, h) => {
   }
 });
 woodTex.wrapS = woodTex.wrapT = THREE.RepeatWrapping;
-const RS = 3.3;
+// contorno do tablado (x, z): fundo reto com cantos arredondados, laterais retas e frente em arco (proscênio)
+const SW = 3.8, ZB = -2.4, ZF = 2.3, ZA = 3.25, CR = .45;
+const stageShape = new THREE.Shape();
+stageShape.moveTo(-SW, ZF);
+stageShape.lineTo(-SW, ZB + CR); stageShape.quadraticCurveTo(-SW, ZB, -SW + CR, ZB);
+stageShape.lineTo(SW - CR, ZB); stageShape.quadraticCurveTo(SW, ZB, SW, ZB + CR);
+stageShape.lineTo(SW, ZF);
+stageShape.quadraticCurveTo(0, 2 * ZA - ZF, -SW, ZF);
+const frontZ = (x) => { const t = (1 - x / SW) / 2; return ZF + 4 * (ZA - ZF) * t * (1 - t); };
 {
   const wood = phys({ map: woodTex, roughness: .32, clearcoat: .7, clearcoatRoughness: .2, envMapIntensity: .6 });
-  const floor = SH(new THREE.Mesh(new THREE.CylinderGeometry(RS, RS, .2, 128), [M.gold, wood, M.velvet]), true, true); floor.position.y = -.1; stage.add(floor);
-  const rim = SH(new THREE.Mesh(new THREE.TorusGeometry(RS + .01, .055, 12, 160), M.gold)); rim.rotation.x = Math.PI / 2; rim.position.y = 0; stage.add(rim);
-  // saia de veludo com pregas (o "corte" da maquete)
-  const sk = new THREE.CylinderGeometry(RS + .02, 2.65, 1.45, 192, 6, true), sp = sk.attributes.position;
-  for (let i = 0; i < sp.count; i++) { const x = sp.getX(i), z = sp.getZ(i), y = sp.getY(i), a = Math.atan2(z, x), t = (.725 - y) / 1.45, k = 1 + (.012 + .03 * t) * Math.sin(a * 56); sp.setX(i, x * k); sp.setZ(i, z * k); }
-  sk.computeVertexNormals();
-  const skirt = SH(new THREE.Mesh(sk, M.velvet)); skirt.position.y = -.2 - .725; stage.add(skirt);
-  const band = SH(new THREE.Mesh(new THREE.TorusGeometry(2.66, .05, 10, 140), M.gold)); band.rotation.x = Math.PI / 2; band.position.y = -1.66; stage.add(band);
-  // franja dourada
-  const fr = new THREE.InstancedMesh(new THREE.ConeGeometry(.045, .26, 8), M.gold, 72), d = new THREE.Object3D();
-  for (let i = 0; i < 72; i++) { const a = i / 72 * Math.PI * 2; d.position.set(Math.cos(a) * 2.66, -1.82, Math.sin(a) * 2.66); d.rotation.set(Math.PI, 0, 0); d.updateMatrix(); fr.setMatrixAt(i, d.matrix); }
+  woodTex.repeat.set(1 / 4.2, 1 / 4.2);
+  // tablado: a forma está no plano x/y; deitada, y da forma vira -z, então espelhamos
+  const flat = stageShape.getPoints(48).map(p => new THREE.Vector2(p.x, -p.y));
+  const deckShape = new THREE.Shape(flat.reverse());
+  const dg = new THREE.ExtrudeGeometry(deckShape, { depth: .2, bevelEnabled: true, bevelThickness: .03, bevelSize: .05, bevelSegments: 3, curveSegments: 48 });
+  const deck = SH(new THREE.Mesh(dg, [wood, M.gold])); deck.rotation.x = -Math.PI / 2; deck.position.y = -.2; stage.add(deck);
+  // contorno amostrado, usado pela saia, franja e faixa dourada
+  const OUT = stageShape.getSpacedPoints(360).slice(0, -1).map(p => new THREE.Vector2(p.x, p.y));
+  const C0 = new THREE.Vector2(0, .3), IN = .84, SKH = 1.45, TOP = -.2;
+  const inner = (p, k) => C0.clone().add(p.clone().sub(C0).multiplyScalar(k));
+  // saia de veludo com pregas
+  {
+    const n = OUT.length, rows = 6, pos = [], idx = [];
+    let acc = 0; const sAt = [0]; for (let i = 1; i < n; i++) { acc += OUT[i].distanceTo(OUT[i - 1]); sAt.push(acc); }
+    for (let r = 0; r <= rows; r++) {
+      const t = r / rows, k = 1 + (IN - 1) * t;
+      for (let i = 0; i <= n; i++) {
+        const p = OUT[i % n], q = inner(p, k), nx = q.x - C0.x, nz = q.y - C0.y, L = Math.hypot(nx, nz) || 1;
+        const pl = (.025 + .045 * t) * Math.sin((i < n ? sAt[i] : acc) * 7.5);
+        pos.push(q.x + nx / L * pl, TOP - t * SKH, q.y + nz / L * pl);
+      }
+    }
+    for (let r = 0; r < rows; r++) for (let i = 0; i < n; i++) { const a = r * (n + 1) + i, b = a + n + 1; idx.push(a, a + 1, b, b, a + 1, b + 1); }
+    const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
+    const vm = M.velvet.clone(); vm.side = THREE.DoubleSide;
+    stage.add(SH(new THREE.Mesh(g, vm)));
+  }
+  const bottom = OUT.map(p => inner(p, IN)), YB = TOP - SKH;
+  // faixa dourada e franja embaixo da saia
+  const band = SH(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(bottom.filter((_, i) => i % 4 === 0).map(p => new THREE.Vector3(p.x, YB, p.y)), true), 240, .05, 8, true), M.gold)); stage.add(band);
+  const NF = 96, fr = new THREE.InstancedMesh(new THREE.ConeGeometry(.045, .26, 8), M.gold, NF), d = new THREE.Object3D();
+  for (let i = 0; i < NF; i++) { const p = bottom[Math.floor(i / NF * bottom.length)]; d.position.set(p.x, YB - .16, p.y); d.rotation.set(Math.PI, 0, 0); d.updateMatrix(); fr.setMatrixAt(i, d.matrix); }
   fr.castShadow = true; stage.add(fr);
-  const under = SH(new THREE.Mesh(new THREE.SphereGeometry(2.62, 64, 20, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), M.lacquer)); under.scale.y = .32; under.position.y = -1.66; stage.add(under);
-  const drop = SH(new THREE.Mesh(new THREE.ConeGeometry(.22, .7, 24), M.gold)); drop.rotation.x = Math.PI; drop.position.y = -2.7; stage.add(drop);
-  // placa na frente
+  // fundo da maquete (laqueado) e pingente
+  const ug = new THREE.ShapeGeometry(new THREE.Shape(bottom.map(p => new THREE.Vector2(p.x, p.y))), 1);
+  const under = SH(new THREE.Mesh(ug, M.lacquer)); under.rotation.x = Math.PI / 2; under.position.y = YB; stage.add(under);
+  const belly = SH(new THREE.Mesh(new THREE.SphereGeometry(1, 48, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), M.lacquer)); belly.scale.set(2.6, .45, 2.0); belly.position.set(0, YB, .3); stage.add(belly);
+  const drop = SH(new THREE.Mesh(new THREE.ConeGeometry(.22, .7, 24), M.gold)); drop.rotation.x = Math.PI; drop.position.set(0, YB - .7, .3); stage.add(drop);
+  // placa na frente, no meio da saia do proscênio
   const pl = new THREE.Mesh(new THREE.PlaneGeometry(2.1, .5), phys({ color: 0xE9C27A, metalness: 1, roughness: .25, envMapIntensity: 1.2, map: canvasTex(840, 200, (g, w, h) => {
     const gr = g.createLinearGradient(0, 0, w, 0); gr.addColorStop(0, "#C99A4E"); gr.addColorStop(.5, "#F6DDA8"); gr.addColorStop(1, "#C99A4E"); g.fillStyle = gr; g.fillRect(0, 0, w, h);
     g.strokeStyle = "#8A6430"; g.lineWidth = 6; g.strokeRect(10, 10, w - 20, h - 20);
     g.fillStyle = "#4A2A1A"; g.textAlign = "center"; g.textBaseline = "middle"; g.font = "800 92px 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif"; g.fillText("FORMAS", w / 2, h / 2 - 16);
     g.font = "700 30px 'Instrument Sans', Arial, sans-serif"; g.fillText("ESCOLA  DE  DANÇA", w / 2, h / 2 + 52);
   }) }));
-  pl.position.set(0, -.72, 3.12); pl.rotation.x = .41; stage.add(pl);
+  const zTop = ZA, zBot = C0.y + (ZA - C0.y) * IN, slope = Math.atan2(zTop - zBot, SKH);
+  pl.position.set(0, TOP - SKH * .5, (zTop + zBot) / 2 + .09); pl.rotation.x = slope; stage.add(pl);
+}
+/* ---------- boca de cena: colunas douradas, cortinas presas e bambolina ---------- */
+const PZ = -2.05, PH = 4.7, PX = 3.55;
+{
+  const vel = M.velvet.clone(); vel.side = THREE.DoubleSide;
+  // colunas e travessa
+  for (const s of [-1, 1]) {
+    const col = SH(new THREE.Mesh(new THREE.CylinderGeometry(.09, .11, PH, 20), M.gold)); col.position.set(s * PX, PH / 2, PZ - .08); stage.add(col);
+    const cap = SH(new THREE.Mesh(new THREE.SphereGeometry(.16, 20, 14), M.gold)); cap.position.set(s * PX, PH + .05, PZ - .08); stage.add(cap);
+    const base = SH(new THREE.Mesh(new THREE.CylinderGeometry(.18, .2, .12, 20), M.gold)); base.position.set(s * PX, .06, PZ - .08); stage.add(base);
+  }
+  const beam = SH(new THREE.Mesh(new THREE.BoxGeometry(PX * 2 + .2, .14, .14), M.gold)); beam.position.set(0, PH - .02, PZ - .08); stage.add(beam);
+  // brasão no alto
+  const crest = SH(new THREE.Mesh(new THREE.TorusGeometry(.26, .045, 12, 40), M.gold)); crest.position.set(0, PH + .3, PZ - .05); stage.add(crest);
+  const gem = new THREE.Mesh(new THREE.OctahedronGeometry(.11), M.gem); gem.position.copy(crest.position); gem.scale.y = 1.5; stage.add(gem);
+  // cortina lateral: painel pregueado, preso no meio (amarra dourada)
+  const drape = (s) => {
+    const w = 1.25, nx = 48, ny = 40, g = new THREE.PlaneGeometry(w, PH - .1, nx, ny), p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const u = (p.getX(i) + w / 2) / w, y = p.getY(i), t = (y + (PH - .1) / 2) / (PH - .1); // t: 0 embaixo, 1 em cima
+      const tie = .38, pinch = t < tie ? .55 + .45 * Math.pow((tie - t) / tie, .6) : .55 + .45 * Math.pow((t - tie) / (1 - tie), .9);
+      const x = (u - (s > 0 ? 1 : 0)) * w * pinch; // presa do lado de fora
+      const z = Math.sin(u * Math.PI * 9) * .05 * (.6 + .4 * pinch) + (1 - pinch) * .25 * Math.sin(u * Math.PI);
+      p.setXYZ(i, x, y, z);
+    }
+    g.computeVertexNormals();
+    const m = SH(new THREE.Mesh(g, vel)); m.position.set(s * (PX - .12), (PH - .1) / 2, PZ); stage.add(m);
+    const tieB = SH(new THREE.Mesh(new THREE.TorusGeometry(.12, .025, 8, 24), M.gold)); tieB.position.set(s * (PX - .12 - w * .55 * .5), (PH - .1) * .38, PZ + .12); tieB.rotation.y = Math.PI / 2; tieB.scale.set(1, 1.3, 1); stage.add(tieB);
+  };
+  drape(1); drape(-1);
+  // bambolina (sanefa) com festões
+  {
+    const w = PX * 2 - .1, h = .75, nx = 160, ny = 10, g = new THREE.PlaneGeometry(w, h, nx, ny), p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const x = p.getX(i), y = p.getY(i), t = (y + h / 2) / h, u = (x + w / 2) / w;
+      const sw = Math.abs(Math.sin(u * Math.PI * 4)); // 4 festões
+      const yy = y + (1 - t) * (1 - sw) * .32;
+      const z = Math.sin(u * Math.PI * 44) * .025 + (1 - t) * sw * .12;
+      p.setXYZ(i, x, yy, z);
+    }
+    g.computeVertexNormals();
+    const val = SH(new THREE.Mesh(g, vel)); val.position.set(0, PH - .1 - h / 2, PZ + .02); stage.add(val);
+  }
 }
 let curtain = null;
 
@@ -171,13 +248,13 @@ for (const [x, z, r, sy] of [[-30, -50, 26, .32], [18, -58, 30, .28], [50, -45, 
 // barra de balé, à esquerda
 {
   const wood2 = phys({ color: 0xB07A4E, roughness: .4, clearcoat: .6 });
-  const A = new THREE.Vector3(-2.75, 0, -.2), B = new THREE.Vector3(-1.75, 0, -2.15);
+  const A = new THREE.Vector3(-3.2, 0, 1.3), B = new THREE.Vector3(-3.2, 0, -1.5);
   for (const P of [A, B]) { const post = SH(new THREE.Mesh(new THREE.CylinderGeometry(.035, .045, 1.15, 12), M.gold)); post.position.copy(P).setY(.575); stage.add(post); const ft = SH(new THREE.Mesh(new THREE.CylinderGeometry(.13, .15, .05, 20), M.gold)); ft.position.copy(P).setY(.025); stage.add(ft); }
   const mid = A.clone().add(B).multiplyScalar(.5), len = A.distanceTo(B);
   for (const y of [1.05, .72]) { const bar = SH(new THREE.Mesh(new THREE.CylinderGeometry(.04, .04, len + .2, 16), wood2)); bar.position.copy(mid).setY(y); bar.lookAt(B.clone().setY(y)); bar.rotateX(Math.PI / 2); stage.add(bar); }
 }
 // buquê de rosas na beira do palco
-const bouquet = new THREE.Group(); bouquet.position.set(2.05, 0, 2.1); bouquet.rotation.z = -.35; stage.add(bouquet);
+const bouquet = new THREE.Group(); bouquet.position.set(2.75, 0, 2.15); bouquet.rotation.z = -.35; stage.add(bouquet);
 {
   const paper = SH(new THREE.Mesh(new THREE.ConeGeometry(.2, .62, 18, 1, true), phys({ color: 0xFFF4EE, roughness: .6, side: THREE.DoubleSide }))); paper.rotation.z = Math.PI; paper.position.y = .3; bouquet.add(paper);
   const bow = SH(new THREE.Mesh(new THREE.TorusGeometry(.09, .03, 8, 20), M.velvet)); bow.position.y = .2; bow.rotation.x = Math.PI / 2; bouquet.add(bow);
@@ -188,7 +265,7 @@ const bouquet = new THREE.Group(); bouquet.position.set(2.05, 0, 2.1); bouquet.r
 const lamps = [];
 // luzinhas da ribalta
 const foots = [];
-for (let i = 0; i < 11; i++) { const a = Math.PI * (.22 + i / 10 * .56); const b = new THREE.Mesh(new THREE.SphereGeometry(.05, 12, 8), new THREE.MeshStandardMaterial({ color: 0xFFF3CF, emissive: 0xFFC56E, emissiveIntensity: 2.4 })); b.position.set(Math.cos(a) * (RS - .1), .05, Math.sin(a) * (RS - .1)); stage.add(b); foots.push(b); }
+for (let i = 0; i < 15; i++) { const x = (i / 14 - .5) * 2 * (SW - .35); const b = new THREE.Mesh(new THREE.SphereGeometry(.05, 12, 8), new THREE.MeshStandardMaterial({ color: 0xFFF3CF, emissive: 0xFFC56E, emissiveIntensity: 2.4 })); b.position.set(x, .06, frontZ(x) - .14); stage.add(b); foots.push(b); }
 // nuvens fofas em volta da maquete
 const puffTex = canvasTex(128, 128, (g) => { const gr = g.createRadialGradient(64, 64, 4, 64, 64, 64); gr.addColorStop(0, "rgba(255,255,255,.95)"); gr.addColorStop(.5, "rgba(255,255,255,.5)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); }, false);
 const clouds = [];
@@ -201,7 +278,7 @@ for (let i = 0; i < 7; i++) {
 /* ============================================================
    A BAILARINA
    ============================================================ */
-const DS = 1.38;
+const DS = 1.85, K = DS / 1.38; // bailarina maior; K reescala alturas pensadas para o tamanho antigo
 const J = {};
 const dancerRoot = new THREE.Group(); dancerRoot.scale.setScalar(DS); dancerRoot.position.set(0, 0, 0); scene.add(dancerRoot);
 const dancer = new THREE.Group(); dancerRoot.add(dancer);
@@ -389,6 +466,7 @@ const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const easeSpin = t => t < .2 ? 2.5 * t * t : t > .8 ? 1 - 2.5 * (1 - t) * (1 - t) : .1 + (t - .2) * 1.3333;
 function play(name) {
   if (!STEPS[name]) return;
+  if (busy && curStep === name) return;
   seq = STEPS[name].map(s => s.slice()); busy = true; curStep = name; nextSeg();
   window.dispatchEvent(new CustomEvent("reino-step", { detail: { step: name, state: "start" } }));
 }
@@ -400,9 +478,10 @@ function playSeq(names) {
 function nextSeg() {
   const s = seq.shift();
   if (s && s[4]) window.dispatchEvent(new CustomEvent("reino-sub", { detail: { step: s[4] } }));
-  if (!s) { busy = false; seg = null; spin = spin % (Math.PI * 2); window.dispatchEvent(new CustomEvent("reino-step", { detail: { step: curStep, state: "end" } })); return; }
+  if (!s) { busy = false; seg = null; spin = 0; face = 0; window.dispatchEvent(new CustomEvent("reino-step", { detail: { step: curStep, state: "end" } })); return; }
   from = snap(); const o = s[3] || {};
-  seg = { pose: POSES[s[0]], d: s[1], hold: s[2], face: o.face != null ? o.face : from.face, spin: from.spin + (o.spin ? o.spin * Math.PI * 2 : 0), isSpin: !!o.spin };
+  const homeSpin = Math.round(from.spin / (Math.PI * 2)) * Math.PI * 2;
+  seg = { pose: POSES[s[0]], d: s[1], hold: s[2], face: o.face != null ? o.face : 0, spin: o.spin ? homeSpin + o.spin * Math.PI * 2 : homeSpin, isSpin: !!o.spin };
   segT = 0; if (seg.isSpin) sparkleBurst(1.3, 70);
 }
 function stepAnim(dt) {
@@ -420,8 +499,8 @@ scene.add(new THREE.HemisphereLight(0xF6F0FF, 0x8A6A9A, .7));
 const sun = new THREE.DirectionalLight(0xFFEEDB, 1.6); sun.position.set(-5, 10, 7); sun.target.position.set(0, 0, 0); scene.add(sun, sun.target);
 sun.castShadow = true; sun.shadow.mapSize.set(MOB ? 1024 : 2048, MOB ? 1024 : 2048); Object.assign(sun.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5, near: 2, far: 30 }); sun.shadow.bias = -.0004; sun.shadow.normalBias = .02;
 const fill = new THREE.DirectionalLight(0xC9B4FF, .6); fill.position.set(6, 3, 5); scene.add(fill);
-const spot = new THREE.SpotLight(0xFFEBDD, 1.4, 0, .28, .7, 0); spot.position.set(1, 8, 5); spot.target.position.set(0, .9, 0); scene.add(spot, spot.target);
-const rimL = new THREE.SpotLight(0xFF9CC8, 7, 0, .45, .6, 0); rimL.position.set(-2.2, 3.2, -1.6); rimL.target.position.set(0, 1.1, 0); scene.add(rimL, rimL.target);
+const spot = new THREE.SpotLight(0xFFEBDD, 1.4, 0, .28, .7, 0); spot.position.set(1, 8, 5); spot.target.position.set(0, .9 * K, 0); scene.add(spot, spot.target);
+const rimL = new THREE.SpotLight(0xFF9CC8, 7, 0, .45, .6, 0); rimL.position.set(-2.2, 3.2 * K, -1.4); rimL.target.position.set(0, 1.1 * K, 0); scene.add(rimL, rimL.target);
 
 /* ---------- partículas ---------- */
 const dotTex = canvasTex(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(.25, "rgba(255,244,230,.8)"); gr.addColorStop(1, "rgba(255,230,210,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); }, false);
@@ -460,7 +539,7 @@ function sparkleBurst(y = 1.3, n = 60, tint = null) {
   for (let i = 0; i < NB && c < n; i++) {
     if (bLife[i] > 0) continue; c++;
     const a = Math.random() * 6.28, sp = .8 + Math.random() * 1.8;
-    Pp[i * 3] = (Math.random() - .5) * .4; Pp[i * 3 + 1] = y + (Math.random() - .5) * .6; Pp[i * 3 + 2] = (Math.random() - .5) * .4;
+    Pp[i * 3] = (Math.random() - .5) * .4; Pp[i * 3 + 1] = y * K + (Math.random() - .5) * .6 * K; Pp[i * 3 + 2] = (Math.random() - .5) * .4;
     bVel[i * 3] = Math.cos(a) * sp; bVel[i * 3 + 1] = .4 + Math.random() * 1.4; bVel[i * 3 + 2] = Math.sin(a) * sp; bLife[i] = 1.4 + Math.random() * .9; A[i] = 1;
     const pc = tint && c % 3 ? [tint.r, tint.g, tint.b] : PAL[i % 4]; C[i * 3] = pc[0]; C[i * 3 + 1] = pc[1]; C[i * 3 + 2] = pc[2];
   }
@@ -479,8 +558,8 @@ let W = 1, H = 1, PORT = false, entered = true, pop = 0, whirl = -1;
 const camS = { az: -.12, azT: -.12, dist: 15, distT: 11, ty: 6, tyT: 4.6, lk: .6, lkT: .6, px: 0, py: 0 };
 let focus = true;
 function setCamTargets() {
-  if (focus) { camS.distT = PORT ? 6.8 : (W / H > 1.7 ? 8.4 : 9); camS.tyT = PORT ? 2.6 : 3.1; camS.lkT = PORT ? 1.2 : 1.3; }
-  else { camS.distT = PORT ? 10 : (W / H > 1.7 ? 10.5 : 11.5); camS.tyT = PORT ? 4.2 : 4.4; camS.lkT = PORT ? .8 : .8; }
+  if (focus) { camS.distT = PORT ? 7.4 : (W / H > 1.7 ? 8.9 : 9.6); camS.tyT = PORT ? 2.9 : 3.3; camS.lkT = PORT ? 1.55 : 1.65; }
+  else { camS.distT = PORT ? 10.8 : (W / H > 1.7 ? 11.2 : 12.2); camS.tyT = PORT ? 4.4 : 4.6; camS.lkT = PORT ? 1.15 : 1.15; }
 }
 let inset = 0, offX = 0, offY = 0;
 function applyOffset() { cam.clearViewOffset(); if (inset || offX || offY) cam.setViewOffset(W, H, offX, offY + inset * .55, W, H); cam.updateProjectionMatrix(); }
@@ -535,7 +614,7 @@ const Reino = {
     if (kind === "pele") { sparkleBurst(1.7, 70, c); if (!busy && whirl < 0) whirl = 0; }
     else if (kind === "tutu") { sparkleBurst(1.0, 110, c); if (!busy) whirl = 0; }
     else if (kind === "sapatilha") { sparkleBurst(.15, 80, c); if (!busy && whirl < 0) whirl = 0; }
-    else if (kind === "pronta") { sparkleBurst(1.3, 200); seq = []; seg = null; busy = false; play("reverence"); }
+    else if (kind === "pronta") { sparkleBurst(1.3, 200); if (!(busy && curStep === "reverence")) { busy = false; play("reverence"); } }
   },
   set(o) {
     if (o.pele) { M.skin.color.set(o.pele); M.tights.color.set(o.pele).lerp(new THREE.Color(0xF6C0C4), .35); }
@@ -555,7 +634,7 @@ const Reino = {
     g.font = `700 ${18 * s}px "Instrument Sans", sans-serif`; g.fillStyle = "#B8346A"; g.fillText("FORMAS ESCOLA DE DANÇA · formasescoladedanca.com.br", c.width / 2, c.height - 28 * s);
     return c.toDataURL("image/jpeg", .9);
   },
-  plaque() { const v = new THREE.Vector3(0, 2.7, 0); v.project(cam); return { x: (v.x + 1) / 2 * W, y: (1 - v.y) / 2 * H }; },
+  plaque() { const v = new THREE.Vector3(0, 2.7 * K + .1, 0); v.project(cam); return { x: (v.x + 1) / 2 * W, y: (1 - v.y) / 2 * H }; },
   debugCam(az, el, dist, ty) { if (az != null) camS.azT = camS.az = az; if (dist != null) camS.dist = camS.distT = dist; if (ty != null) camS.ty = camS.tyT = ty; },
   snapPose(name, f) { seq = []; seg = null; busy = true; JN.forEach(k => cur[k].copy(POSES[name][k])); face = f || 0; spin = 0; },
   instant() { camS.dist = camS.distT; camS.ty = camS.tyT; camS.lk = camS.lkT; camS.az = camS.azT; },
@@ -563,7 +642,7 @@ const Reino = {
 window.Reino = Reino;
 
 /* ---------- laço ---------- */
-let last = performance.now(), visible = true, tm = 0, firstG = true;
+let last = performance.now(), visible = true, tm = 0, idleW = 1;
 const tmpV = new THREE.Vector3(), lq = new THREE.Quaternion(), le = new THREE.Euler();
 const TAU = Math.PI * 2;
 function render(now) {
@@ -573,17 +652,18 @@ function render(now) {
   // bailarina
   stepAnim(dt);
   JN.forEach(k => J[k].quaternion.copy(cur[k]));
-  if (!busy) { const b = Math.sin(tm * 1.6); J.spine.quaternion.multiply(lq.setFromEuler(le.set(b * .012, 0, 0))); J.shR.quaternion.multiply(lq.setFromEuler(le.set(0, 0, b * .035))); J.shL.quaternion.multiply(lq.setFromEuler(le.set(0, 0, -b * .035))); }
+  const still = busy || turnT > 0 || whirl >= 0 ? 0 : 1; idleW += (still - idleW) * Math.min(1, dt * (still ? 1.5 : 6));
+  { const b = Math.sin(tm * 1.6) * idleW; J.spine.quaternion.multiply(lq.setFromEuler(le.set(b * .012, 0, 0))); J.shR.quaternion.multiply(lq.setFromEuler(le.set(0, 0, b * .035))); J.shL.quaternion.multiply(lq.setFromEuler(le.set(0, 0, -b * .035))); }
   J.head.quaternion.multiply(lq.setFromEuler(le.set(look.y * .1, look.x * .3, 0, "YXZ")));
-  if (busy) { turnT = 0; whirl = -1; }
+  if (busy) turnT = 0;
   let wx = 0; if (whirl >= 0) { whirl += dt / 1.15; if (whirl >= 1) whirl = -1; else wx = TAU * ease(whirl); }
   pop = Math.max(0, pop - dt * 2.4); dancerRoot.scale.setScalar(DS * (1 + .08 * Math.sin(pop * Math.PI)));
   if (turnT > 0) { turnT -= dt; idleRot += dt * Math.min(1.4, .4 + turnT * .5); }
   else { const tgt = Math.round(idleRot / TAU) * TAU; idleRot += (tgt - idleRot) * Math.min(1, dt * 1.6); }
-  dancer.rotation.y = face + spin + idleRot + wx + (busy || turnT > 0 || whirl >= 0 ? 0 : Math.sin(tm * .4) * .15) + camS.az * .6;
+  dancer.rotation.y = face + spin + idleRot + wx + Math.sin(tm * .4) * .15 * idleW + camS.az * .6;
   dancerRoot.updateMatrixWorld(true);
   let minY = Infinity; for (const m of markers) { m.getWorldPosition(tmpV); minY = Math.min(minY, tmpV.y); }
-  pelvis.position.y += (-(minY - bob - .004) / DS) * (firstG ? 1 : .35); firstG = false;
+  pelvis.position.y += -(minY - bob - .004) / dancerRoot.scale.y;
   const spinning = (seg && seg.isSpin) || turnT > 0 || whirl >= 0 ? 1 : 0; flare += (spinning - flare) * Math.min(1, dt * (spinning ? 3 : 2));
   if (!REDUCE) updTutu(tm);
   { const sp = seqPts.geometry.attributes.position.array; seqData.forEach((d, i) => { const L = tutuLayers[d.l], rOut = L.rOut * (1 + .22 * flare), drop = L.drop * (1 - .75 * flare), r = L.rIn + (rOut - L.rIn) * d.t; sp[i * 3] = Math.cos(d.a) * r; sp[i * 3 + 1] = L.y0 - drop * Math.pow(d.t, 1.7) + .006; sp[i * 3 + 2] = Math.sin(d.a) * r * .97; }); seqPts.geometry.attributes.position.needsUpdate = true; }
@@ -609,7 +689,7 @@ function render(now) {
   for (let i = 0; i < NS; i++) { if (sLife[i] <= 0) continue; sLife[i] -= dt; sVel[i * 3 + 1] -= .35 * dt; for (let q = 0; q < 3; q++) { sVel[i * 3 + q] *= .97; SP[i * 3 + q] += sVel[i * 3 + q] * dt * .6; } SA[i] = Math.max(0, Math.min(1, sLife[i] / 1.2)); }
   seeds.geometry.attributes.position.needsUpdate = true; seeds.geometry.attributes.alpha.needsUpdate = true;
   [orbs, burst, seqPts, seeds].forEach(p => p.material.uniforms.time.value = tm);
-  if (bokeh) bokeh.uniforms.focus.value = cam.position.distanceTo(tmpV.set(0, 1.1, 0));
+  if (bokeh) bokeh.uniforms.focus.value = cam.position.distanceTo(tmpV.set(0, 1.1 * K, 0));
   if (composer) composer.render(); else R.render(scene, cam);
   window.dispatchEvent(new Event("reino-frame"));
 }

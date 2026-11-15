@@ -35,7 +35,7 @@ const scene = new THREE.Scene();
 const pm = new THREE.PMREMGenerator(R);
 scene.environment = pm.fromScene(new RoomEnvironment(R), 0.04).texture;
 scene.fog = new THREE.Fog(new THREE.Color().setRGB(.967, .8615, .839, THREE.LinearSRGBColorSpace), 12, 30);
-const cam = new THREE.PerspectiveCamera(38, 1, 0.1, 260);
+const cam = new THREE.PerspectiveCamera(38, 1, 0.3, 260);
 
 /* ---------- utilidades ---------- */
 const phys = (o) => new THREE.MeshPhysicalMaterial(Object.assign({ envMapIntensity: .55 }, o));
@@ -101,6 +101,42 @@ table.rotation.x = -Math.PI / 2; table.position.y = -1.71 * SC; scene.add(table)
   }
 }
 
+/* ---------- profundidade: sombra de contato sob a caixinha ---------- */
+{
+  const t = canvasTex(256, 256, (g) => { const gr = g.createRadialGradient(128, 128, 10, 128, 128, 128); gr.addColorStop(0, "rgba(60,20,40,.75)"); gr.addColorStop(.45, "rgba(60,20,40,.38)"); gr.addColorStop(1, "rgba(60,20,40,0)"); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); }, false);
+  const cs = new THREE.Mesh(new THREE.PlaneGeometry(6.4 * SC, 4.8 * SC), new THREE.MeshBasicMaterial({ map: t, transparent: true, depthWrite: false, toneMapped: false }));
+  cs.rotation.x = -Math.PI / 2; cs.position.y = -1.71 * SC + .004; cs.renderOrder = -1; scene.add(cs);
+}
+/* ---------- profundidade: a penteadeira ao fundo (some na névoa) ---------- */
+{
+  const back = new THREE.Group(); back.position.set(0, -1.71 * SC, -7.5); scene.add(back);
+  const glass = phys({ color: 0xFFE6F0, roughness: .08, clearcoat: 1, transparent: true, opacity: .62, depthWrite: false });
+  // espelho grande oval, com moldura dourada
+  const mg = new THREE.CircleGeometry(1, 64); mg.scale(2.2, 2.9, 1);
+  const bm = new THREE.Mesh(mg, phys({ color: 0xF4E3EA, metalness: 1, roughness: .12, envMapIntensity: 1.1 })); bm.position.set(0, 3.6, -.6); back.add(bm);
+  const bfG = new THREE.TorusGeometry(1, .07, 12, 120); bfG.scale(2.2, 2.9, 1);
+  const bf = new THREE.Mesh(bfG, M.gold); bf.position.copy(bm.position); back.add(bf);
+  // frascos de perfume
+  for (const [x, z, h, c] of [[-3.1, .3, 1.1, 0xF7B5CC], [-2.4, .8, .8, 0xD7C2F2], [2.7, .5, 1.25, 0xFFD9A8]]) {
+    const b = lathe([[0, 0], [.32, 0], [.36, .1], [.36, h * .7], [.2, h * .85], [.09, h * .9], [.09, h], [0, h]], glass, 32); b.position.set(x, 0, z); b.material = glass.clone(); b.material.color.set(c); back.add(b);
+    const cap = sphere(.16, M.gold, 20, 14); cap.position.set(x, h + .1, z); back.add(cap);
+  }
+  // vaso com rosas
+  const vase = lathe([[0, 0], [.28, 0], [.4, .4], [.3, .9], [.22, 1.1], [.26, 1.2], [0, 1.2]], M.ivory, 32); vase.position.set(3.6, 0, -.2); back.add(vase);
+  const RC = [0xE8456F, 0xF28CA8, 0xFFD1DC, 0xC2185B, 0xF7A8BD];
+  for (let i = 0; i < 9; i++) { const r = sphere(.2, phys({ color: RC[i % 5], roughness: .5, sheen: 1 }), 14, 10); r.position.set(3.6 + (rnd() - .5) * .8, 1.35 + rnd() * .6, -.2 + (rnd() - .5) * .5); back.add(r); }
+}
+/* ---------- profundidade: brilhos desfocados em primeiro plano ---------- */
+const fgBokeh = [];
+{
+  const bt = canvasTex(128, 128, (g) => { const gr = g.createRadialGradient(64, 64, 30, 64, 64, 64); gr.addColorStop(0, "rgba(255,255,255,.55)"); gr.addColorStop(.8, "rgba(255,255,255,.45)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); }, false);
+  const cols = [0xFFC2D6, 0xFFE2B0, 0xE7D4FF];
+  for (let i = 0; i < (MOB ? 5 : 8); i++) {
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: bt, color: cols[i % 3], transparent: true, opacity: .22 + rnd() * .14, depthWrite: false, fog: false }));
+    const s = .35 + rnd() * .55; sp.scale.set(s, s, 1);
+    const p = new THREE.Vector3((rnd() - .5) * 7, -.6 + rnd() * 3.4, 3.3 + rnd() * 1.6); sp.position.copy(p); scene.add(sp); fgBokeh.push({ sp, p, ph: rnd() * 6.28 });
+  }
+}
 /* ============================================================
    A CAIXINHA DE MÚSICA
    ============================================================ */
@@ -128,7 +164,7 @@ function scroll(g, x, y, s, dir) { g.beginPath(); g.moveTo(x, y); g.bezierCurveT
   }
   // veludo do interior
   const IW = BW - TW * 2, ID = BD - TW * 2;
-  const floor = SH(new THREE.Mesh(new THREE.PlaneGeometry(IW, ID), M.velvet), false, true); floor.rotation.x = -Math.PI / 2; floor.position.y = -.4; stage.add(floor);
+  const floor = SH(new THREE.Mesh(new THREE.PlaneGeometry(IW, ID), M.velvet), false, true); floor.rotation.x = -Math.PI / 2; floor.position.y = -.385; stage.add(floor);
   for (const s of [-1, 1]) {
     const a = SH(new THREE.Mesh(new THREE.PlaneGeometry(IW, .32), M.velvet), false, true); a.position.set(0, -.25, s * (ID / 2 - .002)); a.rotation.y = s > 0 ? Math.PI : 0; stage.add(a);
     const b = SH(new THREE.Mesh(new THREE.PlaneGeometry(ID, .32), M.velvet), false, true); b.position.set(s * (IW / 2 - .002), -.25, 0); b.rotation.y = -s * Math.PI / 2; stage.add(b);
@@ -176,13 +212,13 @@ let mirror;
   const clasp = rbox(.34, .2, .06, .02, M.gold); clasp.position.set(0, .12, BD + .05); lid.add(clasp);
   const cg = sphere(.05, M.gem, 16, 12); cg.position.set(0, .12, BD + .085); lid.add(cg);
   // forro de veludo e espelho
-  const lin = new THREE.Mesh(new THREE.PlaneGeometry(BW - .1, BD - .1), M.velvet); lin.rotation.x = Math.PI / 2; lin.position.set(0, -.002, BD / 2); lid.add(lin);
+  const lin = new THREE.Mesh(new THREE.PlaneGeometry(BW - .1, BD - .1), M.velvet); lin.rotation.x = Math.PI / 2; lin.position.set(0, -.008, BD / 2); lid.add(lin);
   const og = new THREE.CircleGeometry(1, 72); og.scale(1.5, 1.08, 1);
   if (!MOB) { mirror = new Reflector(og, { textureWidth: 1024, textureHeight: 768, color: 0xB9AAB4, clipBias: .003 }); }
   else mirror = new THREE.Mesh(og, phys({ color: 0xEADFE6, metalness: 1, roughness: .05, envMapIntensity: 1.3 }));
-  mirror.rotation.x = Math.PI / 2; mirror.position.set(0, -.012, BD / 2); lid.add(mirror);
+  mirror.rotation.x = Math.PI / 2; mirror.position.set(0, -.02, BD / 2); lid.add(mirror);
   const frameG = new THREE.TorusGeometry(1, .05, 14, 140); frameG.scale(1.5, 1.08, 1);
-  const frame = SH(new THREE.Mesh(frameG, M.gold)); frame.rotation.x = Math.PI / 2; frame.position.set(0, -.03, BD / 2); lid.add(frame);
+  const frame = SH(new THREE.Mesh(frameG, M.gold)); frame.rotation.x = Math.PI / 2; frame.position.set(0, -.04, BD / 2); lid.add(frame);
   for (let i = 0; i < 18; i++) { const a = i / 18 * Math.PI * 2; const p = sphere(.035, M.pearl, 12, 8); p.position.set(Math.cos(a) * 1.5 * 1.1, -.03, BD / 2 + Math.sin(a) * 1.08 * 1.12); lid.add(p); }
 }
 // a chavinha de dar corda (lado direito)
@@ -394,6 +430,7 @@ const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const easeSpin = t => t < .2 ? 2.5 * t * t : t > .8 ? 1 - 2.5 * (1 - t) * (1 - t) : .1 + (t - .2) * 1.3333;
 function play(name) {
   if (!STEPS[name]) return;
+  if (busy && curStep === name) return;
   seq = STEPS[name].map(s => s.slice()); busy = true; curStep = name; nextSeg();
   window.dispatchEvent(new CustomEvent("caixa-step", { detail: { step: name, state: "start" } }));
 }
@@ -405,9 +442,10 @@ function playSeq(names) {
 function nextSeg() {
   const s = seq.shift();
   if (s && s[4]) window.dispatchEvent(new CustomEvent("caixa-sub", { detail: { step: s[4] } }));
-  if (!s) { busy = false; seg = null; spin = spin % (Math.PI * 2); window.dispatchEvent(new CustomEvent("caixa-step", { detail: { step: curStep, state: "end" } })); return; }
+  if (!s) { busy = false; seg = null; spin = 0; face = 0; window.dispatchEvent(new CustomEvent("caixa-step", { detail: { step: curStep, state: "end" } })); return; }
   from = snap(); const o = s[3] || {};
-  seg = { pose: POSES[s[0]], d: s[1], hold: s[2], face: o.face != null ? o.face : from.face, spin: from.spin + (o.spin ? o.spin * Math.PI * 2 : 0), isSpin: !!o.spin };
+  const homeSpin = Math.round(from.spin / (Math.PI * 2)) * Math.PI * 2;
+  seg = { pose: POSES[s[0]], d: s[1], hold: s[2], face: o.face != null ? o.face : 0, spin: o.spin ? homeSpin + o.spin * Math.PI * 2 : homeSpin, isSpin: !!o.spin };
   segT = 0; if (seg.isSpin) sparkleBurst(1.3, 70);
 }
 function stepAnim(dt) {
@@ -576,7 +614,7 @@ const Caixa = {
 window.Caixa = Caixa;
 
 /* ---------- laço ---------- */
-let last = performance.now(), visible = true, tm = 0, firstG = true;
+let last = performance.now(), visible = true, tm = 0, idleW = 1;
 const tmpV = new THREE.Vector3(), lq = new THREE.Quaternion(), le = new THREE.Euler();
 const TAU = Math.PI * 2;
 function render(now) {
@@ -593,16 +631,17 @@ function render(now) {
   // bailarina
   stepAnim(dt);
   JN.forEach(k => J[k].quaternion.copy(cur[k]));
-  if (!busy) { const b = Math.sin(tm * 1.6); J.spine.quaternion.multiply(lq.setFromEuler(le.set(b * .012, 0, 0))); J.shR.quaternion.multiply(lq.setFromEuler(le.set(0, 0, b * .035))); J.shL.quaternion.multiply(lq.setFromEuler(le.set(0, 0, -b * .035))); }
+  const still = busy || turnT > 0 ? 0 : 1; idleW += (still - idleW) * Math.min(1, dt * (still ? 1.5 : 6));
+  { const b = Math.sin(tm * 1.6) * idleW; J.spine.quaternion.multiply(lq.setFromEuler(le.set(b * .012, 0, 0))); J.shR.quaternion.multiply(lq.setFromEuler(le.set(0, 0, b * .035))); J.shL.quaternion.multiply(lq.setFromEuler(le.set(0, 0, -b * .035))); }
   J.head.quaternion.multiply(lq.setFromEuler(le.set(look.y * .1, look.x * .3, 0, "YXZ")));
   // gira como numa caixinha de música enquanto a corda dura
   if (busy) turnT = 0;
   if (turnT > 0) { turnT -= dt; idleRot += dt * Math.min(1.4, .4 + turnT * .5); }
   else { const tgt = Math.round(idleRot / TAU) * TAU; idleRot += (tgt - idleRot) * Math.min(1, dt * 1.6); }
-  dancer.rotation.y = face + spin + idleRot + (busy || turnT > 0 ? 0 : Math.sin(tm * .4) * .15);
+  dancer.rotation.y = face + spin + idleRot + Math.sin(tm * .4) * .15 * idleW;
   dancerRoot.updateMatrixWorld(true);
   let minY = Infinity; for (const m of markers) { m.getWorldPosition(tmpV); minY = Math.min(minY, tmpV.y); }
-  pelvis.position.y += (-(minY - rise - .004) / DS) * (firstG ? 1 : .35); firstG = false;
+  pelvis.position.y += -(minY - rise - .004) / dancerRoot.scale.y;
   const spinning = (seg && seg.isSpin) || turnT > 0 ? 1 : 0; flare += (spinning - flare) * Math.min(1, dt * (spinning ? 3 : 2));
   if (!REDUCE) updTutu(tm);
   { const sp = seqPts.geometry.attributes.position.array; seqData.forEach((d, i) => { const L = tutuLayers[d.l], rOut = L.rOut * (1 + .22 * flare), drop = L.drop * (1 - .75 * flare), r = L.rIn + (rOut - L.rIn) * d.t; sp[i * 3] = Math.cos(d.a) * r; sp[i * 3 + 1] = L.y0 - drop * Math.pow(d.t, 1.7) + .006; sp[i * 3 + 2] = Math.sin(d.a) * r * .97; }); seqPts.geometry.attributes.position.needsUpdate = true; }
@@ -618,6 +657,7 @@ function render(now) {
   cam.position.set(Math.sin(az) * d + camS.px, camS.ty + camS.py, Math.cos(az) * d);
   cam.lookAt(0, camS.lk, 0);
   // bokeh e brilhos
+  fgBokeh.forEach((b, i) => { b.sp.position.set(b.p.x + Math.sin(tm * .2 + b.ph) * .25, b.p.y + Math.sin(tm * .3 + b.ph) * .15, b.p.z); });
   const Po = orbs.geometry.attributes.position.array;
   for (let i = 0; i < NOR; i++) { Po[i * 3 + 1] += orbV[i] * dt; if (Po[i * 3 + 1] > 9) Po[i * 3 + 1] = -1.5; Po[i * 3] += Math.sin(tm * .3 + i) * .0015; }
   orbs.geometry.attributes.position.needsUpdate = true;
