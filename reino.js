@@ -65,127 +65,22 @@ const M = {
   gem: new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xFFE7C2, emissiveIntensity: 2.4, roughness: .1 }),
 };
 /* ============================================================
-   A MAQUETE: um palco de teatro flutuando no céu
-   Tablado com proscênio curvo, saia de veludo, boca de cena
-   com cortinas presas e bambolina, como num teatro de verdade.
+   O CHÃO DE LUZ: sem palco, só a bailarina sobre uma poça de luz
+   suave, com a sombra dela, flutuando no céu de conto de fadas.
    ============================================================ */
-const stage = new THREE.Group(); stage.scale.setScalar(.8); scene.add(stage);
-const woodTex = canvasTex(1024, 1024, (g, w, h) => {
-  g.fillStyle = "#D6A375"; g.fillRect(0, 0, w, h);
-  const N = 22, ph = h / N;
-  for (let i = 0; i < N; i++) {
-    const y = i * ph, off = (i % 3) * 170;
-    for (let x = -off; x < w; x += 340 + (i * 37) % 120) {
-      const l = 52 + ((i * 13 + x) % 9) * 1.2, c = `hsl(${26 + ((i * 7 + x) % 5)},${46 + (i % 4) * 3}%,${l}%)`;
-      g.fillStyle = c; g.fillRect(x, y + 1, 340, ph - 2);
-      g.fillStyle = "rgba(90,50,25,.35)"; g.fillRect(x, y, 2, ph);
-      for (let k = 0; k < 6; k++) { g.strokeStyle = `rgba(120,70,35,${.06 + Math.random() * .06})`; g.lineWidth = 1; g.beginPath(); const yy = y + 4 + Math.random() * (ph - 8); g.moveTo(x, yy); g.bezierCurveTo(x + 90, yy + 2, x + 200, yy - 2, x + 340, yy + 1); g.stroke(); }
-    }
-    g.fillStyle = "rgba(70,38,18,.45)"; g.fillRect(0, y, w, 1.6);
-  }
-});
-woodTex.wrapS = woodTex.wrapT = THREE.RepeatWrapping;
-// contorno do tablado (x, z): fundo reto com cantos arredondados, laterais retas e frente em arco (proscênio)
-const SW = 3.8, ZB = -2.4, ZF = 2.3, ZA = 3.25, CR = .45;
-const stageShape = new THREE.Shape();
-stageShape.moveTo(-SW, ZF);
-stageShape.lineTo(-SW, ZB + CR); stageShape.quadraticCurveTo(-SW, ZB, -SW + CR, ZB);
-stageShape.lineTo(SW - CR, ZB); stageShape.quadraticCurveTo(SW, ZB, SW, ZB + CR);
-stageShape.lineTo(SW, ZF);
-stageShape.quadraticCurveTo(0, 2 * ZA - ZF, -SW, ZF);
-const frontZ = (x) => { const t = (1 - x / SW) / 2; return ZF + 4 * (ZA - ZF) * t * (1 - t); };
+const stage = new THREE.Group(); scene.add(stage);
 {
-  const wood = phys({ map: woodTex, roughness: .32, clearcoat: .7, clearcoatRoughness: .2, envMapIntensity: .6 });
-  woodTex.repeat.set(1 / 4.2, 1 / 4.2);
-  // tablado: a forma está no plano x/y; deitada, y da forma vira -z, então espelhamos
-  const flat = stageShape.getPoints(48).map(p => new THREE.Vector2(p.x, -p.y));
-  const deckShape = new THREE.Shape(flat.reverse());
-  const dg = new THREE.ExtrudeGeometry(deckShape, { depth: .2, bevelEnabled: true, bevelThickness: .03, bevelSize: .05, bevelSegments: 3, curveSegments: 48 });
-  const deck = SH(new THREE.Mesh(dg, [wood, M.gold])); deck.rotation.x = -Math.PI / 2; deck.position.y = -.2; stage.add(deck);
-  // contorno amostrado, usado pela saia, franja e faixa dourada
-  const OUT = stageShape.getSpacedPoints(360).slice(0, -1).map(p => new THREE.Vector2(p.x, p.y));
-  const C0 = new THREE.Vector2(0, .3), IN = .84, SKH = 1.45, TOP = -.2;
-  const inner = (p, k) => C0.clone().add(p.clone().sub(C0).multiplyScalar(k));
-  // saia de veludo com pregas
-  {
-    const n = OUT.length, rows = 6, pos = [], idx = [];
-    let acc = 0; const sAt = [0]; for (let i = 1; i < n; i++) { acc += OUT[i].distanceTo(OUT[i - 1]); sAt.push(acc); }
-    for (let r = 0; r <= rows; r++) {
-      const t = r / rows, k = 1 + (IN - 1) * t;
-      for (let i = 0; i <= n; i++) {
-        const p = OUT[i % n], q = inner(p, k), nx = q.x - C0.x, nz = q.y - C0.y, L = Math.hypot(nx, nz) || 1;
-        const pl = (.025 + .045 * t) * Math.sin((i < n ? sAt[i] : acc) * 7.5);
-        pos.push(q.x + nx / L * pl, TOP - t * SKH, q.y + nz / L * pl);
-      }
-    }
-    for (let r = 0; r < rows; r++) for (let i = 0; i < n; i++) { const a = r * (n + 1) + i, b = a + n + 1; idx.push(a, a + 1, b, b, a + 1, b + 1); }
-    const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
-    const vm = M.velvet.clone(); vm.side = THREE.DoubleSide;
-    stage.add(SH(new THREE.Mesh(g, vm)));
-  }
-  const bottom = OUT.map(p => inner(p, IN)), YB = TOP - SKH;
-  // faixa dourada e franja embaixo da saia
-  const band = SH(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(bottom.filter((_, i) => i % 4 === 0).map(p => new THREE.Vector3(p.x, YB, p.y)), true), 240, .05, 8, true), M.gold)); stage.add(band);
-  const NF = 96, fr = new THREE.InstancedMesh(new THREE.ConeGeometry(.045, .26, 8), M.gold, NF), d = new THREE.Object3D();
-  for (let i = 0; i < NF; i++) { const p = bottom[Math.floor(i / NF * bottom.length)]; d.position.set(p.x, YB - .16, p.y); d.rotation.set(Math.PI, 0, 0); d.updateMatrix(); fr.setMatrixAt(i, d.matrix); }
-  fr.castShadow = true; stage.add(fr);
-  // fundo da maquete (laqueado) e pingente
-  const ug = new THREE.ShapeGeometry(new THREE.Shape(bottom.map(p => new THREE.Vector2(p.x, p.y))), 1);
-  const under = SH(new THREE.Mesh(ug, M.lacquer)); under.rotation.x = Math.PI / 2; under.position.y = YB; stage.add(under);
-  const belly = SH(new THREE.Mesh(new THREE.SphereGeometry(1, 48, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), M.lacquer)); belly.scale.set(2.6, .45, 2.0); belly.position.set(0, YB, .3); stage.add(belly);
-  const drop = SH(new THREE.Mesh(new THREE.ConeGeometry(.22, .7, 24), M.gold)); drop.rotation.x = Math.PI; drop.position.set(0, YB - .7, .3); stage.add(drop);
-  // placa na frente, no meio da saia do proscênio
-  const pl = new THREE.Mesh(new THREE.PlaneGeometry(2.1, .5), phys({ color: 0xE9C27A, metalness: 1, roughness: .25, envMapIntensity: 1.2, map: canvasTex(840, 200, (g, w, h) => {
-    const gr = g.createLinearGradient(0, 0, w, 0); gr.addColorStop(0, "#C99A4E"); gr.addColorStop(.5, "#F6DDA8"); gr.addColorStop(1, "#C99A4E"); g.fillStyle = gr; g.fillRect(0, 0, w, h);
-    g.strokeStyle = "#8A6430"; g.lineWidth = 6; g.strokeRect(10, 10, w - 20, h - 20);
-    g.fillStyle = "#4A2A1A"; g.textAlign = "center"; g.textBaseline = "middle"; g.font = "800 92px 'Big Shoulders Display', 'Arial Narrow', Impact, sans-serif"; g.fillText("FORMAS", w / 2, h / 2 - 16);
-    g.font = "700 30px 'Instrument Sans', Arial, sans-serif"; g.fillText("ESCOLA  DE  DANÇA", w / 2, h / 2 + 52);
-  }) }));
-  const zTop = ZA, zBot = C0.y + (ZA - C0.y) * IN, slope = Math.atan2(zTop - zBot, SKH);
-  pl.position.set(0, TOP - SKH * .5, (zTop + zBot) / 2 + .09); pl.rotation.x = slope; stage.add(pl);
-}
-/* ---------- boca de cena: colunas douradas, cortinas presas e bambolina ---------- */
-const PZ = -2.05, PH = 4.7, PX = 3.55;
-{
-  const vel = M.velvet.clone(); vel.side = THREE.DoubleSide;
-  // colunas e travessa
-  for (const s of [-1, 1]) {
-    const col = SH(new THREE.Mesh(new THREE.CylinderGeometry(.09, .11, PH, 20), M.gold)); col.position.set(s * PX, PH / 2, PZ - .08); stage.add(col);
-    const cap = SH(new THREE.Mesh(new THREE.SphereGeometry(.16, 20, 14), M.gold)); cap.position.set(s * PX, PH + .05, PZ - .08); stage.add(cap);
-    const base = SH(new THREE.Mesh(new THREE.CylinderGeometry(.18, .2, .12, 20), M.gold)); base.position.set(s * PX, .06, PZ - .08); stage.add(base);
-  }
-  const beam = SH(new THREE.Mesh(new THREE.BoxGeometry(PX * 2 + .2, .14, .14), M.gold)); beam.position.set(0, PH - .02, PZ - .08); stage.add(beam);
-  // brasão no alto
-  const crest = SH(new THREE.Mesh(new THREE.TorusGeometry(.26, .045, 12, 40), M.gold)); crest.position.set(0, PH + .3, PZ - .05); stage.add(crest);
-  const gem = new THREE.Mesh(new THREE.OctahedronGeometry(.11), M.gem); gem.position.copy(crest.position); gem.scale.y = 1.5; stage.add(gem);
-  // cortina lateral: painel pregueado, preso no meio (amarra dourada)
-  const drape = (s) => {
-    const w = 1.25, nx = 48, ny = 40, g = new THREE.PlaneGeometry(w, PH - .1, nx, ny), p = g.attributes.position;
-    for (let i = 0; i < p.count; i++) {
-      const u = (p.getX(i) + w / 2) / w, y = p.getY(i), t = (y + (PH - .1) / 2) / (PH - .1); // t: 0 embaixo, 1 em cima
-      const tie = .38, pinch = t < tie ? .55 + .45 * Math.pow((tie - t) / tie, .6) : .55 + .45 * Math.pow((t - tie) / (1 - tie), .9);
-      const x = (u - (s > 0 ? 1 : 0)) * w * pinch; // presa do lado de fora
-      const z = Math.sin(u * Math.PI * 9) * .05 * (.6 + .4 * pinch) + (1 - pinch) * .25 * Math.sin(u * Math.PI);
-      p.setXYZ(i, x, y, z);
-    }
-    g.computeVertexNormals();
-    const m = SH(new THREE.Mesh(g, vel)); m.position.set(s * (PX - .12), (PH - .1) / 2, PZ); stage.add(m);
-    const tieB = SH(new THREE.Mesh(new THREE.TorusGeometry(.12, .025, 8, 24), M.gold)); tieB.position.set(s * (PX - .12 - w * .55 * .5), (PH - .1) * .38, PZ + .12); tieB.rotation.y = Math.PI / 2; tieB.scale.set(1, 1.3, 1); stage.add(tieB);
-  };
-  drape(1); drape(-1);
-  // bambolina (sanefa) com festões
-  {
-    const w = PX * 2 - .1, h = .75, nx = 160, ny = 10, g = new THREE.PlaneGeometry(w, h, nx, ny), p = g.attributes.position;
-    for (let i = 0; i < p.count; i++) {
-      const x = p.getX(i), y = p.getY(i), t = (y + h / 2) / h, u = (x + w / 2) / w;
-      const sw = Math.abs(Math.sin(u * Math.PI * 4)); // 4 festões
-      const yy = y + (1 - t) * (1 - sw) * .32;
-      const z = Math.sin(u * Math.PI * 44) * .025 + (1 - t) * sw * .12;
-      p.setXYZ(i, x, yy, z);
-    }
-    g.computeVertexNormals();
-    const val = SH(new THREE.Mesh(g, vel)); val.position.set(0, PH - .1 - h / 2, PZ + .02); stage.add(val);
-  }
+  const shadowCatcher = new THREE.Mesh(new THREE.CircleGeometry(3.4, 64), new THREE.ShadowMaterial({ opacity: .2, transparent: true, depthWrite: false }));
+  shadowCatcher.rotation.x = -Math.PI / 2; shadowCatcher.position.y = .002; shadowCatcher.receiveShadow = true; stage.add(shadowCatcher);
+  const poolTex = canvasTex(512, 512, (g, w) => {
+    const c = w / 2, gr = g.createRadialGradient(c, c, 0, c, c, c);
+    gr.addColorStop(0, "rgba(255,248,240,.95)"); gr.addColorStop(.35, "rgba(255,226,236,.6)"); gr.addColorStop(.62, "rgba(240,190,220,.22)"); gr.addColorStop(1, "rgba(230,180,220,0)");
+    g.fillStyle = gr; g.fillRect(0, 0, w, w);
+    g.strokeStyle = "rgba(246,221,168,.75)"; g.lineWidth = 3; g.beginPath(); g.arc(c, c, c * .56, 0, 7); g.stroke();
+    g.strokeStyle = "rgba(246,221,168,.35)"; g.lineWidth = 2; g.beginPath(); g.arc(c, c, c * .66, 0, 7); g.stroke();
+  }, false);
+  const pool = new THREE.Mesh(new THREE.CircleGeometry(2.6, 64), new THREE.MeshBasicMaterial({ map: poolTex, transparent: true, depthWrite: false, toneMapped: false }));
+  pool.rotation.x = -Math.PI / 2; pool.position.y = .001; pool.renderOrder = -1; stage.add(pool);
 }
 let curtain = null;
 
@@ -245,27 +140,8 @@ castle(-48, -36, .75, .5);
 for (const [x, z, r, sy] of [[-30, -50, 26, .32], [18, -58, 30, .28], [50, -45, 22, .3], [-55, -38, 20, .35], [0, -70, 40, .22]]) {
   const hl = new THREE.Mesh(new THREE.SphereGeometry(r, 40, 16, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xEFE3F2, roughness: 1 })); hl.scale.y = sy; hl.position.set(x, -7.2, z); scene.add(hl);
 }
-// barra de balé, à esquerda
-{
-  const wood2 = phys({ color: 0xB07A4E, roughness: .4, clearcoat: .6 });
-  const A = new THREE.Vector3(-3.2, 0, 1.3), B = new THREE.Vector3(-3.2, 0, -1.5);
-  for (const P of [A, B]) { const post = SH(new THREE.Mesh(new THREE.CylinderGeometry(.035, .045, 1.15, 12), M.gold)); post.position.copy(P).setY(.575); stage.add(post); const ft = SH(new THREE.Mesh(new THREE.CylinderGeometry(.13, .15, .05, 20), M.gold)); ft.position.copy(P).setY(.025); stage.add(ft); }
-  const mid = A.clone().add(B).multiplyScalar(.5), len = A.distanceTo(B);
-  for (const y of [1.05, .72]) { const bar = SH(new THREE.Mesh(new THREE.CylinderGeometry(.04, .04, len + .2, 16), wood2)); bar.position.copy(mid).setY(y); bar.lookAt(B.clone().setY(y)); bar.rotateX(Math.PI / 2); stage.add(bar); }
-}
-// buquê de rosas na beira do palco
-const bouquet = new THREE.Group(); bouquet.position.set(2.75, 0, 2.15); bouquet.rotation.z = -.35; stage.add(bouquet);
-{
-  const paper = SH(new THREE.Mesh(new THREE.ConeGeometry(.2, .62, 18, 1, true), phys({ color: 0xFFF4EE, roughness: .6, side: THREE.DoubleSide }))); paper.rotation.z = Math.PI; paper.position.y = .3; bouquet.add(paper);
-  const bow = SH(new THREE.Mesh(new THREE.TorusGeometry(.09, .03, 8, 20), M.velvet)); bow.position.y = .2; bow.rotation.x = Math.PI / 2; bouquet.add(bow);
-  const RC = [0xE8456F, 0xF28CA8, 0xFFD1DC, 0xE8456F, 0xC2185B, 0xF7A8BD, 0xFFFFFF];
-  for (let i = 0; i < 7; i++) { const a = i / 7 * 6.28; const r = sphere(.085, phys({ color: RC[i], roughness: .5, sheen: 1, sheenColor: new THREE.Color(0xffffff) }), 14, 10); r.position.set(Math.cos(a) * .1 * (i ? 1 : 0), .66 + (i ? 0 : .06), Math.sin(a) * .1 * (i ? 1 : 0)); r.scale.y = .8; bouquet.add(r); }
-  for (let i = 0; i < 5; i++) { const lf = sphere(.06, M.leaf, 10, 8); const a = i * 1.3; lf.scale.set(.5, 1.4, .3); lf.position.set(Math.cos(a) * .17, .58, Math.sin(a) * .17); lf.rotation.z = Math.cos(a) * .8; bouquet.add(lf); }
-}
 const lamps = [];
-// luzinhas da ribalta
 const foots = [];
-for (let i = 0; i < 15; i++) { const x = (i / 14 - .5) * 2 * (SW - .35); const b = new THREE.Mesh(new THREE.SphereGeometry(.05, 12, 8), new THREE.MeshStandardMaterial({ color: 0xFFF3CF, emissive: 0xFFC56E, emissiveIntensity: 2.4 })); b.position.set(x, .06, frontZ(x) - .14); stage.add(b); foots.push(b); }
 // nuvens fofas em volta da maquete
 const puffTex = canvasTex(128, 128, (g) => { const gr = g.createRadialGradient(64, 64, 4, 64, 64, 64); gr.addColorStop(0, "rgba(255,255,255,.95)"); gr.addColorStop(.5, "rgba(255,255,255,.5)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); }, false);
 const clouds = [];
@@ -592,7 +468,6 @@ addEventListener("pointerup", e => {
   ray.setFromCamera(ptr, cam);
   const first = (o) => ray.intersectObject(o, true)[0];
   if (first(dancer)) { window.dispatchEvent(new CustomEvent("reino-tap")); return; }
-  const hb = first(bouquet); if (hb) { seedBurst(hb.point, 50, .8); ev("flores"); return; }
   for (const l of lamps) { if (first(l.L)) { l.i = (l.i + 1) % LAMPC.length; const c = new THREE.Color(LAMPC[(l.i + lamps.indexOf(l)) % LAMPC.length]); l.lens.material.color.copy(c); l.cone.material.color.copy(c); l.sl.color.copy(c); seedBurst(l.L.getWorldPosition(new THREE.Vector3()).setY(1.6), 24, .6); ev("luz"); return; } }
   const hs = first(stage); if (hs) { seedBurst(hs.point, 24, .6); return; }
   const p = new THREE.Vector3(); ray.ray.at(10, p); seedBurst(p, 24);
@@ -648,7 +523,7 @@ const TAU = Math.PI * 2;
 function render(now) {
   const dt = Math.min(.05, (now - last) / 1000); last = now; tm += dt;
   // a maquete flutua
-  const bob = Math.sin(tm * .7) * .08; stage.position.y = bob; dancerRoot.position.y = bob; stage.rotation.z = Math.sin(tm * .5) * .008;
+  const bob = Math.sin(tm * .7) * .08; stage.position.y = bob; dancerRoot.position.y = bob; 
   // bailarina
   stepAnim(dt);
   JN.forEach(k => J[k].quaternion.copy(cur[k]));

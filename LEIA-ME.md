@@ -10,12 +10,15 @@
 - `adm.webmanifest`, `adm-sw.js`, `adm-icon-*.png`, `adm-apple-icon.png`: o app da Área da Irene no celular.
 
 ## O site
-- **Faixa do palco:** logo abaixo da caixinha, uma fileira de bailarinas dança no palco (plié, saltinho, arabesque, pirouette e révérence) enquanto a Irene dá as instruções num balão. Tocar numa bailarina faz ela dar um salto com brilhos.
-- **O palco em 3D (abertura):** uma maquete de palco redondo flutuando no céu, no mesmo estilo da serra dos Leopardos. A primeira brincadeira é **montar a bailarina**: a pessoa escolhe entre 3 cores de pele, 3 vestidos e 3 sapatilhas, e a bailarina gira e brilha a cada escolha. Com as 3 escolhas feitas, ela faz a reverência e aparecem os 4 passos (Plié, Relevé, Arabesque, Pirouette) e a Coreografia. Dá para girar o palco arrastando e tocar na bailarina, no buquê, nos refletores (mudam de cor) e na cortina.
+- **Faixa da aula:** a Irene (de collant preto) mostra os passos e a fileira de bailarinas acompanha logo depois, com as instruções num balão. Tocar numa bailarina faz ela dar um salto com brilhos.
+- **A bailarina em 3D (abertura):** a bailarina sozinha sobre uma poça de luz, num céu de conto de fadas. A primeira brincadeira é **montar a bailarina**: a pessoa escolhe entre 3 cores de pele, 3 vestidos e 3 sapatilhas, e a bailarina gira e brilha a cada escolha. Com as 3 escolhas feitas, ela faz a reverência e aparecem os 4 passos (Plié, Relevé, Arabesque, Pirouette) e a Coreografia. Dá para girar arrastando e tocar na bailarina.
 - **Consulte a disponibilidade:** a família informa responsável, nome e idade da bailarina e WhatsApp. Aparecem os horários das turmas daquela idade; ela escolhe e a mensagem vai para a Irene. O pedido também fica em **Contatos** no /adm (com o horário escolhido). Se a turma estiver completa, entra na fila de espera.
   Para ter mais de um horário para a mesma idade, crie uma turma para cada horário (ex.: "Pré-Ballet · manhã" e "Pré-Ballet · tarde").
 - **Espetáculos:** vídeos (YouTube, Instagram, Google Drive ou .mp4 na pasta `videos/`), cadastrados no /adm, aba Site.
 - **Fotos:** álbum com visualização em tela cheia, enviado pelo /adm, aba Site.
+
+## Loja do Camarim
+Endereço próprio: **www.formasescoladedanca.com.br/camarim**. Mostra todas as peças, com filtro por tipo e a sacolinha (várias peças num pedido só). No site aparecem 4 peças e o botão para a loja; o botão **Pedidos dos alunos** fica sempre no topo.
 
 ## Área da Irene
 Endereço: **www.formasescoladedanca.com.br/adm** (não aparece no site e não vai para o Google).

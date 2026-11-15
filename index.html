@@ -18,6 +18,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Caveat:wght@500;700&family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js">
+<script>if(/^\/camarim\/?$/.test(location.pathname))document.documentElement.classList.add("shop","opened")</script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <style>
 :root{
@@ -1074,21 +1075,21 @@ h1 em,h2 em,h3 em{font-style:normal}
 @media (max-width:760px){.mj{border-radius:26px;margin-inline:-6px;padding:20px 0}.rl-top{padding:0 18px 8px}.rl-arr{display:none}.reels{padding:6px 18px 14px;gap:10px}.reel{width:170px}.reel b{font-size:19px}.mj-stories{gap:12px}.mj-stories b{width:58px;height:58px}.mj .mj-ig{padding:4px 18px 0}}
 /* botões de escolha maiores (pele, vestido, sapatilha) */
 .bgp .bk{font-size:12px}
-.bo{padding:10px 6px 8px;border-radius:18px;gap:5px}
-.bo svg{width:48px;height:48px}
-.bo span{font-size:13px}
+.bo{padding:8px 4px 6px;border-radius:16px;gap:3px}
+.bo svg{width:40px;height:40px}
+.bo span{font-size:12px}
 .bo i{width:24px;height:24px;font-size:13px;line-height:24px;right:-6px;top:-6px}
 @media (min-width:861px){.h3-dock{width:360px}.h3-dock .build{gap:14px}.h3-dock .bopts{gap:10px}}
 @media (min-width:861px) and (max-width:1180px){.h3-dock{width:330px}}
 @media (max-width:860px){
-  #reino .h3-dock .build{flex-direction:column;gap:12px}
-  #reino .h3-dock .bgp{flex:none;width:100%}
-  #reino .h3-dock .bgp .bk{font-size:11.5px;letter-spacing:.14em}
-  #reino .h3-dock .bopts{gap:10px}
-  #reino .h3-dock .bo{flex:1;width:auto;min-height:84px;padding:10px 4px 8px;border-radius:18px;justify-content:center}
-  #reino .h3-dock .bo svg{width:46px;height:46px}
-  #reino .h3-dock .bo span{font-size:13.5px}
-  #reino .h3-dock .bo i{width:22px;height:22px;font-size:12px;line-height:22px;right:-5px;top:-5px}
+  #reino .h3-dock .build{flex-direction:column;gap:8px}
+  #reino .h3-dock .bgp{flex:none;width:100%;flex-direction:row;align-items:center;gap:10px}
+  #reino .h3-dock .bgp .bk{flex:0 0 78px;font-size:11px;letter-spacing:.12em;padding:0}
+  #reino .h3-dock .bopts{flex:1;gap:10px;justify-content:flex-start}
+  #reino .h3-dock .bo{flex:0 0 auto;width:54px;height:54px;min-height:0;padding:0;border-radius:50%;justify-content:center}
+  #reino .h3-dock .bo svg{width:40px;height:40px}
+  #reino .h3-dock .bo span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  #reino .h3-dock .bo i{width:18px;height:18px;font-size:10px;line-height:18px;right:-3px;top:-3px}
 }
 /* sacolinha do Camarim */
 .bag{position:sticky;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:35;display:flex;justify-content:center;margin-top:26px;pointer-events:none}
@@ -1112,26 +1113,6 @@ h1 em,h2 em,h3 em{font-style:normal}
 .bl-x:hover{background:#fff;color:#B8346A}
 .bag-more{display:block;width:100%;border:1.5px dashed var(--line-d);background:none;border-radius:16px;padding:11px;font:700 14px var(--body);color:var(--ink);cursor:pointer;margin-bottom:16px}
 .bag-more:hover{background:#FAF4EE}
-/* Irene: programa de teatro */
-#irene{overflow-x:clip}
-#irene .ir-grid{align-items:start}
-#irene .ir-ph{position:sticky;top:96px}
-.ir-spot{position:absolute;left:50%;top:-70px;width:100%;height:70%;transform:translateX(-50%);background:conic-gradient(from 162deg at 50% 0,transparent 0deg,rgba(255,226,190,.16) 14deg,rgba(255,236,210,.22) 18deg,rgba(255,226,190,.16) 22deg,transparent 36deg);-webkit-mask:linear-gradient(#000 40%,transparent);mask:linear-gradient(#000 40%,transparent);pointer-events:none;z-index:0}
-#irene .frame{position:relative;z-index:1}
-#irene .ir-sig{z-index:3}
-.ir-bio{display:grid;gap:16px;margin:0 0 26px}
-.ir-bio p{margin:0!important;font-size:clamp(16px,1.5vw,18px)!important;line-height:1.7;white-space:normal!important}
-.ir-bio .ir-lead{font-size:clamp(17.5px,1.7vw,20px)!important;color:rgba(255,246,250,.94)!important}
-.ir-bio .ir-lead::first-letter{float:left;font-family:var(--display);font-size:4.1em;line-height:.82;padding:.06em .12em 0 0;color:var(--gold-2);font-style:italic}
-.ir-q{position:relative;margin:8px 0;padding:22px 26px 22px 64px;border-radius:24px;background:linear-gradient(120deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid rgba(232,194,122,.35);font-family:var(--display);font-style:italic;font-size:clamp(22px,2.4vw,30px);line-height:1.2;color:#fff}
-.ir-q span{position:absolute;left:18px;top:4px;font-size:72px;line-height:1;color:var(--gold)}
-.ir-q em{color:var(--gold-2)}
-.ir-credits{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:0 0 26px;border-block:1px solid rgba(232,194,122,.3)}
-.ir-credits div{padding:14px 14px 14px 0}
-.ir-credits div+div{padding-left:14px;border-left:1px dashed rgba(232,194,122,.25)}
-.ir-credits dt{font-size:10.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#FFB8D2;margin-bottom:4px}
-.ir-credits dd{margin:0;font-family:var(--display);font-style:italic;font-size:17px;line-height:1.25;color:#fff}
-@media (max-width:860px){#irene .ir-ph{position:relative;top:auto}.ir-credits{grid-template-columns:1fr}.ir-credits div,.ir-credits div+div{padding:12px 0;border-left:0}.ir-credits div+div{border-top:1px dashed rgba(232,194,122,.25)}.ir-q{padding:18px 18px 18px 54px}.ir-q span{font-size:60px;left:14px}}
 /* vídeos maiores e mais visíveis */
 .reel{width:clamp(240px,21vw,280px)}
 .reels{gap:18px;padding-bottom:20px}
@@ -1179,6 +1160,64 @@ h1 em,h2 em,h3 em{font-style:normal}
 .cta-steps li{counter-increment:cs;display:grid;grid-template-columns:38px 1fr;column-gap:12px;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:11px 14px 11px 11px}
 .cta-steps li::before{content:counter(cs);grid-row:span 2;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(120deg,#F6DDA8,#E8C27A);color:#2A1533;font-weight:800;font-size:16px}
 .cta-steps b{font-size:15.5px;color:#fff}.cta-steps span{font-size:13px;color:rgba(255,246,250,.72)}
+/* faixa: a Irene dá a aula, as bailarinas acompanham */
+.sb-irene{position:absolute;z-index:5;bottom:18px;right:max(22px,calc((100vw - 1220px)/2 + 22px));width:104px;height:174px;cursor:default;pointer-events:none;filter:drop-shadow(0 12px 10px rgba(60,20,40,.3))}
+.sb-irene::before{content:"";position:absolute;left:-30%;right:-30%;bottom:-6px;height:30px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,240,215,.75),transparent)}
+.sbi-tag{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);background:var(--ink);color:#fff;font:800 9.5px var(--body);letter-spacing:.16em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.sb-say{right:calc(max(22px,calc((100vw - 1220px)/2 + 22px)) + 100px)!important;top:30px!important}
+.sband{height:220px}
+@media (max-width:760px){.sband{height:190px}.sb-irene{width:80px;height:134px;right:10px;bottom:16px}.sb-say{right:84px!important;top:22px!important;font-size:18px!important;max-width:calc(100% - 110px)}}
+/* idades: todas bem visíveis, com aviso para tocar */
+.wiz .w-ages button{background:#fff;border:1.5px solid rgba(58,40,80,.2);box-shadow:0 4px 12px -8px rgba(60,20,80,.45)}
+.wiz .w-ages button:hover{border-color:var(--amber)}
+.wiz .w-ages button[aria-checked="true"]{background:var(--amber);border-color:var(--amber)}
+.w-ages{-webkit-mask-image:none;mask-image:none}
+.w-tap{font-style:normal;text-transform:none;letter-spacing:0;font-size:12.5px;font-weight:700;color:var(--amber);margin-left:6px;display:inline-block;animation:wtap 1.4s ease-in-out infinite}
+.wiz.aged .w-tap{display:none}
+@keyframes wtap{50%{transform:translateY(-3px)}}
+.wiz:not(.aged) .w-ages button{animation:wnudge 2.4s ease-in-out infinite}
+.wiz:not(.aged) .w-ages button:nth-child(2n){animation-delay:.15s}
+@keyframes wnudge{0%,80%,100%{transform:none}88%{transform:translateY(-3px)}}
+.wiz:not(.aged) .w-ages button[aria-checked="true"]{animation:none;transform:none;background:#fff;color:var(--ink);border-color:rgba(58,40,80,.2);box-shadow:0 4px 12px -8px rgba(60,20,80,.45)}
+.wiz:not(.aged) .w-ages button[aria-checked="true"] small{color:var(--ink-soft)}
+/* turmas: nenhuma fica apagada; a indicada só ganha destaque */
+.tcard.dim{opacity:1;filter:none}
+/* botão de pedidos no topo */
+.ped-b{display:inline-flex;align-items:center;gap:6px;text-decoration:none;font-weight:800;font-size:13.5px;color:var(--ink);background:#fff;border:1.5px solid rgba(194,56,111,.35);padding:9px 14px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 18px -12px rgba(194,56,111,.6);transition:transform .2s}
+.ped-b:hover{transform:translateY(-2px)}
+.links{margin-right:4px}
+@media (max-width:1060px){.ped-b{margin-left:auto;padding:8px 12px;font-size:12.5px}.ped-b+.btn+.menu-b,.ped-b~.menu-b{margin-left:8px}}
+@media (max-width:380px){.ped-b{font-size:11.5px;padding:7px 10px}}
+/* site: só 4 peças e o convite para a loja */
+.shop-more{display:flex;justify-content:center;margin-top:24px}.shop-more[hidden]{display:none}
+.shop-back{display:none}
+/* modo loja (/camarim): só o Camarim */
+html.shop #reino,html.shop .sband,html.shop main>section.sec:not(#camarim),html.shop .loader,html.shop .ato,html.shop .h3-card{display:none!important}
+html.shop #camarim{padding-top:120px!important;min-height:80vh}
+html.shop .shop-back{display:inline-flex;align-self:center;text-decoration:none;font-weight:800;font-size:14px;color:var(--ink);padding:9px 14px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+html.shop .ped-b{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pfilt{display:flex;flex-wrap:wrap;gap:8px;margin:-8px 0 22px}
+.pfilt[hidden]{display:none}
+.pfilt button{border:1.5px solid rgba(58,40,80,.18);background:#fff;color:var(--ink);border-radius:999px;padding:9px 16px;font:700 14px var(--body);cursor:pointer}
+.pfilt button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* Irene: polaroide + perfil, fundo de papel claro */
+#irene{background:#FBF5EF!important;color:var(--ink)!important;background-image:radial-gradient(rgba(180,140,120,.07) 1px,transparent 1px)!important;background-size:18px 18px!important}
+.irx{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(34px,6vw,90px);align-items:center}
+.irx-pol{position:relative;margin:0;background:#fff;padding:14px 14px 0;border-radius:4px;box-shadow:0 30px 60px -30px rgba(60,30,40,.45),0 2px 6px rgba(60,30,40,.08);transform:rotate(-2.5deg);transition:transform .5s cubic-bezier(.3,1.5,.5,1);max-width:440px;justify-self:center;width:100%}
+.irx-pol:hover{transform:rotate(0) translateY(-4px)}
+#irene .irx-pol img{display:block;width:100%!important;height:auto!important;aspect-ratio:1/1.05!important;max-height:none!important;object-fit:cover;object-position:50% 20%;border-radius:2px;filter:saturate(.95) contrast(1.02)}
+.irx-pol figcaption{font-family:var(--hand);font-size:24px;text-align:center;padding:12px 0 16px;color:#5A3A4A}
+.irx-tape{position:absolute;top:-14px;left:50%;width:120px;height:30px;transform:translateX(-50%) rotate(3deg);background:rgba(243,196,214,.75);box-shadow:0 2px 4px rgba(0,0,0,.08);z-index:2}
+#irene .irx-txt .eyebrow{color:#A3416A!important}
+.irx-name{font-family:var(--hand)!important;font-weight:700!important;text-transform:none!important;letter-spacing:0!important;font-size:clamp(54px,7vw,92px)!important;line-height:.95!important;color:var(--ink)!important;margin:16px 0 4px}
+.irx-role{margin:0 0 22px;font-size:12px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#B8577A}
+.irx-bio{display:grid;gap:14px;max-width:560px}
+.irx-bio p{margin:0;font-size:clamp(16px,1.45vw,17.5px);line-height:1.75;color:#4E3A46}
+.irx-bio p:first-child{font-family:var(--display);font-style:italic;font-size:clamp(19px,1.9vw,23px);line-height:1.45;color:var(--ink)}
+.irx-cta{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:28px}
+.irx-cta .btn.dark{background:var(--ink)!important;color:#fff!important}
+.irx-sig{font-family:var(--hand);font-size:44px;color:#B8577A;transform:rotate(-6deg);line-height:1}
+@media (max-width:860px){.irx{grid-template-columns:1fr}.irx-pol{max-width:320px}.irx-txt{text-align:left}}
 </style>
 </head>
 <body>
@@ -1219,12 +1258,14 @@ h1 em,h2 em,h3 em{font-style:normal}
   <div class="wrap nav">
     <a class="brand" href="#reino" aria-label="Formas Escola de Dança, início"><img src="logo-ink.png" alt="Formas Escola de Dança" width="728" height="536"></a>
     <nav class="links" aria-label="Seções"><a href="#caixa-sec">Caixinha</a><a href="#turmas">Turmas</a><a href="#espetaculos">Espetáculos</a><a href="#fotos">Fotos</a><a href="#irene">A Irene</a><a href="#camarim">Camarim</a></nav>
+    <a class="ped-b" href="/camarim"><span aria-hidden="true">🩰</span> Pedidos dos alunos</a>
     <a class="btn goldb" href="#turmas">Ver vagas</a>
     <button class="menu-b" id="menu-b" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span></button>
   </div>
 </header>
 <nav class="mnav" id="mnav" aria-label="Menu">
   <a href="#caixa-sec">A <em>caixinha</em></a><a href="#turmas">As <em>turmas</em></a><a href="#espetaculos"><em>Espetáculos</em></a><a href="#fotos"><em>Fotos</em></a><a href="#irene">A <em>Irene</em></a><a href="#camarim">O <em>Camarim</em></a><a href="#duvidas">Dúvidas</a>
+  <a class="btn goldb" href="/camarim" style="margin-top:14px">🩰 Pedidos dos alunos</a>
   <a class="btn wa js-wa" data-msg="Olá, Irene! Vim pelo site da Formas e gostaria de mais informações." target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#wa"/></svg>Falar com a Irene</a>
 </nav>
 
@@ -1270,13 +1311,27 @@ h1 em,h2 em,h3 em{font-style:normal}
     </div>
     <div id="dk-vestir" hidden><small class="h3k">Vestir a bailarina</small><div class="dress" id="dress"></div></div>
   </div>
-  <div class="h3-hint" id="h3hint"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>arraste para girar o palco</div>
+  <div class="h3-hint" id="h3hint"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>arraste para girar a bailarina</div>
 </section>
 
-<div class="sband" id="sband" aria-label="Bailarinas dançando no palco">
+<div class="sband" id="sband" aria-label="A Irene dá aula e as bailarinas acompanham">
   <div class="sb-curt"></div><div class="sb-spot s1"></div><div class="sb-spot s2"></div>
   <div class="sb-floor"></div>
   <div class="sb-track" id="sb-track"></div>
+  <div class="bl sb-irene" aria-hidden="true" style="--dl:0s"><svg viewBox="0 0 90 150"><g class="bd">
+    <g class="ll"><path d="M42 92 L40 134" stroke="#231A26" stroke-width="6.2" stroke-linecap="round"/><path d="M40 134 L39.5 142" stroke="#E7C3A8" stroke-width="5.6" stroke-linecap="round"/></g>
+    <g class="lr"><path d="M48 92 L50 134" stroke="#2B2030" stroke-width="6.2" stroke-linecap="round"/><path d="M50 134 L50.5 142" stroke="#E7C3A8" stroke-width="5.6" stroke-linecap="round"/></g>
+    <g class="al"><path d="M38.5 64 L31 90" stroke="#E8BFA2" stroke-width="4.2" stroke-linecap="round"/></g>
+    <path d="M37 61.5 Q45 57.5 53 61.5 L52.5 80 Q52 88 50.5 93 Q45 96.5 39.5 93 Q38 88 37.5 80 Z" fill="#231A26"/>
+    <path d="M40 62.5 Q45 66 50 62.5" stroke="#4A3A50" stroke-width="1.2" fill="none"/>
+    <g class="ar"><path d="M51.5 64 L59 90" stroke="#E8BFA2" stroke-width="4.2" stroke-linecap="round"/></g>
+    <rect x="42.6" y="53" width="4.8" height="9.5" rx="2.4" fill="#E8BFA2"/>
+    <circle cx="45" cy="47.5" r="9.3" fill="#E8BFA2"/>
+    <path d="M35.4 48.5 Q35 37 45 37 Q55 37 54.6 48.5 Q52 41.5 45 41.2 Q38.5 41.5 35.4 48.5Z" fill="#4A2F22"/>
+    <ellipse cx="45" cy="36.2" rx="6.3" ry="5" fill="#4A2F22"/>
+    <path d="M40.6 48.6 q1.6 1.2 3.2 0 M46.2 48.6 q1.6 1.2 3.2 0" stroke="#3A2030" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+    <path d="M43.2 53.2 q1.8 1.3 3.6 0" stroke="#B5466F" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  </g></svg><span class="sbi-tag">Irene</span></div>
   <div class="sb-val"></div>
   <div class="sb-say" id="sb-say">E um, e dois, e três…</div>
   <div class="sb-foot"></div>
@@ -1302,7 +1357,7 @@ h1 em,h2 em,h3 em{font-style:normal}
         <div class="wz-blk">
           <div class="wz-bh"><span class="wz-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.6" r="2.4" fill="currentColor"/><path d="M12 7.5v6M8 9.5l4 1.5 4-1.5M12 13.5l-2.6 7M12 13.5l2.6 7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M6.5 13.5Q12 11 17.5 13.5Q16 15.5 12 15Q8 15.5 6.5 13.5Z" fill="currentColor"/></svg></span><div><b>A bailarina</b><small>a idade mostra as turmas certas</small></div></div>
           <label class="wf ic-b"><span>Nome da bailarina</span><input id="w-cri" autocomplete="off" placeholder="Nome da criança"></label>
-          <div class="wf"><span>Idade</span>
+          <div class="wf"><span>Idade <em class="w-tap">👆 toque na idade da bailarina</em></span>
             <div class="w-ages" id="w-ages" role="radiogroup" aria-label="Idade da bailarina"></div>
             <div class="w-age" hidden><button type="button" id="w-am" aria-label="Menos um ano">−</button><input id="w-ida" type="number" inputmode="numeric" min="2" max="17" value="5" aria-label="Idade"><b>anos</b><button type="button" id="w-ap" aria-label="Mais um ano">+</button></div>
             <p class="w-hint" id="w-hint"></p>
@@ -1374,24 +1429,22 @@ h1 em,h2 em,h3 em{font-style:normal}
   </div>
 </section>
 
-<section class="sec light" id="irene">
-  <div class="wrap ir-grid">
-    <div class="ir-ph rv" style="position:relative">
-      <span class="ir-sp" style="left:-10px;top:12%">✦</span><span class="ir-sp" style="right:6%;top:-14px;animation-delay:-2s">✧</span>
-      <span class="ir-spot" aria-hidden="true"></span>
-      <div class="frame"><div class="arch"><img src="fotos/irene.webp" alt="Irene Melillo, professora e diretora artística da Formas Escola de Dança" loading="lazy" width="900" height="852"></div></div>
-      <div class="ir-sig"><b>Irene Melillo</b><small>Professora e diretora artística</small></div>
-    </div>
-    <div class="ir-txt rv d1">
+<section class="sec" id="irene">
+  <div class="wrap irx">
+    <figure class="irx-pol rv">
+      <span class="irx-tape" aria-hidden="true"></span>
+      <img src="fotos/irene.webp" alt="Irene Melillo, professora e diretora artística da Formas Escola de Dança" loading="lazy" width="900" height="852">
+      <figcaption>Irene Melillo ✦ Formas</figcaption>
+    </figure>
+    <div class="irx-txt rv d1">
       <span class="eyebrow"><b class="n">05</b>Quem conduz a escola</span>
-      <h2>Por trás de cada <em>forma</em>, a Irene</h2>
-      <div class="ir-bio" id="sobre"></div>
-      <dl class="ir-credits" aria-label="No programa">
-        <div><dt>Direção artística e aulas</dt><dd>Irene Melillo</dd></div>
-        <div><dt>Em cena</dt><dd>as pequenas bailarinas e bailarinos</dd></div>
-        <div><dt>Na plateia</dt><dd>as famílias, sempre perto</dd></div>
-      </dl>
-      <a class="btn dark js-wa" data-msg="Olá, Irene! Vim pelo site da Formas e gostaria de conversar com você." target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#wa"/></svg>Conversar com a Irene</a>
+      <h2 class="irx-name">Irene Melillo</h2>
+      <p class="irx-role">Professora e diretora artística</p>
+      <div class="irx-bio" id="sobre"></div>
+      <div class="irx-cta">
+        <a class="btn dark js-wa" data-msg="Olá, Irene! Vim pelo site da Formas e gostaria de conversar com você." target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#wa"/></svg>Conversar com a Irene</a>
+        <span class="irx-sig" aria-hidden="true">Irene</span>
+      </div>
     </div>
   </div>
 </section>
@@ -1405,8 +1458,11 @@ h1 em,h2 em,h3 em{font-style:normal}
         <p>Veja o que falta no uniforme, ponha quantas peças quiser na sacolinha e mande um pedido só pelo WhatsApp. A Irene separa e combina a entrega com você.</p>
       </div>
       <div class="cm-how rv d1"><span>Escolha as peças</span><span>Ponha na sacolinha</span><span>Envie tudo no WhatsApp</span></div>
+      <a class="shop-back" href="/">← Voltar ao site</a>
     </div>
+    <div class="pfilt" id="pfilt" role="group" aria-label="Filtrar peças" hidden></div>
     <div class="pgrid" id="pgrid"></div>
+    <div class="shop-more"><a class="btn goldb" href="/camarim">🩰 Abrir a loja completa de pedidos <span aria-hidden="true">→</span></a></div>
     <div class="bag" id="bag" hidden><button type="button" class="bag-in" id="bag-open"><span class="bag-ic" aria-hidden="true">👜<i id="bag-n">0</i></span><span class="bag-t"><b id="bag-t">Sacolinha</b><small id="bag-s">toque para revisar e enviar</small></span><span class="bag-go">Enviar pedido →</span></button></div>
   </div>
 </section>
@@ -1662,13 +1718,23 @@ document.addEventListener("keydown",function(e){if(!$("lb").classList.contains("
 function prodIcon(t){return '<svg aria-hidden="true"><use href="#p-'+(["collant","sapatilha","saia","meia","coque"].indexOf(t)>=0?t:"outro")+'"/></svg>'}
 function priceTxt(p){var v=String(p.preco||"").trim();if(!v)return "";var n=parseFloat(v.replace(/\./g,"").replace(",","."));return isNaN(n)?v:n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
 function renderProds(){
-  var P=(SITE.produtos||[]).filter(function(p){return p.ativo!==false});$("camarim").hidden=!P.length;
+  var SHOP=document.documentElement.classList.contains("shop"),P=(SITE.produtos||[]).filter(function(p){return p.ativo!==false});$("camarim").hidden=!P.length&&!SHOP;
+  var tipos=[];P.forEach(function(p){var t=p.tipo||"outro";if(tipos.indexOf(t)<0)tipos.push(t)});var TN={collant:"Collant",sapatilha:"Sapatilhas",saia:"Saias",meia:"Meias",coque:"Coque",outro:"Outros"};
+  if(SHOP&&tipos.length>1){var pf=$("pfilt");pf.hidden=false;var cur=pf.dataset.t||"";pf.innerHTML='<button type="button" data-t="" aria-pressed="'+(!cur)+'">Todas</button>'+tipos.map(function(t){return '<button type="button" data-t="'+esc(t)+'" aria-pressed="'+(cur===t)+'">'+esc(TN[t]||t)+'</button>'}).join("");if(cur)P=P.filter(function(p){return (p.tipo||"outro")===cur})}
+  var ALL=P.length;if(!SHOP)P=P.slice(0,4);document.querySelector(".shop-more").hidden=SHOP;
   $("pgrid").innerHTML=P.map(function(p,i){var pr=priceTxt(p);
     return '<article class="prod rv d'+(i%3)+'"><div class="p-img">'+(p.foto?'<img src="'+esc(p.foto)+'" alt="'+esc(p.nome)+'" loading="lazy">':prodIcon(p.tipo))+(p.tag?'<span class="p-tag">'+esc(p.tag)+'</span>':'')+'</div>'+
       '<div class="p-b"><h3>'+esc(p.nome)+'</h3><p>'+esc(p.desc||"")+'</p>'+(p.tamanhos?'<span class="p-meta">Tamanhos: '+esc(p.tamanhos)+'</span>':'')+
       '<div class="p-f">'+(pr?'<span class="p-price">'+esc(pr)+'</span>':'<span class="p-price ask">Valor com a Irene</span>')+'<button class="btn goldb" type="button" data-prod="'+esc(p.id)+'">'+(bagCount(p.id)?'✓ Na sacolinha ('+bagCount(p.id)+')':'Escolher')+'</button></div></div></article>';
   }).join("");observe($("pgrid").querySelectorAll(".rv"));renderBag();
 }
+$("pfilt").addEventListener("click",function(e){var b=e.target.closest("[data-t]");if(!b)return;this.dataset.t=b.dataset.t;renderProds()});
+if(document.documentElement.classList.contains("shop")){(function(){
+  document.title="Pedidos dos alunos · Camarim · Formas Escola de Dança";
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){var h=a.getAttribute("href");if(h!=="#"&&h!=="#top"&&h!=="#camarim")a.setAttribute("href","/"+h)});
+  var e=document.querySelector("#camarim .eyebrow");if(e)e.innerHTML='<b class="n">✦</b>Loja do Camarim';
+  var h=document.querySelector("#camarim h2");if(h)h.innerHTML="Pedidos dos <em>alunos</em>";
+})()}
 function renderFaq(){$("faq").innerHTML=(SITE.faq||[]).filter(function(f){return f.q}).map(function(f,i){return '<details class="rv d'+(i%3)+'"><summary>'+esc(f.q)+'</summary><p>'+esc(f.a)+'</p></details>'}).join("");$("duvidas").hidden=!$("faq").innerHTML;observe($("faq").querySelectorAll(".rv"))}
 function renderContact(){
   var ig=SITE.instagram||"formasescoladedanca";
@@ -1682,9 +1748,7 @@ function renderContact(){
   renderSobre();wireWa();
 }
 function renderSobre(){
-  var ps=String(SITE.sobre||"").split(/\n+/).map(function(x){return x.trim()}).filter(Boolean),el=$("sobre");if(!el)return;
-  var q='<blockquote class="ir-q"><span aria-hidden="true">“</span>Toda criança tem a sua <em>forma</em> de dançar.</blockquote>',mid=Math.min(2,ps.length);
-  el.innerHTML=ps.map(function(p,i){return (i===mid&&ps.length>2?q:"")+'<p'+(i===0?' class="ir-lead"':'')+'>'+esc(p)+'</p>'}).join("")+(ps.length<=2?q:"");
+  var el=$("sobre");if(!el)return;el.innerHTML=String(SITE.sobre||"").split(/\n+/).map(function(x){return x.trim()}).filter(Boolean).map(function(p){return "<p>"+esc(p)+"</p>"}).join("");
 }
 function wireWa(){document.querySelectorAll(".js-wa").forEach(function(a){a.href=waUrl(a.dataset.msg||"Olá, Irene!");if(!a._w){a._w=1;a.addEventListener("click",function(){hit("whatsapp")})}})}
 function renderAll(){renderTurmas();renderVideos();renderFotos();renderProds();renderFaq();renderContact()}
@@ -1805,7 +1869,7 @@ document.addEventListener("click",function(e){if(!e.target.closest("#cta-fill"))
   var tr=$("sb-track");if(!tr)return;
   var SK=["#F1C7AE","#E4B08F","#C98D68","#9C6545","#6A4029"],HR=["#2C1A12","#5A3825","#B9844F","#1A110C","#7A4A2A"],TU=["#F09ABB","#C9A7E8","#9FCDEE","#F7F2F2","#E8C27A","#F4B183","#E07AA5"];
   function dancer(i){var s=SK[(i*3)%5],hr=HR[(i*2)%5],t=TU[i%7];
-    return '<button class="bl" type="button" aria-label="Bailarina '+(i+1)+'" style="--dl:'+(-i*.28).toFixed(2)+'s"><svg viewBox="0 0 90 150" aria-hidden="true"><g class="bd">'+
+    return '<button class="bl" type="button" aria-label="Bailarina '+(i+1)+'" style="--dl:.35s"><svg viewBox="0 0 90 150" aria-hidden="true"><g class="bd">'+
       '<g class="ll"><path d="M42 92 L40 134" stroke="#F3C9C9" stroke-width="6" stroke-linecap="round"/><path d="M40 134 L39.5 142" stroke="#F2A7B4" stroke-width="5.5" stroke-linecap="round"/></g>'+
       '<g class="lr"><path d="M48 92 L50 134" stroke="#F6D2D2" stroke-width="6" stroke-linecap="round"/><path d="M50 134 L50.5 142" stroke="#F2A7B4" stroke-width="5.5" stroke-linecap="round"/></g>'+
       '<g class="al"><path d="M38.5 64 L31 90" stroke="'+s+'" stroke-width="4.4" stroke-linecap="round"/></g>'+
@@ -1834,7 +1898,7 @@ function wzAge(n){var v=Math.max(2,Math.min(17,(+$("w-ida").value||5)+n));$("w-i
 function drawAges(){var el=$("w-ages");if(!el)return;var v=+$("w-ida").value||5,h="";for(var a=3;a<=15;a++){var on=a===v||(a===15&&v>15);h+='<button type="button" role="radio" aria-checked="'+on+'" data-age="'+a+'"><b>'+a+(a===15?"+":"")+'</b><small>'+(a===15?"anos":"anos")+'</small></button>'}el.innerHTML=h;
   var T=turmasSite(),m=T.filter(function(t){return v>=(t.idadeMin||0)&&v<=(t.idadeMax||99)});$("w-hint").innerHTML=m.length?'✦ Turma indicada: <b>'+m.map(function(t){return esc(t.nome)}).join("</b> ou <b>")+'</b>':'✦ A Irene vai indicar a melhor turma';
   var on=el.querySelector('[aria-checked="true"]');if(on&&el.scrollWidth>el.clientWidth)el.scrollLeft=on.offsetLeft-el.clientWidth/2+on.offsetWidth/2}
-$("w-ages").addEventListener("click",function(e){var b=e.target.closest("[data-age]");if(!b)return;$("w-ida").value=b.dataset.age;setAge(+b.dataset.age);drawAges();b.classList.add("pop");if(typeof chime==="function")chime([79,84],.06)});
+$("w-ages").addEventListener("click",function(e){var b=e.target.closest("[data-age]");if(!b)return;$("wiz").classList.add("aged");$("w-ida").value=b.dataset.age;setAge(+b.dataset.age);drawAges();b.classList.add("pop");if(typeof chime==="function")chime([79,84],.06)});
 $("w-am").onclick=function(){wzAge(-1)};$("w-ap").onclick=function(){wzAge(1)};$("w-ida").oninput=function(){setAge(+this.value);drawAges()};drawAges();
 $("w-go1").onclick=function(){
   var e=$("w-err1"),res=fv("w-res"),cri=fv("w-cri"),tel=fv("w-tel").replace(/\D/g,""),ida=+fv("w-ida");
@@ -2052,7 +2116,6 @@ staged=true;
 addEventListener("reino-ready",function(){setTimeout(function(){if(window.Reino&&!curStep)window.Reino.play("reverence")},1600)});
 setTimeout(function(){if(!opened){if(!window.Reino){$("reino").classList.add("no3d");$("dock").hidden=true}open3d()}},10000);
 </script>
-<script type="module" src="reino.js"></script>
-<script type="module" src="caixa.js"></script>
+<script type="module">if(!document.documentElement.classList.contains("shop")){import("/reino.js").catch(function(){dispatchEvent(new Event("reino-fail"))});import("/caixa.js").catch(function(){var c=document.getElementById("caixa");if(c)c.classList.add("no3d")})}</script>
 </body>
 </html>
