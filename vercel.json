@@ -78,7 +78,7 @@
   "rewrites": [
     {
       "source": "/camarim",
-      "destination": "/index.html"
+      "destination": "/"
     }
   ],
   "trailingSlash": false
