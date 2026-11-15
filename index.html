@@ -1363,7 +1363,7 @@ html:not(.shop) #camarim{display:none!important}
     <div class="h3-copy">
       <p class="tag-l"><b>Balé</b>infantil com a Irene</p>
       <h1><span>Formas</span><span class="g">escola de</span><span class="g">dança</span></h1>
-      <p class="hero-sub">Escolha um passo e veja a bailarina dançar no palco. Depois, encontre a turma certa para a sua pequena.</p>
+      <p class="hero-sub">Monte a sua bailarina: escolha a pele, o vestido e a sapatilha. Depois, veja ela dançar na caixinha de música.</p>
       <a class="h3-go" href="#turmas"><span class="dot"></span><span>Ver vagas e horários</span><b>→</b></a>
     </div>
   </div>
@@ -1504,7 +1504,7 @@ html:not(.shop) #camarim{display:none!important}
     <div class="sec-h rv">
       <span class="eyebrow"><b class="n">04</b>A caixinha de música</span>
       <h2>Dê corda na <em>caixinha</em></h2>
-      <p>Abra a tampa e veja a bailarina subir girando com a música. Gire a chavinha dourada, toque no medalhão da tampa e nas pérolas.</p>
+      <p>A bailarina que você montou dança aqui. Abra a tampa, escolha um passo (plié, relevé, arabesque ou pirouette) e gire a chavinha dourada para dar corda.</p>
     </div>
     <div class="cx-card rv" id="caixa">
       <canvas id="c3dbox" aria-label="Caixinha de música em 3D com uma bailarina" role="img"></canvas>
@@ -2081,8 +2081,8 @@ function doStep(name){
 }
 $("steps4").addEventListener("click",function(e){var b=e.target.closest("[data-step]");if(b)doStep(b.dataset.step)});
 addEventListener("reino-step",function(e){if(e.detail.state==="end"&&e.detail.step===curStep)document.querySelectorAll(".st4").forEach(function(b){b.classList.remove("on")})});
-addEventListener("reino-tap",function(){doStep("pirouette");$("dk-info").innerHTML=STEP_TXT.tap});
-addEventListener("keydown",function(e){if(/INPUT|TEXTAREA|SELECT/.test((e.target.tagName||""))||!staged)return;var m={"1":"plie","2":"releve","3":"arabesque","4":"pirouette"}[e.key];if(m&&$("reino").getBoundingClientRect().bottom>100)doStep(m)});
+addEventListener("reino-tap",function(){if(window.Reino)window.Reino.burst();$("dk-info").innerHTML="Que linda! Troque a pele, o vestido ou a sapatilha ✦"});
+addEventListener("keydown",function(e){if(/INPUT|TEXTAREA|SELECT/.test((e.target.tagName||""))||!staged)return;var m=null});
 
 var DOLL={pele:"#E4B08F",cabelo:"#2C1A12",tutu:"#F09ABB",sapatilha:"#F2B7B4",enfeite:"tiara",nome:""};
 try{Object.assign(DOLL,JSON.parse(localStorage.getItem(LS_DOLL)||"{}"))}catch(e){}
@@ -2164,7 +2164,7 @@ hit("view");
   el.innerHTML=Object.keys(B).map(function(k){return '<div class="bgp" data-g="'+k+'"><span class="bk">'+B[k].t+'</span><div class="bopts">'+B[k].o.map(function(o){return '<button type="button" class="bo" data-k="'+k+'" data-v="'+o[0]+'" aria-pressed="false" aria-label="'+B[k].t+' '+o[1]+'">'+ico(k,o[0])+'<span>'+o[1]+'</span><i>✓</i></button>'}).join("")+'</div></div>'}).join("");
   var LINES={pele:["Que bailarina linda! ✦","Já dá pra ver o sorriso dela ✦"],tutu:["Olha o giro com o vestido novo! 💫","O tutu ficou um encanto ✦"],sapatilha:["Sapatilhas prontas para a ponta ✦","Agora ela pode subir no relevé ✦"]};
   function prog(){var n=Object.keys(done).length;document.querySelectorAll("#prog i").forEach(function(x,i){x.classList.toggle("on",i<n)});var go=$("dk-go");
-    if(n<3){go.disabled=true;go.textContent=n===2?"Falta 1 escolha":"Faltam "+(3-n)+" escolhas"}else{go.disabled=false;go.textContent="Agora, os passos ✦"}return n}
+    if(n<3){go.disabled=true;go.textContent=n===2?"Falta 1 escolha":"Faltam "+(3-n)+" escolhas"}else{go.disabled=false;go.textContent="Ver ela dançar na caixinha ✦"}return n}
   el.addEventListener("click",function(e){var b=e.target.closest(".bo");if(!b)return;var k=b.dataset.k,v=b.dataset.v;
     el.querySelectorAll('.bo[data-k="'+k+'"]').forEach(function(x){x.setAttribute("aria-pressed",x===b)});
     b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump");
@@ -2174,13 +2174,13 @@ hit("view");
     chime(k==="pele"?[76,81,84]:k==="tutu"?[79,84,88,91]:[84,88,91],.08);
     var n=prog();$("dk-info").innerHTML=LINES[k][first?0:1];
     if(n===3&&first){setTimeout(function(){if(window.Reino)window.Reino.dress("pronta");playMusic(6);for(var i=0;i<4;i++)setTimeout(function(){fairyAt(innerWidth*(.55+Math.random()*.3),innerHeight*(.25+Math.random()*.3),40)},i*160);
-      $("dk-hand").textContent="bailarina pronta!";$("dk-sub").textContent="agora escolha um passo para ela dançar";$("dk-info").innerHTML="Ela está pronta! Toque em <b>Agora, os passos</b> ✦";$("dk-go").classList.add("pulse")},450)}
+      $("dk-hand").textContent="bailarina pronta!";$("dk-sub").textContent="agora veja ela dançar na caixinha de música";$("dk-info").innerHTML="Ela está pronta! Toque em <b>Ver ela dançar</b> ✦";$("dk-go").classList.add("pulse")},450)}
     hit("passo","montar-"+k)});
   function mode(steps){$("build").hidden=steps;$("steps4").hidden=!steps;$("dk-more").hidden=!steps;$("dk-go").hidden=steps;$("prog").hidden=steps;
     if(steps){$("dk-hand").textContent="escolha o passo";$("dk-sub").textContent="toque num passo e a bailarina dança no palco";$("dk-info").innerHTML="Toque na bailarina, no buquê, nos refletores ou na cortina ✦"}
     else{$("dk-hand").textContent="monte sua bailarina";$("dk-sub").textContent="escolha a pele, o vestido e a sapatilha";$("dk-info").innerHTML="Troque o que quiser ✦";$("h3card").classList.remove("on")}}
   (function(){var b=$("build"),home=b.parentNode,next=b.nextSibling,mq=matchMedia("(max-width:860px)");function place(){if(mq.matches){if(b.parentNode!==$("reino"))$("c3d").after(b)}else if(b.parentNode!==home)home.insertBefore(b,next)}place();mq.addEventListener?mq.addEventListener("change",place):mq.addListener(place)})();
-  $("dk-go").onclick=function(){this.classList.remove("pulse");mode(true);if(window.Reino){window.Reino.burst();window.Reino.focus(false)}};
+  $("dk-go").onclick=function(){this.classList.remove("pulse");if(window.Reino)window.Reino.burst();var sec=$("caixa-sec");if(sec)sec.scrollIntoView({behavior:"smooth",block:"start"});setTimeout(function(){var m=$("cx-msg");if(m)m.textContent="Sua bailarina chegou! Escolha um passo ✦";if(window.Caixa&&!window.Caixa.isOpen())window.Caixa.open()},900)};
   $("dk-back").onclick=function(){mode(false);if(window.Reino)window.Reino.focus(true)};
   prog();
 })();
