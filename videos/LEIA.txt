@@ -1,0 +1,1 @@
+Coloque aqui os vídeos .mp4 dos espetáculos (ex.: espetaculo2025.mp4) e cadastre o link na aba Site do /adm: videos/espetaculo2025.mp4

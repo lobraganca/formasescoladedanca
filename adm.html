@@ -1,0 +1,1023 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#F7F1EC">
+<link rel="manifest" href="adm.webmanifest">
+<link rel="apple-touch-icon" href="adm-apple-icon.png">
+<link rel="icon" type="image/png" href="favicon-64.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Formas">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Área da Irene · Formas Escola de Dança</title>
+<script>try{if(localStorage.getItem("formasAdmTok"))document.documentElement.className+=" boot"}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Manrope:wght@500;600;700;800&display=swap">
+<style>
+:root{
+  --bg:#F7F1EC;--bg-2:#EFE5DF;--paper:#FFFDFB;--ink:#1A1215;--ink-soft:#6E5A61;--line:#E6D9D3;
+  --rose:#A8526A;--rose-soft:#F6E2E0;--blush:#F3D3D0;--plum:#3A1E2A;--ok:#2B6B43;--ok-soft:#E3F1E7;--warn:#9A5A16;--warn-soft:#FCEBD6;--err:#B4432A;--err-soft:#FBE3DC;--wa:#1F8F5A;--gold:#C9A36A;
+  --display:"Bodoni Moda",Didot,Georgia,serif;--body:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh}
+html.boot #login{display:none!important}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;line-height:1.1}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:13px 20px;font-weight:800;font-size:14.5px;cursor:pointer;background:var(--ink);color:#fff;text-decoration:none;white-space:nowrap;transition:transform .15s,opacity .2s}
+.btn:active{transform:scale(.97)}
+.btn.rose{background:var(--rose)}
+.btn.wa{background:var(--wa)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.soft{background:var(--rose-soft);color:var(--rose)}
+.btn.ok{background:var(--ok)}
+.btn.red{background:#B3261E}
+.btn.sm{padding:9px 14px;font-size:13px}
+.btn.xs{padding:7px 11px;font-size:12.5px}
+.btn[disabled]{opacity:.55;cursor:wait}
+.btn svg{width:17px;height:17px;flex:none}
+.ibtn{width:38px;height:38px;border-radius:50%;border:0;background:var(--bg);display:inline-grid;place-items:center;cursor:pointer;flex:none;color:var(--ink)}
+.ibtn svg{width:18px;height:18px}
+.ibtn.wa{background:var(--wa);color:#fff}
+.lnk{border:0;background:none;color:var(--rose);font-weight:800;cursor:pointer;padding:6px;text-decoration:underline;text-underline-offset:3px}
+
+/* login */
+.login{min-height:100vh;display:grid;place-items:center;padding:40px 18px;background:radial-gradient(60% 50% at 80% 10%,#F6DCDC,transparent 70%),var(--bg)}
+.login-card{width:min(400px,100%);background:var(--paper);border:1px solid var(--line);border-radius:30px;padding:32px 28px;display:grid;gap:16px;box-shadow:0 30px 60px -40px rgba(58,30,42,.6)}
+.login-card img{width:150px;margin:0 auto 4px}
+.login-card h1{font-size:30px;text-align:center}
+.login-card h1 em{color:var(--rose)}
+.login-card .sub{text-align:center;color:var(--ink-soft);margin:-6px 0 4px;font-size:14px}
+.err{color:var(--err);font-weight:700;font-size:14px;text-align:center;margin:0}
+.keep{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;cursor:pointer}
+.keep input{width:20px;height:20px;accent-color:var(--rose)}
+
+/* campos */
+.fld{display:grid;gap:6px;min-width:0}
+.fld>label,.fld>span{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.fld input,.fld select,.fld textarea,.inp{width:100%;font-size:16px;font-weight:600;padding:12px 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);outline:0;min-width:0}
+.fld textarea{resize:vertical;min-height:90px;font-weight:500;line-height:1.5}
+.fld input:focus,.fld select:focus,.fld textarea:focus,.inp:focus{border-color:var(--rose);background:#fff}
+.fld small{color:var(--ink-soft);font-size:12.5px}
+.pw{position:relative}.pw button{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--ink-soft);font-weight:700;font-size:12px;cursor:pointer;padding:8px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:520px){.g3{grid-template-columns:1fr 1fr}}
+.tog{display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:700;font-size:14.5px}
+.tog input{appearance:none;-webkit-appearance:none;width:46px;height:28px;border-radius:99px;background:var(--line);position:relative;cursor:pointer;transition:background .2s;flex:none;margin:0}
+.tog input::after{content:"";position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.tog input:checked{background:var(--ok)}
+.tog input:checked::after{transform:translateX(18px)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:8px 14px;font-weight:800;font-size:13px;color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip .n{background:var(--rose);color:#fff;border-radius:99px;font-size:11px;padding:0 7px;min-width:19px;text-align:center}
+.chip[aria-pressed="true"] .n{background:#fff;color:var(--ink)}
+
+/* topo fixo (igual à Pousada Ingá) */
+.top{position:sticky;top:0;z-index:30;background:rgba(247,241,236,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.bar{display:flex;align-items:center;gap:12px;height:64px}
+.bar .lt{display:flex;align-items:center;gap:12px;min-width:0;margin-right:auto}
+.bar .lt img{height:44px;width:auto}
+.bar .lt small{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--ink-soft);white-space:nowrap}
+.st{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:var(--ok);background:var(--ok-soft);border-radius:999px;padding:6px 12px;white-space:nowrap}
+.st::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.st.saving{color:var(--warn);background:var(--warn-soft)}
+.st.err{color:var(--err);background:var(--err-soft)}
+.st.test{color:#5C4766;background:#ECE6EF}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding:0 0 10px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{border:0;background:none;padding:9px 12px;border-radius:999px;font-weight:800;font-size:13.5px;color:var(--ink-soft);cursor:pointer;display:inline-flex;gap:7px;align-items:center;white-space:nowrap}
+.tabs button svg{width:17px;height:17px}
+.tabs button[aria-selected="true"]{background:var(--ink);color:#fff}
+.bd{background:var(--rose);color:#fff;border-radius:999px;font-size:11px;padding:0 7px;min-width:19px;text-align:center;font-style:normal;line-height:18px}
+.tabs button[aria-selected="true"] .bd{background:#fff;color:var(--ink)}
+.bnav{display:none}
+@media (max-width:760px){
+  .tabs{display:none}
+  .bar .lt small,.bar .vs{display:none}
+  .bar .lt img{height:40px;flex:none}
+  .st{max-width:150px;overflow:hidden;text-overflow:ellipsis;display:block;font-size:11.5px;padding:6px 10px}
+  .st::before{display:none}
+  .bnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:35;background:rgba(255,253,251,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:6px max(6px,env(safe-area-inset-left)) calc(6px + env(safe-area-inset-bottom,0px))}
+  .bnav button{border:0;background:none;display:grid;justify-items:center;gap:2px;padding:6px 2px;font-size:11px;font-weight:800;color:var(--ink-soft);cursor:pointer;position:relative;border-radius:14px}
+  .bnav button svg{width:23px;height:23px}
+  .bnav button[aria-selected="true"]{color:var(--rose);background:var(--rose-soft)}
+  .bnav .bd{position:absolute;top:2px;left:calc(50% + 6px)}
+  main{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))!important}
+}
+
+main{padding-block:22px 70px;display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
+main>*{min-width:0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
+.head h1{font-size:clamp(30px,4vw,42px)}
+.head h1 em{color:var(--rose)}
+.head p{color:var(--ink-soft);margin:6px 0 0;font-size:14px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:20px}
+.card h2{font-size:23px;margin-bottom:4px}
+.card .note{font-size:13px;color:var(--ink-soft);margin:0 0 14px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:16px 18px;display:grid;gap:2px;text-align:left;cursor:default;min-width:0}
+button.kpi{cursor:pointer;font:inherit;color:inherit}
+.kpi.main{background:var(--plum);color:#fff;border-color:var(--plum)}
+.kpi span{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.kpi.main span{color:#F1C2CC}
+.kpi b{font-family:var(--display);font-weight:400;font-size:36px;line-height:1.05;font-variant-numeric:lining-nums tabular-nums;overflow-wrap:anywhere}
+.kpi small{font-size:12.5px;color:var(--ink-soft)}
+.kpi.main small{color:rgba(255,255,255,.7)}
+.kpi.warn b{color:var(--err)}
+@media (max-width:860px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi b{font-size:30px}}
+@media (max-width:520px){.kpi{padding:14px}.kpi b{font-size:23px;white-space:nowrap}.kpi span{font-size:10.5px}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.empty{color:var(--ink-soft);font-size:14px;text-align:center;padding:18px 10px}
+.empty b{display:block;font-family:var(--display);font-weight:400;font-size:22px;color:var(--ink);margin-bottom:4px}
+.tb{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.tb .inp{flex:1 1 220px;width:auto}
+.tb select.inp{flex:0 1 220px}
+.pill{font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--bg-2);color:var(--ink-soft);white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.err{background:var(--err-soft);color:var(--err)}
+.pill.rose{background:var(--rose-soft);color:var(--rose)}
+.pill.lilac{background:#ECE6EF;color:#5C4766}
+
+/* linhas */
+.list{display:grid;gap:10px}
+.row{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:14px 16px;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 14px;align-items:center}
+.row.off{opacity:.55}
+.av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:15px;color:#fff;background:var(--c,var(--rose));flex:none}
+.row .nm{font-weight:800;font-size:15.5px;line-height:1.3;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row .mt{font-size:13px;color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:2px 12px}
+.row .ac{display:flex;gap:6px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+@media (max-width:600px){.row{grid-template-columns:auto minmax(0,1fr)}.row .ac{grid-column:1/-1;justify-content:flex-start}}
+.lead-row{border-left:6px solid var(--warn)}
+.lead-row.sent{border-left-color:var(--ok)}
+.lead-row.done{border-left-color:var(--line);opacity:.75}
+
+/* turmas */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+@media (max-width:400px){.tgrid{grid-template-columns:minmax(0,1fr)}}
+.tcard{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:18px;display:grid;gap:12px;position:relative;overflow:hidden}
+.tcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c)}
+.tcard h3{font-size:26px}
+.tcard .mt{font-size:13.5px;color:var(--ink-soft)}
+.occ{display:grid;gap:6px}
+.occ .tr{height:10px;border-radius:99px;background:var(--bg-2);overflow:hidden}
+.occ .tr i{display:block;height:100%;border-radius:99px;background:var(--c)}
+.occ .tx{display:flex;justify-content:space-between;font-size:13px;font-weight:700}
+.tcard .ac{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tal{display:grid;gap:6px;border-top:1px dashed var(--line);padding-top:12px}
+.tal .r{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.tal .r .tn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tal select{font-size:13px;padding:7px 10px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);font-weight:700;max-width:160px}
+
+/* chamada */
+.cham{display:grid;gap:8px}
+.ch-r{display:flex;align-items:center;gap:12px;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:10px 10px 10px 14px}
+.ch-r .nm{flex:1;min-width:0;font-weight:800;font-size:15.5px;line-height:1.25}
+.ch-r .nm small{display:block;font-weight:600;font-size:12px;color:var(--ink-soft)}
+.pfj{display:flex;gap:6px}
+.pfj button{width:48px;height:48px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);font-weight:800;font-size:15px;cursor:pointer;color:var(--ink-soft)}
+.pfj button[aria-pressed="true"].p{background:var(--ok);border-color:var(--ok);color:#fff}
+.pfj button[aria-pressed="true"].f{background:var(--err);border-color:var(--err);color:#fff}
+.pfj button[aria-pressed="true"].j{background:var(--warn);border-color:var(--warn);color:#fff}
+.datebar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.datebar input{width:auto;flex:0 1 190px}
+.freq{width:100%;border-collapse:collapse;font-size:13.5px}
+.freq th,.freq td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+.freq th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.dots{display:flex;gap:3px;flex-wrap:wrap}
+.dots i{width:10px;height:10px;border-radius:3px;background:var(--line)}
+.dots i.p{background:var(--ok)}.dots i.f{background:var(--err)}.dots i.j{background:var(--warn)}
+
+/* mensalidades */
+.mnav{display:flex;align-items:center;gap:8px}
+.mnav b{font-family:var(--display);font-weight:400;font-size:24px;min-width:200px;text-align:center;display:inline-block}.mnav b::first-letter{text-transform:uppercase}
+.money{font-variant-numeric:tabular-nums;font-weight:800}
+
+/* camarim */
+.prod-row .ph{width:56px;height:56px;border-radius:14px;background:var(--rose-soft);display:grid;place-items:center;overflow:hidden;flex:none}
+.prod-row .ph img{width:100%;height:100%;object-fit:cover}
+.prod-row .ph svg{width:70%;height:70%;color:var(--plum)}
+.steps3{display:inline-flex;background:var(--bg);border-radius:999px;padding:3px;gap:2px}
+.steps3 button{border:0;background:none;border-radius:999px;padding:7px 11px;font-size:12.5px;font-weight:800;color:var(--ink-soft);cursor:pointer}
+.steps3 button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.seg{display:inline-grid;grid-auto-flow:column;background:var(--bg-2);border-radius:999px;padding:4px;gap:2px}
+.seg button{border:0;background:none;border-radius:999px;padding:9px 16px;font-weight:800;font-size:13.5px;color:var(--ink-soft);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--paper);color:var(--ink);box-shadow:0 2px 8px -4px rgba(0,0,0,.3)}
+
+/* fotos e dúvidas (aba Site) */
+.ph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.ph-it{background:var(--bg);border-radius:16px;overflow:hidden;display:grid}
+.ph-it img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.ph-it .b{padding:8px;display:grid;gap:6px}
+.ph-it input{font-size:13px;padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);background:#fff;width:100%}
+.ph-it .ac{display:flex;gap:4px;justify-content:space-between}
+.faq-it{display:grid;gap:8px;background:var(--bg);border-radius:18px;padding:12px}
+.faq-it .ac{display:flex;gap:6px;justify-content:flex-end}
+
+/* acessos */
+.chart{width:100%;height:auto;display:block}
+.chart text{font-family:var(--body);font-size:10px;fill:var(--ink-soft)}
+.chart .bar{fill:var(--rose)}
+.chart .bar.t{fill:var(--plum)}
+.srow{display:grid;grid-template-columns:minmax(0,1fr) 1fr 44px;gap:10px;align-items:center;font-size:14px;font-weight:700;margin-bottom:8px}
+.srow span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srow .tr{height:10px;border-radius:10px;background:var(--bg-2);overflow:hidden}
+.srow .tr i{display:block;height:100%;border-radius:10px;background:linear-gradient(90deg,var(--rose),var(--gold))}
+.srow b{text-align:right}
+.srow.w{grid-template-columns:minmax(0,1fr) minmax(40px,1fr) auto}
+
+/* janela */
+.ov{position:fixed;inset:0;z-index:60;background:rgba(30,18,24,.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:20px}
+.sh{width:min(560px,100%);max-height:calc(100dvh - 40px);overflow:auto;background:var(--paper);border-radius:28px;padding:24px 22px;overscroll-behavior:contain;animation:up .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(24px);opacity:.4}}
+.sh-h{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
+.sh-h h2{font-size:28px;flex:1}
+.sh-h h2 em{color:var(--rose)}
+.sh-h .x{width:38px;height:38px;border-radius:50%;border:0;background:var(--bg);font-size:20px;cursor:pointer;flex:none}
+.sh form,.sh .frm{display:grid;gap:14px}
+.sh .foot{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:6px}
+.sh .foot .btn:first-child{flex:1}
+.more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.more-grid button{border:1px solid var(--line);background:var(--bg);border-radius:18px;padding:16px 8px;display:grid;justify-items:center;gap:6px;font-weight:800;font-size:13px;cursor:pointer;position:relative;color:var(--ink)}
+.more-grid button svg{width:26px;height:26px;color:var(--rose)}
+.more-grid .bd{position:absolute;top:8px;right:8px}
+@media (max-width:560px){.ov{align-items:flex-end;padding:0}.sh{border-radius:26px 26px 0 0;max-height:92dvh;padding:22px 18px calc(22px + env(safe-area-inset-bottom,0px))}}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 16px 12px 18px;border-radius:999px;font-weight:700;font-size:14px;z-index:80;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px);display:flex;gap:12px;align-items:center;animation:up .25s}
+.toast button{border:0;background:rgba(255,255,255,.18);color:#fff;font-weight:800;border-radius:999px;padding:6px 12px;cursor:pointer}
+.demo{background:#ECE6EF;color:#4A3655;border-radius:18px;padding:12px 16px;font-size:13.5px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.demo b{font-weight:800}
+.demo .btn{margin-left:auto}
+
+/* instalar o app */
+.inst{display:flex;align-items:center;gap:14px;background:linear-gradient(120deg,#F8E6E8,#F3D3D0);border:1px solid #EBC6C8;border-radius:22px;padding:14px 16px 14px 14px}
+.inst .ic{flex:none;width:48px;height:48px;border-radius:12px;background:#fff url(adm-icon-192.png) center/cover;box-shadow:0 6px 14px -8px #000}
+.inst .tx{flex:1;min-width:0}.inst b{display:block}.inst span{font-size:13px;color:var(--ink-soft)}
+.inst .x{border:0;background:none;font-size:22px;cursor:pointer;color:var(--ink-soft)}
+@media (max-width:520px){.inst{flex-wrap:wrap;position:relative}.inst .tx{flex:1 1 calc(100% - 70px);padding-right:24px}.inst .btn{flex:1 1 100%}.inst .x{position:absolute;top:8px;right:8px}}
+.howto{border:0;padding:0;border-radius:26px;width:min(440px,calc(100% - 24px));background:var(--paper);color:var(--ink)}
+.howto::backdrop{background:rgba(30,18,24,.55)}
+.howto .in{padding:24px 22px;display:grid;gap:14px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:12px;background:var(--bg);border-radius:16px;padding:12px 14px;font-size:14px}
+.steps li::before{content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--plum);color:#fff;display:grid;place-items:center;font-weight:800}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1-.7-.3-1.5-.7-2.2-1.4-.6-.5-1-1.2-1.2-1.6-.1-.2 0-.4.1-.5l.4-.5.3-.5v-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1 0-.3-.1-.5-.2Z"/></symbol>
+  <symbol id="i-inicio" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+  <symbol id="i-alunos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.6"/><path d="M17 14.5c2.4 0 4 1.5 4.6 4"/></g></symbol>
+  <symbol id="i-turmas" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M12 3 21 8l-9 5-9-5Z"/><path d="m3 12.5 9 5 9-5M3 16.5l9 5 9-5"/></g></symbol>
+  <symbol id="i-chamada" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="18" rx="2.5"/><path d="M9 3.5h6v3H9zM8 12l2.5 2.5L16 9"/></g></symbol>
+  <symbol id="i-mensal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h3"/><path d="M6 6V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></g></symbol>
+  <symbol id="i-caixa" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16v12H4z"/><path d="M7 8V5h10v3M12 12v4M10 14h4"/></g></symbol>
+  <symbol id="i-fila" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12M6 21h12M7 3c0 5 10 6 10 9s-10 4-10 9M17 3c0 5-10 6-10 9"/></g></symbol>
+  <symbol id="i-camarim" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6a2 2 0 1 1 2-2M12 6v2L3 15c-1 .8-.5 2 .7 2h16.6c1.2 0 1.7-1.2.7-2l-9-7"/></g></symbol>
+  <symbol id="i-contatos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4Z"/><path d="M8 9h8M8 12h5" stroke-linecap="round"/></g></symbol>
+  <symbol id="i-acessos" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></g></symbol>
+  <symbol id="i-site" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></g></symbol>
+  <symbol id="i-mais" viewBox="0 0 24 24"><g fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></g></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="m6 14 6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 10 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-del" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+  <symbol id="p-collant" viewBox="0 0 64 64"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M20 6c2 6 6 9 12 9s10-3 12-9l6 2c-2 9-3 16-2 24l-6 22c-1 3-4 4-6 4h-8c-2 0-5-1-6-4l-6-22c1-8 0-15-2-24Z"/></symbol>
+  <symbol id="p-sapatilha" viewBox="0 0 64 64"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M5 44c0-7 7-11 15-11h4c3-4 9-5 15-5 11 0 20 6 20 13 0 6-6 9-14 9H14c-6 0-9-2-9-6Z"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M33 30c-6-6-8-14-4-22M36 30c2-8 9-14 18-16"/></symbol>
+  <symbol id="p-saia" viewBox="0 0 64 64"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M22 14h20l2 8H20ZM20 22 6 46c6 4 13 2 16-1 3 4 9 5 12 1 3 4 9 4 12 0 3 3 10 5 16 1L44 22"/></symbol>
+  <symbol id="p-meia" viewBox="0 0 64 64"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M18 6h28l-2 22-2 22c0 3 3 5 6 6 2 1 1 4-1 4H36c-2 0-3-2-3-4l-1-20-1 20c0 2-1 4-3 4H19c-2 0-3-3-1-4 3-1 6-3 6-6l-2-22Z"/></symbol>
+  <symbol id="p-coque" viewBox="0 0 64 64"><circle cx="32" cy="34" r="17" fill="none" stroke="currentColor" stroke-width="2.2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M10 12l18 14M54 12 38 27"/></symbol>
+  <symbol id="p-outro" viewBox="0 0 64 64"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" d="M32 6l7 15 16 2-12 11 3 16-14-8-14 8 3-16L9 23l16-2Z"/></symbol>
+</defs></svg>
+
+<section class="login" id="login">
+  <form class="login-card" id="lform" autocomplete="on">
+    <img src="logo-ink.png" alt="Formas Escola de Dança">
+    <h1>Área da <em>Irene</em></h1>
+    <p class="sub">Alunos, turmas, chamada, mensalidades, fila de espera e Camarim.</p>
+    <div class="fld"><label for="lu">Login</label><input id="lu" name="username" autocomplete="username" autocapitalize="none" required></div>
+    <div class="fld"><label for="lp">Senha</label><div class="pw"><input id="lp" name="password" type="password" autocomplete="current-password" required><button type="button" id="lshow">Mostrar</button></div></div>
+    <label class="keep"><input type="checkbox" id="lkeep" checked> Manter conectado neste aparelho</label>
+    <p class="err" id="lerr" hidden></p>
+    <button class="btn rose" id="lgo" type="submit">Entrar</button>
+    <button class="lnk" type="button" data-howto style="justify-self:center">📲 Como instalar no celular</button>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header class="top">
+    <div class="wrap bar">
+      <div class="lt"><img src="logo-ink.png" alt="Formas"><small>Painel da escola</small></div>
+      <span class="st" id="st">Salvo</span>
+      <a class="btn ghost sm vs" href="./" target="_blank" rel="noopener">Ver site</a>
+      <button class="btn sm" id="out" type="button">Sair</button>
+    </div>
+    <nav class="wrap tabs" id="tabs" role="tablist" aria-label="Seções"></nav>
+  </header>
+  <main class="wrap" id="main"></main>
+  <nav class="bnav" id="bnav" aria-label="Seções"></nav>
+</div>
+
+<div class="ov" id="ov" hidden><div class="sh" id="sh" role="dialog" aria-modal="true"></div></div>
+<dialog class="howto" id="howto"><div class="in">
+  <div style="display:flex;align-items:center;gap:12px"><img src="adm-icon-192.png" alt="" width="52" height="52" style="border-radius:14px"><div style="flex:1"><h2 style="font-size:24px">App da Formas</h2><small style="color:var(--ink-soft)">Um ícone na tela do celular, abre direto aqui.</small></div><button class="ibtn" type="button" onclick="this.closest('dialog').close()">×</button></div>
+  <div class="seg" style="width:100%;grid-auto-columns:1fr"><button type="button" aria-pressed="true" data-os="and">Android</button><button type="button" aria-pressed="false" data-os="ios">iPhone</button></div>
+  <ol class="steps" id="st-and"><li><span>Abra <b>formasescoladedanca.com.br/adm</b> no <b>Chrome</b>.</span></li><li><span>Toque nos <b>⋮</b> (três pontinhos) no canto de cima.</span></li><li><span>Toque em <b>Instalar app</b> (ou <b>Adicionar à tela inicial</b>) e confirme.</span></li></ol>
+  <ol class="steps" id="st-ios" hidden><li><span>Abra <b>formasescoladedanca.com.br/adm</b> no <b>Safari</b>.</span></li><li><span>Toque no botão <b>Compartilhar</b> (quadrado com a seta para cima).</span></li><li><span>Toque em <b>Adicionar à Tela de Início</b> e depois em <b>Adicionar</b>.</span></li></ol>
+  <button class="btn rose" id="inst-now" type="button" hidden>Instalar agora</button>
+</div></dialog>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ============================================================
+   FORMAS · ÁREA DA IRENE (/adm)
+   Publicado com o banco ligado: tudo fica salvo no banco (Upstash) e vale
+   em qualquer aparelho. Na prévia ou sem banco: modo de teste (só neste aparelho).
+   ============================================================ */
+var API=(/^https?:$/.test(location.protocol)&&!/claude|anthropic|usercontent|localhost|127\.0\.0\.1/.test(location.host))?"/api":"";
+var TEST_USER="irene",TEST_PASS="123456789";
+var LS_E="formas-escola-v1",LS_SITE="formas-site-v1",LS_INBOX="formas-inbox-v1",LS_TOK="formasAdmTok";
+var DIAS=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"],DIASL=["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+var MESES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+var TCOL=["#D98C99","#C9A36A","#9E7BB5","#7FA8A0","#A8526A","#E2A27B","#6F8FBF","#B5838D"];
+var FORMAS=["Pix","Dinheiro","Cartão","Transferência"];
+var TABS=[["inicio","Início"],["alunos","Alunos"],["turmas","Turmas"],["chamada","Chamada"],["mensal","Mensalidades"],["caixa","Caixa"],["fila","Fila de espera"],["camarim","Camarim"],["contatos","Contatos"],["acessos","Acessos"],["site","Site"]];
+var BNAV=["inicio","chamada","mensal","alunos","mais"];
+
+function defSite(){return{
+  whatsapp:"31984552588",instagram:"formasescoladedanca",endereco:"",horario:"",
+  sobre:"A Formas é a escola de dança da Irene. É ela quem cuida das turmas, conversa com as famílias e acompanha de perto cada pequena bailarina e cada pequeno bailarino.\nNas aulas, a técnica do balé caminha junto com a brincadeira, a música e o respeito pelo tempo de cada criança.",
+  produtos:[
+    {id:"collant",nome:"Collant",tipo:"collant",desc:"Collant do uniforme da turma.",preco:"",tamanhos:"2, 4, 6, 8, 10, 12, 14",cores:"",ativo:true},
+    {id:"meia",nome:"Meia-calça",tipo:"meia",desc:"Meia-calça de balé.",preco:"",tamanhos:"P, M, G",cores:"",ativo:true},
+    {id:"sapatilha",nome:"Sapatilha meia-ponta",tipo:"sapatilha",desc:"Sapatilha de meia-ponta para as aulas.",preco:"",tamanhos:"",cores:"",ativo:true},
+    {id:"saia",nome:"Saia de tule",tipo:"saia",desc:"Saia de tule para aulas e ensaios.",preco:"",tamanhos:"P, M, G",cores:"",ativo:true},
+    {id:"coque",nome:"Kit coque",tipo:"coque",desc:"Rede, grampos e elástico para o coque perfeito.",preco:"",tamanhos:"",cores:"",ativo:true}],
+  fotos:[],videos:[],
+  faq:[
+    {q:"A partir de que idade pode começar?",a:"Cada turma tem a sua faixa de idade. Use o seletor de idade aqui no site ou fale com a Irene, que indica a turma certa para a sua criança."},
+    {q:"Como sei se tem vaga na turma?",a:"Cada turma mostra a sua situação. Toque em “Ver disponibilidade” e a sua mensagem vai direto para o WhatsApp da Irene, já com a turma e a idade da criança."},
+    {q:"E se a turma estiver completa?",a:"Entre na fila de espera pelo próprio site. As famílias são chamadas na ordem em que entraram, assim que abrir uma vaga."},
+    {q:"Qual roupa usar nas aulas?",a:"Pergunte à Irene qual é o uniforme da turma. As peças podem ser pedidas aqui mesmo, no Camarim."},
+    {q:"Como funciona o pedido no Camarim?",a:"Escolha a peça, o tamanho e a cor, e toque em “Pedir pelo WhatsApp”. O pedido chega para a Irene com o nome da criança, e ela combina com você o valor e a entrega."}]
+}}
+function defTurmas(){return[
+  {id:"baby",nome:"Baby Class",idadeMin:3,idadeMax:4,desc:"O primeiro contato com a dança: música, imaginação e coordenação.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[0],site:true,status:"auto"},
+  {id:"pre",nome:"Pré-Ballet",idadeMin:5,idadeMax:6,desc:"Os primeiros passos do balé, com postura, ritmo e muita diversão.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[1],site:true,status:"auto"},
+  {id:"inf1",nome:"Ballet Infantil I",idadeMin:7,idadeMax:8,desc:"Técnica clássica com base sólida: posições, barra e centro.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[2],site:true,status:"auto"},
+  {id:"inf2",nome:"Ballet Infantil II",idadeMin:9,idadeMax:11,desc:"Mais técnica, giros e as primeiras coreografias completas.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[3],site:true,status:"auto"},
+  {id:"juv",nome:"Ballet Juvenil",idadeMin:12,idadeMax:17,desc:"Para quem quer ir além: técnica, expressão e palco.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[4],site:true,status:"auto"}]}
+function defEscola(){return{v:1,turmas:defTurmas(),alunos:[],pag:{},cham:{},hist:[],caixa:[],site:defSite()}}
+
+/* ---------- utilidades ---------- */
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function pad(n){return String(n).padStart(2,"0")}
+function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function today(){return iso(new Date())}
+function pd(s){var p=String(s).split("-");return new Date(+p[0],+p[1]-1,+(p[2]||1))}
+function mk(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)}
+function mName(k){var p=k.split("-");return MESES[+p[1]-1]+" de "+p[0]}
+function addM(k,n){var d=pd(k+"-01");d.setMonth(d.getMonth()+n);return mk(d)}
+function dm(s){if(!s)return "";var p=String(s).slice(0,10).split("-");return p[2]+"/"+p[1]}
+function dmy(s){if(!s)return "";var p=String(s).slice(0,10).split("-");return p[2]+"/"+p[1]+"/"+p[0]}
+function when(s){if(!s)return "";var d=new Date(s),t=new Date(),y=new Date(Date.now()-864e5);var h=pad(d.getHours())+":"+pad(d.getMinutes());if(iso(d)===iso(t))return "hoje, "+h;if(iso(d)===iso(y))return "ontem, "+h;return pad(d.getDate())+"/"+pad(d.getMonth()+1)+", "+h}
+function num(v){if(v===""||v==null)return NaN;var s=String(v).trim().replace(/[R$\s]/g,"");if(s.indexOf(",")>=0)s=s.replace(/\./g,"").replace(",",".");return parseFloat(s)}
+function brl(v){var n=+v||0;return n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function ageOf(nasc){if(!nasc)return null;var b=pd(nasc),t=new Date(),a=t.getFullYear()-b.getFullYear();if(t.getMonth()<b.getMonth()||(t.getMonth()===b.getMonth()&&t.getDate()<b.getDate()))a--;return a>=0&&a<120?a:null}
+function ini(n){return String(n||"?").trim().split(/\s+/).slice(0,2).map(function(x){return x[0]}).join("").toUpperCase()}
+function first(n){return String(n||"").trim().split(/\s+/)[0]||""}
+function waLink(num,txt){var n=String(num||"").replace(/\D/g,"");if(!n)return "";if(n.length<=11)n="55"+n;return "https://wa.me/"+n+"?text="+encodeURIComponent(txt||"")}
+function phone(n){n=String(n||"").replace(/\D/g,"");if(n.length>11)n=n.slice(-11);return n.length===11?"("+n.slice(0,2)+") "+n.slice(2,7)+"-"+n.slice(7):n.length===10?"("+n.slice(0,2)+") "+n.slice(2,6)+"-"+n.slice(6):n}
+function ic(n){return '<svg aria-hidden="true"><use href="#'+n+'"/></svg>'}
+function toast(t,undo){var e=$("toast");e.innerHTML=esc(t)+(undo?'<button type="button">Desfazer</button>':"");e.hidden=false;if(undo)e.querySelector("button").onclick=function(){e.hidden=true;undo()};clearTimeout(toast.t);toast.t=setTimeout(function(){e.hidden=true},undo?6000:2800)}
+function sig(){return "\n\nIrene · Formas Escola de Dança"}
+
+/* ---------- estado ---------- */
+var S={tok:"",test:!API,escola:null,rev:0,leads:[],espera:[],pedidos:[],tab:"inicio",mes:mk(new Date()),chT:"",chD:today(),q:"",fT:"",inat:false,mf:"todos",mT:"",camTab:"pedidos",pf:"novo",lf:"pend",ff:false,stR:30,stDe:"",stAte:"",stats:null,open:{}};
+var E=function(){return S.escola};
+
+/* ---------- servidor ---------- */
+function api(acao,data){
+  return fetch(API+"/adm",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({acao:acao,tok:S.tok},data||{}))})
+    .then(function(r){return r.json().catch(function(){return{}}).then(function(j){j._s=r.status;return j})});
+}
+function setSt(k,t){var e=$("st");e.className="st"+(k?" "+k:"");e.textContent=t}
+var saveT=null,saving=false,again=false;
+function touch(){if(S.test){saveLocal();return}setSt("saving","Salvando…");clearTimeout(saveT);saveT=setTimeout(save,700)}
+function siteOut(){
+  var e=E();return Object.assign({},e.site,{turmas:e.turmas.filter(function(t){return t.site!==false}).map(function(t){
+    var cap=parseInt(t.cap,10);return{id:t.id,nome:t.nome,idadeMin:+t.idadeMin||0,idadeMax:+t.idadeMax||99,desc:t.desc||"",dias:t.dias||[],hIni:t.hIni||"",hFim:t.hFim||"",cor:t.cor||"",status:t.status||"auto",site:true,vagas:cap>0?cap-ativosNa(t.id).length:null};
+  })});
+}
+function saveLocal(){try{localStorage.setItem(LS_E,JSON.stringify(E()));localStorage.setItem(LS_SITE,JSON.stringify(siteOut()));setSt("test","Modo de teste · salvo neste aparelho")}catch(x){setSt("err","Sem espaço no aparelho");toast("O aparelho ficou sem espaço para o modo de teste. Use fotos menores.")}}
+function save(){
+  if(saving){again=true;return}saving=true;
+  api("save",{escola:E(),site:siteOut(),rev:S.rev}).then(function(r){
+    saving=false;
+    if(r.ok){S.rev=r.rev;setSt("","Salvo");}
+    else if(r.conflito){S.rev=r.rev;if(r.escola)S.escola=norm(r.escola);setSt("","Salvo");toast("Alguém mudou os dados em outro aparelho. Carreguei a versão mais nova: confira e faça de novo a última alteração.");render()}
+    else if(r.sair){logout(true)}
+    else{setSt("err","Não salvou · tentando de novo");setTimeout(save,5000)}
+    if(again){again=false;save()}
+  }).catch(function(){saving=false;setSt("err","Sem internet · tentando de novo");setTimeout(save,6000)});
+}
+addEventListener("beforeunload",function(e){if(!S.test&&(saving||$("st").classList.contains("saving")||$("st").classList.contains("err"))){e.preventDefault();e.returnValue=""}});
+var LIST={lead:"leads",espera:"espera",pedido:"pedidos"};
+function inboxLocal(){try{return JSON.parse(localStorage.getItem(LS_INBOX)||"{}")}catch(x){return{}}}
+function saveInboxLocal(){try{localStorage.setItem(LS_INBOX,JSON.stringify({lead:S.leads,espera:S.espera,pedido:S.pedidos}))}catch(x){}}
+function upItem(kind,item){var L=S[LIST[kind]],i=L.findIndex(function(x){return x.id===item.id});if(i>=0)L[i]=item;else L.push(item);if(S.test)saveInboxLocal();else api(kind,{item:item}).then(function(r){if(!r.ok)toast("Não salvou. Confira a internet.")});render()}
+function delItem(kind,id){var L=S[LIST[kind]],i=L.findIndex(function(x){return x.id===id});if(i<0)return;var old=L[i];L.splice(i,1);if(S.test)saveInboxLocal();else api(kind,{op:"del",id:id});render();return old}
+
+/* ---------- dados da escola ---------- */
+function norm(e){e=e||defEscola();e.caixa=e.caixa||[];e.turmas=e.turmas||[];e.alunos=e.alunos||[];e.pag=e.pag||{};e.cham=e.cham||{};e.hist=e.hist||[];e.site=Object.assign(defSite(),e.site||{});return e}
+function turma(id){return E().turmas.find(function(t){return t.id===id})}
+function tcol(t){if(!t)return "#B9A9AF";return t.cor||TCOL[E().turmas.indexOf(t)%TCOL.length]}
+function ativosNa(tid){return E().alunos.filter(function(a){return a.ativo!==false&&a.turmaId===tid})}
+function aluno(id){return E().alunos.find(function(a){return a.id===id})}
+function valorDe(a){var v=num(a.valor);if(isNaN(v)){var t=turma(a.turmaId);v=t?num(t.valor):NaN}return isNaN(v)?0:v}
+function mensal(a,k){
+  var p=(E().pag[a.id]||{})[k],ini=String(a.inicio||a.criado||"").slice(0,7)||"0000-00";
+  if(!p&&(k<ini||a.ativo===false))return null;
+  var d=pd(k+"-01"),dim=new Date(d.getFullYear(),d.getMonth()+1,0).getDate(),vd=Math.min(+a.venc||10,dim),venc=k+"-"+pad(vd);
+  var st=p?"pago":(today()>venc?"atrasado":"aberto");
+  return{p:p,valor:p?num(p.valor)||valorDe(a):valorDe(a),venc:venc,st:st};
+}
+function devedores(){
+  var k0=mk(new Date()),out=[];
+  E().alunos.forEach(function(a){var ms=[];for(var n=0;n<12;n++){var k=addM(k0,-n),m=mensal(a,k);if(m&&m.st==="atrasado")ms.push({k:k,valor:m.valor,venc:m.venc})}if(ms.length)out.push({a:a,ms:ms.reverse(),total:ms.reduce(function(s,x){return s+x.valor},0)})});
+  return out.sort(function(x,y){return y.total-x.total||y.ms.length-x.ms.length});
+}
+function cobrarTudo(d){var a=d.a;return "Olá, "+(first(a.resp)||"tudo bem")+"! Aqui é a Irene, da Formas. Passando para lembrar das mensalidades de "+first(a.nome)+" em aberto:\n\n"+d.ms.map(function(x){return "• "+mName(x.k)+": "+brl(x.valor)+" (venceu "+dm(x.venc)+")"}).join("\n")+"\n\nTotal: "+brl(d.total)+". Qualquer dúvida, estou à disposição."+sig()}
+function devCard(lim){
+  var D=devedores(),tot=D.reduce(function(s,d){return s+d.total},0);
+  return '<div class="card dev"><div style="display:flex;justify-content:space-between;gap:10px;align-items:end;flex-wrap:wrap"><div><h2>Quem está devendo</h2><p class="note" style="margin:0">Mensalidades vencidas e não pagas, de todos os meses.</p></div>'+(D.length?'<span class="pill err" style="font-size:13px;padding:6px 12px">'+D.length+' aluno'+(D.length===1?"":"s")+' · '+brl(tot)+'</span>':'')+'</div><div class="list" style="margin-top:14px">'+
+    (D.length?D.slice(0,lim||999).map(function(d){var t=turma(d.a.turmaId);return '<div class="row"><span class="av" style="--c:'+tcol(t)+'">'+esc(ini(d.a.nome))+'</span><div><div class="nm">'+esc(d.a.nome)+' <span class="pill err">'+brl(d.total)+'</span></div><div class="mt"><span>'+esc(t?t.nome:"")+'</span>'+(d.a.resp?'<span>'+esc(d.a.resp)+'</span>':'')+'</div><div class="chips" style="margin-top:6px">'+d.ms.map(function(x){return '<button type="button" class="chip" data-pay="'+esc(d.a.id)+'" data-k="'+x.k+'" title="Marcar como pago">'+MESES[+x.k.slice(5)-1].slice(0,3)+'/'+x.k.slice(2,4)+' · '+brl(x.valor)+' ✓</button>'}).join("")+'</div></div><div class="ac">'+(d.a.whats?'<a class="btn sm wa" href="'+waLink(d.a.whats,cobrarTudo(d))+'" target="_blank" rel="noopener">'+ic("wa")+'Cobrar</a>':'<span class="pill">sem WhatsApp</span>')+'</div></div>'}).join("")+(lim&&D.length>lim?'<button class="lnk" type="button" data-t="mensal" data-go>Ver todos ('+D.length+')</button>':'')
+    :'<p class="empty"><b>Ninguém devendo ✦</b>Todas as mensalidades vencidas estão pagas.</p>')+'</div><p class="note" style="margin:12px 0 0">Toque no mês para marcar como pago.</p></div>';
+}
+function resumoMes(k){var r={prev:0,rec:0,nrec:0,abr:0,atr:0,natr:0,nab:0};E().alunos.forEach(function(a){var m=mensal(a,k);if(!m)return;r.prev+=m.valor;if(m.st==="pago"){r.rec+=m.valor;r.nrec++}else if(m.st==="atrasado"){r.atr+=m.valor;r.natr++}else{r.abr+=m.valor;r.nab++}});return r}
+function temAula(t,date){return (t.dias||[]).indexOf(pd(date).getDay())>=0}
+function chamDe(tid,date){return ((E().cham[tid]||{})[date])||null}
+function statusSite(t){
+  var cap=parseInt(t.cap,10),v=cap>0?cap-ativosNa(t.id).length:null;
+  if(t.site===false)return{k:"",l:"Fora do site"};
+  if(t.status==="lotada")return{k:"err",l:"Completa (manual)"};
+  if(t.status==="consultar"||v==null)return{k:"lilac",l:"Consulte as vagas"};
+  if(v<=0)return{k:"err",l:"Completa"};if(v<=3)return{k:"warn",l:v===1?"Última vaga":"Últimas "+v+" vagas"};return{k:"ok",l:v+" vagas abertas"};
+}
+function filaDe(tid){return S.espera.filter(function(x){return x.turmaId===tid&&(x.status==="espera"||x.status==="avisado")}).sort(function(a,b){return a.quando<b.quando?-1:1})}
+function hist(t){E().hist.unshift({q:new Date().toISOString(),t:t});E().hist=E().hist.slice(0,300)}
+function counts(){return{fila:S.espera.filter(function(x){return x.status==="espera"}).length,ped:S.pedidos.filter(function(x){return (x.status||"novo")==="novo"}).length,lead:S.leads.filter(function(x){return !x.contatado}).length,atr:devedores().length}}
+
+/* ---------- abas ---------- */
+function tabBtn(id,lbl,n){return '<button type="button" role="tab" data-t="'+id+'" aria-selected="'+(S.tab===id)+'">'+ic("i-"+id)+'<span>'+lbl+'</span>'+(n?'<i class="bd">'+n+'</i>':'')+'</button>'}
+function badge(id){var c=counts();return id==="fila"?c.fila:id==="camarim"?c.ped:id==="contatos"?c.lead:id==="mensal"?c.atr:0}
+function renderNav(){
+  $("tabs").innerHTML=TABS.map(function(t){return tabBtn(t[0],t[1],badge(t[0]))}).join("");
+  var moreN=["turmas","caixa","fila","camarim","contatos","acessos","site"].reduce(function(s,id){return s+(badge(id)||0)},0);
+  $("bnav").innerHTML=BNAV.map(function(id){if(id==="mais")return '<button type="button" data-t="mais" aria-selected="'+(["inicio","chamada","mensal","alunos"].indexOf(S.tab)<0)+'">'+ic("i-mais")+'<span>Mais</span>'+(moreN?'<i class="bd">'+moreN+'</i>':'')+'</button>';var t=TABS.find(function(x){return x[0]===id});return tabBtn(id,id==="mensal"?"Mensal.":t[1],badge(id))}).join("");
+}
+function go(t){if(t==="mais"){moreSheet();return}S.tab=t;try{history.replaceState(null,"","#"+t)}catch(x){}closeSh();render();scrollTo(0,0)}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-t]");if(b&&(b.closest("#tabs")||b.closest("#bnav")||b.closest(".more-grid")||b.hasAttribute("data-go")))go(b.dataset.t)});
+function moreSheet(){openSh('<div class="sh-h"><h2>Mais <em>seções</em></h2><button class="x" data-x>×</button></div><div class="more-grid">'+["turmas","caixa","fila","camarim","contatos","acessos","site"].map(function(id){var t=TABS.find(function(x){return x[0]===id}),n=badge(id);return '<button type="button" data-t="'+id+'">'+ic("i-"+id)+t[1]+(n?'<i class="bd">'+n+'</i>':'')+'</button>'}).join("")+'</div>')}
+
+/* ---------- janela ---------- */
+function openSh(html,ready){$("sh").innerHTML=html;$("ov").hidden=false;document.body.style.overflow="hidden";if(ready)ready($("sh"))}
+function closeSh(){$("ov").hidden=true;document.body.style.overflow=""}
+$("ov").addEventListener("click",function(e){if(e.target.id==="ov"||e.target.closest("[data-x]"))closeSh()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("ov").hidden)closeSh()});
+function shHead(t){return '<div class="sh-h"><h2>'+t+'</h2><button class="x" type="button" data-x aria-label="Fechar">×</button></div>'}
+function val(id){var e=$(id);return e?String(e.value||"").trim():""}
+
+/* ============================================================
+   TELAS
+   ============================================================ */
+function render(){
+  if(!S.escola)return;renderNav();
+  var m=$("main"),h="";
+  if(S.test)h+='<div class="demo"><span>🧪 <b>Modo de teste.</b> '+(API?"O banco ainda não está ligado na Vercel: ":"Nesta prévia ")+'o que você salvar fica só neste aparelho.'+(E().demo?" Os alunos e pedidos são exemplos.":"")+'</span>'+(E().demo?'<button class="btn sm ghost" type="button" id="clr-demo">Apagar exemplos</button>':'')+'</div>';
+  h+=({inicio:vInicio,alunos:vAlunos,turmas:vTurmas,chamada:vChamada,mensal:vMensal,caixa:vCaixa,fila:vFila,camarim:vCamarim,contatos:vContatos,acessos:vAcessos,site:vSite}[S.tab]||vInicio)();
+  m.innerHTML=h;
+  var c=$("clr-demo");if(c)c.onclick=function(){if(!confirm("Apagar todos os exemplos e começar do zero?"))return;S.escola=defEscola();S.leads=[];S.espera=[];S.pedidos=[];saveInboxLocal();saveLocal();render()};
+  (AFTER[S.tab]||function(){})();
+}
+var AFTER={};
+
+/* ---------- Início ---------- */
+function vInicio(){
+  var h=new Date().getHours(),sau=h<12?"Bom dia":h<18?"Boa tarde":"Boa noite",k=mk(new Date()),r=resumoMes(k),c=counts(),td=today();
+  var ativos=E().alunos.filter(function(a){return a.ativo!==false}).length,dv=devedores();
+  var hoje=E().turmas.filter(function(t){return temAula(t,td)}).sort(function(a,b){return (a.hIni||"")<(b.hIni||"")?-1:1});
+  var atr=E().alunos.map(function(a){return{a:a,m:mensal(a,k)}}).filter(function(x){return x.m&&x.m.st==="atrasado"}).slice(0,5);
+  var nov=[].concat(S.leads.filter(function(x){return !x.contatado}).map(function(x){return{k:"contatos",t:"Contato",c:"rose",x:x,d:(x.crianca||x.nome)+(x.turma?" · "+x.turma:"")}}),
+    S.espera.filter(function(x){return x.status==="espera"}).map(function(x){return{k:"fila",t:"Fila",c:"lilac",x:x,d:x.crianca+" · "+(x.turma||"")}}),
+    S.pedidos.filter(function(x){return (x.status||"novo")==="novo"}).map(function(x){return{k:"camarim",t:"Camarim",c:"warn",x:x,d:(x.qtd||1)+"x "+x.produto+(x.tamanho?" ("+x.tamanho+")":"")+" · "+x.crianca}})).sort(function(a,b){return a.x.quando<b.x.quando?1:-1}).slice(0,6);
+  var s='<div class="head"><div><h1>'+sau+', <em>Irene</em></h1><p>'+DIASL[new Date().getDay()]+", "+new Date().getDate()+" de "+MESES[new Date().getMonth()]+'</p></div></div>';
+  s+=instCard();
+  s+='<div class="kpis"><button class="kpi main" type="button" data-t="alunos" data-go><span>Alunos ativos</span><b>'+ativos+'</b><small>em '+E().turmas.length+' turmas</small></button>'+
+    '<button class="kpi" type="button" data-t="mensal" data-go><span>Recebido em '+MESES[new Date().getMonth()]+'</span><b>'+brl(r.rec)+'</b><small>de '+brl(r.prev)+' previstos</small></button>'+
+    '<button class="kpi'+(dv.length?" warn":"")+'" type="button" data-t="mensal" data-go><span>Devendo</span><b>'+dv.length+'</b><small>'+(dv.length?brl(dv.reduce(function(s,d){return s+d.total},0))+" em atraso":"tudo em dia ✦")+'</small></button>'+
+    '<button class="kpi" type="button" data-t="fila" data-go><span>Fila de espera</span><b>'+c.fila+'</b><small>'+c.ped+' pedido'+(c.ped===1?"":"s")+' novo'+(c.ped===1?"":"s")+' no Camarim</small></button></div>';
+  s+='<div class="grid2"><div class="card"><h2>Aulas de hoje</h2><p class="note">Toque para fazer a chamada.</p><div class="list">'+
+    (hoje.length?hoje.map(function(t){var n=ativosNa(t.id).length,ch=chamDe(t.id,td);return '<div class="row"><span class="av" style="--c:'+tcol(t)+';font-size:11.5px">'+esc((t.hIni||"--").slice(0,5))+'</span><div><div class="nm">'+esc(t.nome)+'</div><div class="mt">'+n+' aluno'+(n===1?"":"s")+(t.hFim?" · até "+esc(t.hFim):"")+'</div></div><div class="ac">'+(ch?'<span class="pill ok">Chamada feita</span>':'')+'<button class="btn sm '+(ch?"ghost":"rose")+'" type="button" data-cham="'+esc(t.id)+'">'+(ch?"Ver":"Fazer chamada")+'</button></div></div>'}).join(""):'<p class="empty"><b>Sem aulas hoje</b>Cadastre os dias de cada turma na aba Turmas.</p>')+'</div></div>';
+  s+=devCard(5)+'</div>';
+  s+='<div class="card"><h2>Novidades do site</h2><p class="note">Contatos, fila de espera e pedidos do Camarim que ainda pedem atenção.</p><div class="list">'+(nov.length?nov.map(function(n){return '<div class="row"><span class="pill '+n.c+'">'+n.t+'</span><div><div class="nm">'+esc(n.d)+'</div><div class="mt">'+esc(n.x.nome||"")+' · '+when(n.x.quando)+'</div></div><div class="ac"><button class="btn sm ghost" type="button" data-t="'+n.k+'" data-go>Abrir</button></div></div>'}).join(""):'<p class="empty">Nada novo por enquanto.</p>')+'</div></div>';
+  return s;
+}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-cham]");if(b){S.chT=b.dataset.cham;S.chD=today();go("chamada")}});
+
+/* ---------- Alunos ---------- */
+function vAlunos(){
+  var L=E().alunos.filter(function(a){return (S.inat||a.ativo!==false)&&(!S.fT||a.turmaId===S.fT)&&(!S.q||(a.nome+" "+(a.resp||"")).toLowerCase().indexOf(S.q.toLowerCase())>=0)}).sort(function(a,b){return a.nome.localeCompare(b.nome)});
+  var k=mk(new Date());
+  return '<div class="head"><div><h1>Alunos</h1><p>'+E().alunos.filter(function(a){return a.ativo!==false}).length+' ativos</p></div><button class="btn rose" type="button" id="a-new">＋ Novo aluno</button></div>'+
+    '<div class="tb"><input class="inp" id="a-q" type="search" placeholder="Buscar por nome da criança ou responsável" value="'+esc(S.q)+'"><select class="inp" id="a-t"><option value="">Todas as turmas</option>'+E().turmas.map(function(t){return '<option value="'+esc(t.id)+'"'+(S.fT===t.id?" selected":"")+'>'+esc(t.nome)+'</option>'}).join("")+'</select><label class="tog"><input type="checkbox" id="a-i"'+(S.inat?" checked":"")+'> Inativos</label></div>'+
+    '<div class="list" id="a-list">'+(L.length?L.map(function(a){var t=turma(a.turmaId),m=mensal(a,k),ag=ageOf(a.nasc),fr=freqMes(a,k);
+      return '<div class="row'+(a.ativo===false?" off":"")+'"><span class="av" style="--c:'+tcol(t)+'">'+esc(ini(a.nome))+'</span><div><div class="nm">'+esc(a.nome)+(a.ativo===false?' <span class="pill">Inativo</span>':'')+(m?' <span class="pill '+(m.st==="pago"?"ok":m.st==="atrasado"?"err":"")+'">'+(m.st==="pago"?"Pago":m.st==="atrasado"?"Em atraso":"A pagar")+'</span>':'')+'</div><div class="mt"><span>'+(ag!=null?ag+" anos · ":"")+esc(t?t.nome:"Sem turma")+'</span>'+(a.resp?'<span>'+esc(a.resp)+'</span>':'')+(fr.t?'<span>Frequência '+Math.round(fr.p*100/fr.t)+'%</span>':'')+'</div></div><div class="ac">'+(a.whats?'<a class="ibtn wa" href="'+waLink(a.whats,"Olá, "+first(a.resp)+"! Aqui é a Irene, da Formas.")+'" target="_blank" rel="noopener" aria-label="WhatsApp">'+ic("wa")+'</a>':'')+'<button class="btn sm ghost" type="button" data-al="'+esc(a.id)+'">Abrir</button></div></div>'}).join(""):'<p class="empty"><b>'+(E().alunos.length?"Ninguém encontrado":"Nenhum aluno ainda")+'</b>'+(E().alunos.length?"Mude a busca ou o filtro.":"Toque em ＋ Novo aluno para começar.")+'</p>')+'</div>';
+}
+AFTER.alunos=function(){
+  var q=$("a-q");q.oninput=function(){S.q=q.value;var p=q.selectionStart;render();var n=$("a-q");n.focus();n.setSelectionRange(p,p)};
+  $("a-t").onchange=function(){S.fT=this.value;render()};$("a-i").onchange=function(){S.inat=this.checked;render()};
+  $("a-new").onclick=function(){alunoSheet(null)};
+};
+document.addEventListener("click",function(e){var b=e.target.closest("[data-al]");if(b)alunoSheet(b.dataset.al)});
+function freqMes(a,k){var r={p:0,f:0,j:0,t:0};Object.keys(E().cham).forEach(function(tid){var C=E().cham[tid];Object.keys(C).forEach(function(d){if(d.slice(0,7)!==k)return;var v=C[d][a.id];if(v){r[v]++;r.t++}})});return r}
+function alunoSheet(id,pre){
+  var a=id?aluno(id):Object.assign({id:"",nome:"",nasc:"",turmaId:S.fT||"",resp:"",whats:"",valor:"",venc:"10",inicio:today(),obs:"",ativo:true},pre||{});
+  var k=mk(new Date()),hs=id?E().hist.filter(function(h){return h.a===id}).slice(0,6):[];
+  var pays=id?[0,-1,-2,-3,-4,-5].map(function(n){var mk_=addM(k,n),m=mensal(a,mk_);return m?'<span class="pill '+(m.st==="pago"?"ok":m.st==="atrasado"?"err":"")+'">'+MESES[+mk_.slice(5)-1].slice(0,3)+': '+(m.st==="pago"?"pago":m.st==="atrasado"?"atrasado":"a pagar")+'</span>':""}).join(" "):"";
+  var fr=id?freqMes(a,k):null;
+  openSh(shHead(id?esc(a.nome):"Novo <em>aluno</em>")+'<form class="frm" id="al-f">'+
+    '<div class="fld"><label for="al-n">Nome da criança</label><input id="al-n" value="'+esc(a.nome)+'" required></div>'+
+    '<div class="g2"><div class="fld"><label for="al-b">Nascimento</label><input id="al-b" type="date" value="'+esc(a.nasc)+'"></div><div class="fld"><label for="al-t">Turma</label><select id="al-t"><option value="">Sem turma</option>'+E().turmas.map(function(t){var n=ativosNa(t.id).length,cap=parseInt(t.cap,10);return '<option value="'+esc(t.id)+'"'+(a.turmaId===t.id?" selected":"")+'>'+esc(t.nome)+(cap>0?" ("+n+"/"+cap+")":"")+'</option>'}).join("")+'</select></div></div>'+
+    '<div class="g2"><div class="fld"><label for="al-r">Responsável</label><input id="al-r" value="'+esc(a.resp)+'" autocomplete="off"></div><div class="fld"><label for="al-w">WhatsApp do responsável</label><input id="al-w" type="tel" inputmode="tel" value="'+esc(phone(a.whats))+'" placeholder="(31) 9…"></div></div>'+
+    '<div class="g3"><div class="fld"><label for="al-v">Mensalidade</label><input id="al-v" inputmode="decimal" value="'+esc(a.valor)+'" placeholder="'+esc((turma(a.turmaId)||{}).valor||"da turma")+'"></div><div class="fld"><label for="al-d">Vence dia</label><input id="al-d" type="number" min="1" max="31" inputmode="numeric" value="'+esc(a.venc||10)+'"></div><div class="fld"><label for="al-i">Início</label><input id="al-i" type="date" value="'+esc(a.inicio||"")+'"></div></div>'+
+    '<div class="fld"><label for="al-o">Observações</label><textarea id="al-o" placeholder="Alergias, quem busca, tamanhos de uniforme…">'+esc(a.obs)+'</textarea></div>'+
+    (id?'<label class="tog"><input type="checkbox" id="al-a"'+(a.ativo!==false?" checked":"")+'> Aluno ativo (desligue quando sair da escola)</label>':'')+
+    (id?'<div class="fld"><span>Mensalidades</span><div class="chips">'+pays+'</div></div>'+(fr&&fr.t?'<div class="fld"><span>Frequência em '+MESES[+k.slice(5)-1]+'</span><div class="chips"><span class="pill ok">'+fr.p+' presenças</span><span class="pill err">'+fr.f+' faltas</span><span class="pill warn">'+fr.j+' justificadas</span></div></div>':'')+(hs.length?'<div class="fld"><span>Histórico</span>'+hs.map(function(h){return '<small>'+dmy(h.q)+' · '+esc(h.t)+'</small>'}).join("")+'</div>':''):'')+
+    '<div class="foot"><button class="btn rose" type="submit">Salvar</button>'+(id?'<button class="btn ghost" type="button" id="al-del">'+ic("i-del")+'Excluir</button>':'')+'</div></form>',function(){
+      $("al-f").onsubmit=function(ev){ev.preventDefault();
+        var n=val("al-n");if(n.length<2){$("al-n").focus();return}
+        var novo=!id,tOld=a.turmaId,tNew=val("al-t");
+        if(novo){a.id=uid();a.criado=today();E().alunos.push(a)}
+        Object.assign(a,{nome:n,nasc:val("al-b"),turmaId:tNew,resp:val("al-r"),whats:val("al-w").replace(/\D/g,""),valor:val("al-v"),venc:val("al-d")||"10",inicio:val("al-i"),obs:$("al-o").value.trim()});
+        if($("al-a"))a.ativo=$("al-a").checked;
+        if(novo){E().hist.unshift({q:new Date().toISOString(),a:a.id,t:"Matrícula"+(tNew?" em "+turma(tNew).nome:"")})}
+        else if(tOld!==tNew){E().hist.unshift({q:new Date().toISOString(),a:a.id,t:"Mudou de "+((turma(tOld)||{}).nome||"sem turma")+" para "+((turma(tNew)||{}).nome||"sem turma")})}
+        if(pre&&pre._from){var f=pre._from;f.item.status="matriculado";f.item.alunoId=a.id;upItem(f.kind,f.item)}
+        touch();closeSh();render();toast(novo?a.nome+" matriculada(o) ✦":"Salvo");
+      };
+      if($("al-del"))$("al-del").onclick=function(){
+        if(this.dataset.sure){var i=E().alunos.indexOf(a);E().alunos.splice(i,1);delete E().pag[a.id];touch();closeSh();render();toast(a.nome+" excluída(o)",function(){E().alunos.splice(i,0,a);touch();render()});return}
+        this.dataset.sure=1;this.className="btn red";this.innerHTML="Toque de novo para excluir";
+      };
+    });
+}
+
+/* ---------- Turmas ---------- */
+function vTurmas(){
+  return '<div class="head"><div><h1>Turmas</h1><p>Ocupação, alunos e o que aparece no site. Para trocar alguém de turma, abra a lista e escolha a nova turma.</p></div><button class="btn rose" type="button" id="t-new">＋ Nova turma</button></div>'+
+  '<div class="tgrid">'+E().turmas.map(function(t,i){var al=ativosNa(t.id).sort(function(a,b){return a.nome.localeCompare(b.nome)}),cap=parseInt(t.cap,10),fl=filaDe(t.id).length,ss=statusSite(t),open=S.open[t.id];
+    return '<div class="tcard" style="--c:'+tcol(t)+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><h3>'+esc(t.nome)+'</h3><div class="mt">'+esc(ageTxt(t))+' · '+esc(diasTxt(t.dias)||"dias a definir")+(t.hIni?" · "+esc(t.hIni)+(t.hFim?"–"+esc(t.hFim):""):"")+'</div></div><div style="display:flex;gap:4px"><button class="ibtn" type="button" data-tmv="'+i+'" data-d="-1" aria-label="Subir"'+(i?"":" disabled")+'>'+ic("i-up")+'</button><button class="ibtn" type="button" data-tmv="'+i+'" data-d="1" aria-label="Descer"'+(i<E().turmas.length-1?"":" disabled")+'>'+ic("i-down")+'</button></div></div>'+
+      '<div class="occ"><div class="tx"><span>'+al.length+(cap>0?" de "+cap:"")+' aluno'+(al.length===1?"":"s")+'</span><span>'+(cap>0?Math.max(0,cap-al.length)+" vaga"+(cap-al.length===1?"":"s")+" livre"+(cap-al.length===1?"":"s"):"defina a capacidade")+'</span></div><div class="tr"><i style="width:'+(cap>0?Math.min(100,al.length*100/cap):0)+'%"></i></div></div>'+
+      '<div class="ac"><span class="pill '+ss.k+'">Site: '+esc(ss.l)+'</span>'+(fl?'<button class="pill lilac" style="border:0;cursor:pointer" type="button" data-t="fila" data-go>'+fl+' na fila</button>':'')+(t.valor?'<span class="pill">'+brl(num(t.valor))+'/mês</span>':'')+'</div>'+
+      '<div class="ac"><button class="btn sm '+(open?"":"ghost")+'" type="button" data-topen="'+esc(t.id)+'">'+ic("i-alunos")+'Alunos ('+al.length+')</button><button class="btn sm ghost" type="button" data-tcham="'+esc(t.id)+'">'+ic("i-chamada")+'Chamada</button><button class="btn sm ghost" type="button" data-ted="'+esc(t.id)+'">'+ic("i-edit")+'Editar</button></div>'+
+      (open?'<div class="tal">'+(al.length?al.map(function(a){return '<div class="r"><span class="av" style="--c:'+tcol(t)+';width:30px;height:30px;font-size:11px">'+esc(ini(a.nome))+'</span><span class="tn">'+esc(a.nome)+'</span><select data-move="'+esc(a.id)+'" aria-label="Mover '+esc(a.nome)+' para outra turma"><option value="">Mover para…</option>'+E().turmas.filter(function(x){return x.id!==t.id}).map(function(x){return '<option value="'+esc(x.id)+'">'+esc(x.nome)+'</option>'}).join("")+'</select></div>'}).join(""):'<p class="empty" style="padding:6px">Nenhum aluno nesta turma.</p>')+'<button class="lnk" type="button" data-addin="'+esc(t.id)+'" style="justify-self:start">＋ Matricular nesta turma</button></div>':'')+
+    '</div>'}).join("")+'</div>';
+}
+AFTER.turmas=function(){$("t-new").onclick=function(){turmaSheet(null)}};
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-topen],[data-ted],[data-tmv],[data-tcham],[data-addin]");if(!b)return;
+  if(b.dataset.topen){S.open[b.dataset.topen]=!S.open[b.dataset.topen];render()}
+  else if(b.dataset.ted)turmaSheet(b.dataset.ted);
+  else if(b.dataset.tcham){S.chT=b.dataset.tcham;go("chamada")}
+  else if(b.dataset.addin){S.fT="";alunoSheet(null,{turmaId:b.dataset.addin})}
+  else{var i=+b.dataset.tmv,j=i+(+b.dataset.d),T=E().turmas;if(j<0||j>=T.length)return;var x=T[i];T[i]=T[j];T[j]=x;touch();render()}
+});
+document.addEventListener("change",function(e){
+  var s=e.target.closest("[data-move]");if(!s||!s.value)return;var a=aluno(s.dataset.move),from=a.turmaId,to=s.value,tt=turma(to),cap=parseInt(tt.cap,10);
+  if(cap>0&&ativosNa(to).length>=cap&&!confirm(tt.nome+" já está completa ("+cap+" alunos). Mover mesmo assim?")){s.value="";return}
+  a.turmaId=to;E().hist.unshift({q:new Date().toISOString(),a:a.id,t:"Mudou de "+((turma(from)||{}).nome||"sem turma")+" para "+tt.nome});S.open[to]=true;touch();render();
+  toast(first(a.nome)+" agora está em "+tt.nome,function(){a.turmaId=from;E().hist.shift();touch();render()});
+});
+function ageTxt(t){if(!t.idadeMin&&!t.idadeMax)return "todas as idades";if(+t.idadeMax>=17)return t.idadeMin+"+ anos";return t.idadeMin+" a "+t.idadeMax+" anos"}
+function diasTxt(d){d=(d||[]).slice().sort();return d.map(function(i){return DIAS[i]}).join(", ")}
+function turmaSheet(id){
+  var t=id?turma(id):{id:"",nome:"",idadeMin:"",idadeMax:"",desc:"",dias:[],hIni:"",hFim:"",cap:"",valor:"",prof:"",cor:TCOL[E().turmas.length%TCOL.length],site:true,status:"auto"};
+  openSh(shHead(id?esc(t.nome):"Nova <em>turma</em>")+'<form class="frm" id="tf">'+
+    '<div class="fld"><label for="t-n">Nome da turma</label><input id="t-n" value="'+esc(t.nome)+'" required placeholder="Ex.: Baby Class"></div>'+
+    '<div class="g2"><div class="fld"><label for="t-a">Idade mínima</label><input id="t-a" type="number" min="1" max="99" value="'+esc(t.idadeMin)+'"></div><div class="fld"><label for="t-b">Idade máxima</label><input id="t-b" type="number" min="1" max="99" value="'+esc(t.idadeMax)+'"><small>Use 17 para “12+ anos”.</small></div></div>'+
+    '<div class="fld"><span>Dias de aula</span><div class="chips" id="t-d">'+[1,2,3,4,5,6,0].map(function(d){return '<button type="button" class="chip" data-d="'+d+'" aria-pressed="'+((t.dias||[]).indexOf(d)>=0)+'">'+DIAS[d]+'</button>'}).join("")+'</div></div>'+
+    '<div class="g2"><div class="fld"><label for="t-hi">Começa</label><input id="t-hi" type="time" value="'+esc(t.hIni)+'"></div><div class="fld"><label for="t-hf">Termina</label><input id="t-hf" type="time" value="'+esc(t.hFim)+'"></div></div>'+
+    '<div class="g2"><div class="fld"><label for="t-c">Capacidade (vagas)</label><input id="t-c" type="number" min="0" inputmode="numeric" value="'+esc(t.cap)+'"></div><div class="fld"><label for="t-v">Mensalidade padrão</label><input id="t-v" inputmode="decimal" value="'+esc(t.valor)+'" placeholder="Ex.: 150,00"></div></div>'+
+    '<div class="fld"><label for="t-p">Descrição no site</label><textarea id="t-p" style="min-height:70px">'+esc(t.desc)+'</textarea></div>'+
+    '<div class="fld"><span>Cor</span><div class="chips" id="t-cor">'+TCOL.map(function(c){return '<button type="button" class="chip" data-c="'+c+'" aria-pressed="'+(t.cor===c)+'" style="width:38px;height:38px;padding:0;background:'+c+';border:3px solid '+(t.cor===c?"var(--ink)":"transparent")+'" aria-label="Cor"></button>'}).join("")+'</div></div>'+
+    '<label class="tog"><input type="checkbox" id="t-s"'+(t.site!==false?" checked":"")+'> Mostrar no site</label>'+
+    '<div class="fld"><span>Vagas no site</span><div class="chips" id="t-st">'+[["auto","Automático (pela capacidade)"],["consultar","“Consulte as vagas”"],["lotada","Turma completa (fila)"]].map(function(o){return '<button type="button" class="chip" data-s="'+o[0]+'" aria-pressed="'+((t.status||"auto")===o[0])+'">'+o[1]+'</button>'}).join("")+'</div><small>No automático, o site mostra “vagas abertas”, “últimas vagas” ou “completa” conforme os alunos ativos.</small></div>'+
+    '<div class="foot"><button class="btn rose" type="submit">Salvar turma</button>'+(id?'<button class="btn ghost" type="button" id="t-del">'+ic("i-del")+'Excluir</button>':'')+'</div></form>',function(sh){
+      sh.querySelectorAll("#t-d .chip").forEach(function(b){b.onclick=function(){b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")!=="true")}});
+      sh.querySelectorAll("#t-st .chip").forEach(function(b){b.onclick=function(){sh.querySelectorAll("#t-st .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)})}});
+      sh.querySelectorAll("#t-cor .chip").forEach(function(b){b.onclick=function(){sh.querySelectorAll("#t-cor .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b);x.style.borderColor=x===b?"var(--ink)":"transparent"})}});
+      $("tf").onsubmit=function(ev){ev.preventDefault();var n=val("t-n");if(n.length<2)return;
+        if(!id){t.id=uid();E().turmas.push(t)}
+        Object.assign(t,{nome:n,idadeMin:+val("t-a")||"",idadeMax:+val("t-b")||"",dias:[].map.call(sh.querySelectorAll("#t-d [aria-pressed=true]"),function(b){return +b.dataset.d}),hIni:val("t-hi"),hFim:val("t-hf"),cap:val("t-c"),valor:val("t-v"),desc:$("t-p").value.trim(),site:$("t-s").checked,status:(sh.querySelector("#t-st [aria-pressed=true]")||{dataset:{s:"auto"}}).dataset.s,cor:(sh.querySelector("#t-cor [aria-pressed=true]")||{dataset:{c:t.cor}}).dataset.c});
+        touch();closeSh();render();toast("Turma salva");};
+      if($("t-del"))$("t-del").onclick=function(){if(ativosNa(t.id).length){toast("Mova os alunos desta turma antes de excluir.");return}if(!this.dataset.sure){this.dataset.sure=1;this.className="btn red";this.textContent="Toque de novo para excluir";return}E().turmas.splice(E().turmas.indexOf(t),1);touch();closeSh();render()};
+    });
+}
+
+/* ---------- Chamada ---------- */
+function vChamada(){
+  var sw='<div class="seg"><button type="button" data-chv="cham" aria-pressed="'+(S.chV!=="freq")+'">✓ Fazer chamada</button><button type="button" data-chv="freq" aria-pressed="'+(S.chV==="freq")+'">📊 Frequência</button></div>';
+  if(S.chV==="freq")return '<div class="head"><div><h1>Frequência</h1><p>Presença de cada aluno, por turma e período.</p></div>'+sw+'</div>'+vFreq();
+  var T=E().turmas;if(!T.length)return '<p class="empty"><b>Sem turmas</b>Crie uma turma primeiro.</p>';
+  var td=today();
+  if(!S.chT||!turma(S.chT)){var h=T.find(function(t){return temAula(t,S.chD)});S.chT=(h||T[0]).id}
+  var t=turma(S.chT),al=ativosNa(t.id).sort(function(a,b){return a.nome.localeCompare(b.nome)}),ch=chamDe(t.id,S.chD)||{},k=S.chD.slice(0,7);
+  var c={p:0,f:0,j:0};al.forEach(function(a){if(ch[a.id])c[ch[a.id]]++});
+  var dias=Object.keys(E().cham[t.id]||{}).filter(function(d){return d.slice(0,7)===k}).sort();
+  return '<div class="head"><div><h1>Chamada</h1><p>Toque em <b>P</b> (presente), <b>F</b> (falta) ou <b>J</b> (falta justificada). Salva sozinha, de qualquer celular.</p></div>'+sw+'</div>'+
+    '<div class="chips">'+T.map(function(x){var hj=temAula(x,td);return '<button type="button" class="chip" data-cht="'+esc(x.id)+'" aria-pressed="'+(x.id===t.id)+'">'+esc(x.nome)+(hj?' <span class="n">hoje</span>':'')+'</button>'}).join("")+'</div>'+
+    '<div class="card"><div class="datebar"><button class="ibtn" type="button" data-chd="-1" aria-label="Dia anterior">‹</button><input class="inp" type="date" id="ch-d" value="'+esc(S.chD)+'"><button class="ibtn" type="button" data-chd="1" aria-label="Próximo dia">›</button>'+(S.chD!==td?'<button class="btn xs ghost" type="button" data-chd="0">Hoje</button>':'')+'<span class="pill '+(temAula(t,S.chD)?"ok":"")+'">'+(temAula(t,S.chD)?"Dia de aula":DIASL[pd(S.chD).getDay()])+'</span><span style="margin-left:auto" class="pill">'+c.p+' P · '+c.f+' F · '+c.j+' J</span></div></div>'+
+    (al.length?'<div class="cham">'+al.map(function(a){var v=ch[a.id]||"";return '<div class="ch-r"><span class="av" style="--c:'+tcol(t)+';width:38px;height:38px;font-size:13px">'+esc(ini(a.nome))+'</span><div class="nm">'+esc(a.nome)+'<small>'+(ageOf(a.nasc)!=null?ageOf(a.nasc)+" anos":"")+'</small></div><div class="pfj">'+["p","f","j"].map(function(x){return '<button type="button" class="'+x+'" data-pfj="'+x+'" data-a="'+esc(a.id)+'" aria-pressed="'+(v===x)+'" aria-label="'+({p:"Presente",f:"Falta",j:"Justificada"})[x]+'">'+x.toUpperCase()+'</button>'}).join("")+'</div></div>'}).join("")+'</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ok" type="button" id="ch-all">Todos presentes</button>'+(Object.keys(ch).length?'<button class="btn ghost" type="button" id="ch-clr">Limpar este dia</button>':'')+'</div>':'<p class="empty"><b>Nenhum aluno nesta turma</b>Matricule pela aba Alunos ou Turmas.</p>')+
+    '<div class="card"><h2>Frequência de '+esc(mName(k))+'</h2><p class="note">'+dias.length+' aula'+(dias.length===1?"":"s")+' com chamada neste mês.</p>'+(dias.length&&al.length?'<div style="overflow-x:auto"><table class="freq"><thead><tr><th>Aluno</th><th>Aulas</th><th>%</th></tr></thead><tbody>'+al.map(function(a){var r={p:0,f:0,j:0},dots=dias.map(function(d){var v=(E().cham[t.id][d]||{})[a.id]||"";if(v)r[v]++;return '<i class="'+v+'" title="'+dm(d)+'"></i>'}).join(""),tot=r.p+r.f+r.j;return '<tr><td><b>'+esc(a.nome)+'</b></td><td><div class="dots">'+dots+'</div></td><td><b>'+(tot?Math.round(r.p*100/tot)+"%":"–")+'</b></td></tr>'}).join("")+'</tbody></table></div>':'<p class="empty" style="padding:4px">Ainda sem chamadas neste mês.</p>')+'</div>';
+}
+AFTER.chamada=function(){
+  if($("fr-t")){$("fr-t").onchange=function(){S.frT=this.value;render()};$("fr-csv").onclick=freqCsv;return}
+  $("ch-d").onchange=function(){if(this.value){S.chD=this.value;render()}};
+  if($("ch-all"))$("ch-all").onclick=function(){var t=S.chT,C=E().cham[t]=E().cham[t]||{},d=C[S.chD]=C[S.chD]||{};ativosNa(t).forEach(function(a){d[a.id]="p"});touch();render();toast("Todos presentes ✦")};
+  if($("ch-clr"))$("ch-clr").onclick=function(){var C=E().cham[S.chT],old=C[S.chD];delete C[S.chD];touch();render();toast("Chamada do dia apagada",function(){C[S.chD]=old;touch();render()})};
+};
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-pfj],[data-cht],[data-chd]");if(!b)return;
+  if(b.dataset.cht){S.chT=b.dataset.cht;render();return}
+  if(b.dataset.chd!=null&&!b.dataset.pfj){var n=+b.dataset.chd;if(!n)S.chD=today();else{var d=pd(S.chD);d.setDate(d.getDate()+n);S.chD=iso(d)}render();return}
+  var t=S.chT,C=E().cham[t]=E().cham[t]||{},d=C[S.chD]=C[S.chD]||{},a=b.dataset.a,v=b.dataset.pfj;
+  if(d[a]===v)delete d[a];else d[a]=v;if(!Object.keys(d).length)delete C[S.chD];touch();
+  var row=b.closest(".pfj");row.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",d[a]===x.dataset.pfj)});
+  clearTimeout(AFTER.rt);AFTER.rt=setTimeout(render,900);
+});
+
+
+/* ---------- Frequência (relatório) ---------- */
+function freqRange(){var t=new Date(),k=mk(t);if(S.frR==="mes")return[k+"-01",today()];if(S.frR==="ant"){var p=addM(k,-1);return[p+"-01",p+"-31"]}if(S.frR==="tri")return[addM(k,-2)+"-01",today()];return[t.getFullYear()+"-01-01",today()]}
+function vFreq(){
+  S.frR=S.frR||"mes";var rg=freqRange(),T=E().turmas.filter(function(t){return !S.frT||t.id===S.frT});
+  var s='<div class="chips">'+[["mes","Este mês"],["ant","Mês passado"],["tri","Últimos 3 meses"],["ano","Este ano"]].map(function(o){return '<button type="button" class="chip" data-frr="'+o[0]+'" aria-pressed="'+(S.frR===o[0])+'">'+o[1]+'</button>'}).join("")+'<select class="inp" id="fr-t" style="flex:0 1 220px;width:auto;padding:8px 12px"><option value="">Todas as turmas</option>'+E().turmas.map(function(t){return '<option value="'+esc(t.id)+'"'+(S.frT===t.id?" selected":"")+'>'+esc(t.nome)+'</option>'}).join("")+'</select><button class="btn ghost sm" type="button" id="fr-csv">⬇ Planilha</button></div>';
+  var alertas=[],geral={p:0,t:0};
+  var cards=T.map(function(t){
+    var C=E().cham[t.id]||{},dias=Object.keys(C).filter(function(d){return d>=rg[0]&&d<=rg[1]}).sort(),al=ativosNa(t.id).sort(function(a,b){return a.nome.localeCompare(b.nome)});
+    var tp=0,tt=0;
+    var rows=al.map(function(a){var r={p:0,f:0,j:0},seqF=0,maxSeq=0;dias.forEach(function(d){var v=C[d][a.id];if(v){r[v]++;if(v==="f"){seqF++;maxSeq=Math.max(maxSeq,seqF)}else seqF=0}});var tot=r.p+r.f+r.j,pc=tot?Math.round(r.p*100/tot):null;tp+=r.p;tt+=tot;
+      var warn=(pc!=null&&pc<75)||seqF>=3;if(warn)alertas.push({a:a,t:t,pc:pc,seq:seqF});
+      return '<tr><td><b>'+esc(a.nome)+'</b>'+(warn?' <span class="pill err">atenção</span>':'')+'</td><td>'+r.p+'</td><td>'+r.f+'</td><td>'+r.j+'</td><td><div style="display:flex;align-items:center;gap:8px"><span class="tr" style="flex:1;height:8px;border-radius:9px;background:var(--bg-2);overflow:hidden;min-width:50px"><i style="display:block;height:100%;width:'+(pc||0)+'%;background:'+(pc==null?"var(--line)":pc<75?"var(--err)":pc<90?"var(--warn)":"var(--ok)")+'"></i></span><b>'+(pc==null?"–":pc+"%")+'</b></div></td></tr>'}).join("");
+    geral.p+=tp;geral.t+=tt;var med=tt?Math.round(tp*100/tt):null;
+    return '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:end"><div><h2>'+esc(t.nome)+'</h2><p class="note" style="margin:0">'+dias.length+' aula'+(dias.length===1?"":"s")+' com chamada · '+al.length+' aluno'+(al.length===1?"":"s")+'</p></div><span class="pill '+(med==null?"":med<75?"err":med<90?"warn":"ok")+'" style="font-size:13px;padding:6px 12px">Média '+(med==null?"–":med+"%")+'</span></div>'+(al.length&&dias.length?'<div style="overflow-x:auto;margin-top:10px"><table class="freq"><thead><tr><th>Aluno</th><th>P</th><th>F</th><th>J</th><th style="min-width:150px">Frequência</th></tr></thead><tbody>'+rows+'</tbody></table></div>':'<p class="empty" style="padding:8px">'+(al.length?"Sem chamadas no período.":"Sem alunos.")+'</p>')+'</div>';
+  }).join("");
+  var gm=geral.t?Math.round(geral.p*100/geral.t):null;
+  s+='<div class="kpis"><div class="kpi main"><span>Frequência geral</span><b>'+(gm==null?"–":gm+"%")+'</b><small>presenças no período</small></div><div class="kpi"><span>Presenças</span><b>'+geral.p+'</b><small>registradas</small></div><div class="kpi"><span>Faltas e justificadas</span><b>'+(geral.t-geral.p)+'</b><small>no período</small></div><div class="kpi'+(alertas.length?" warn":"")+'"><span>Pedem atenção</span><b>'+alertas.length+'</b><small>abaixo de 75% ou 3 faltas seguidas</small></div></div>';
+  if(alertas.length)s+='<div class="card"><h2>Pedem atenção</h2><p class="note">Vale conversar com a família.</p><div class="list">'+alertas.map(function(x){var msg="Olá, "+(first(x.a.resp)||"tudo bem")+"! Aqui é a Irene, da Formas. Senti falta de "+first(x.a.nome)+" nas últimas aulas de "+x.t.nome+". Está tudo bem? Fico à disposição."+sig();return '<div class="row"><span class="av" style="--c:'+tcol(x.t)+'">'+esc(ini(x.a.nome))+'</span><div><div class="nm">'+esc(x.a.nome)+'</div><div class="mt"><span>'+esc(x.t.nome)+'</span>'+(x.pc!=null?'<span>'+x.pc+'% de presença</span>':'')+(x.seq>=3?'<span>'+x.seq+' faltas seguidas</span>':'')+'</div></div><div class="ac">'+(x.a.whats?'<a class="btn sm wa" href="'+waLink(x.a.whats,msg)+'" target="_blank" rel="noopener">'+ic("wa")+'Conversar</a>':'')+'</div></div>'}).join("")+'</div></div>';
+  return s+cards;
+}
+function freqCsv(){var rg=freqRange(),rows=[["Turma","Aluno","Presenças","Faltas","Justificadas","Frequência %"]];E().turmas.forEach(function(t){var C=E().cham[t.id]||{},dias=Object.keys(C).filter(function(d){return d>=rg[0]&&d<=rg[1]});ativosNa(t.id).forEach(function(a){var r={p:0,f:0,j:0};dias.forEach(function(d){var v=C[d][a.id];if(v)r[v]++});var tot=r.p+r.f+r.j;rows.push([t.nome,a.nome,r.p,r.f,r.j,tot?Math.round(r.p*100/tot):""])})});
+  var csv="﻿"+rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"'}).join(";")}).join("\r\n");var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="frequencia-formas-"+rg[0]+".csv";document.body.appendChild(a);a.click();a.remove()}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-frr],[data-chv]");if(!b)return;if(b.dataset.frr)S.frR=b.dataset.frr;else S.chV=b.dataset.chv;render()});
+
+/* ---------- Mensalidades ---------- */
+function payRow(a,m,k,mini){
+  var t=turma(a.turmaId),p=m.p;
+  var cob="Olá, "+(first(a.resp)||"tudo bem")+"! Passando para lembrar da mensalidade de "+mName(k).split(" de ")[0]+" de "+first(a.nome)+(t?" ("+t.nome+")":"")+", no valor de "+brl(m.valor)+", com vencimento em "+dm(m.venc)+". Qualquer dúvida, estou à disposição."+sig();
+  var rec=p?"Olá, "+(first(a.resp)||"tudo bem")+"! Recebi a mensalidade de "+mName(k).split(" de ")[0]+" de "+first(a.nome)+": "+brl(m.valor)+(p.forma?" ("+p.forma+")":"")+" em "+dm(p.data)+". Obrigada!"+sig():"";
+  return '<div class="row"><span class="av" style="--c:'+tcol(t)+'">'+esc(ini(a.nome))+'</span><div><div class="nm">'+esc(a.nome)+' <span class="pill '+(m.st==="pago"?"ok":m.st==="atrasado"?"err":"")+'">'+(m.st==="pago"?"Pago "+dm(p.data)+(p.forma?" · "+esc(p.forma):""):m.st==="atrasado"?"Atrasado":"A pagar")+'</span></div><div class="mt"><span class="money">'+brl(m.valor)+'</span><span>vence '+dm(m.venc)+'</span>'+(mini?"":'<span>'+esc(t?t.nome:"Sem turma")+'</span>')+(a.resp?'<span>'+esc(a.resp)+'</span>':'')+'</div></div><div class="ac">'+
+    (m.st==="pago"?(a.whats?'<a class="btn sm ghost" href="'+waLink(a.whats,rec)+'" target="_blank" rel="noopener">'+ic("wa")+'Recibo</a>':'')+(mini?'':'<button class="btn sm ghost" type="button" data-unpay="'+esc(a.id)+'" data-k="'+k+'">Desfazer</button>')
+    :(a.whats?'<a class="btn sm ghost" href="'+waLink(a.whats,cob)+'" target="_blank" rel="noopener">'+ic("wa")+'Cobrar</a>':'')+'<button class="btn sm ok" type="button" data-pay="'+esc(a.id)+'" data-k="'+k+'">Recebi</button>')+'</div></div>';
+}
+function vMensal(){
+  var k=S.mes,r=resumoMes(k);
+  var L=E().alunos.map(function(a){return{a:a,m:mensal(a,k)}}).filter(function(x){return x.m&&(!S.mT||x.a.turmaId===S.mT)&&(S.mf==="todos"||(S.mf==="aberto"&&x.m.st!=="pago")||x.m.st===S.mf)}).sort(function(x,y){var o={atrasado:0,aberto:1,pago:2};return o[x.m.st]-o[y.m.st]||x.a.nome.localeCompare(y.a.nome)});
+  return '<div class="head"><div><h1>Mensalidades</h1><p>Marque quem pagou, cobre pelo WhatsApp e mande o recibo.</p></div><div class="mnav"><button class="ibtn" type="button" data-mes="-1" aria-label="Mês anterior">‹</button><b>'+esc(mName(k))+'</b><button class="ibtn" type="button" data-mes="1" aria-label="Próximo mês">›</button></div></div>'+
+    '<div class="kpis"><div class="kpi main"><span>Recebido</span><b>'+brl(r.rec)+'</b><small>'+r.nrec+' pagamento'+(r.nrec===1?"":"s")+'</small></div><div class="kpi"><span>Previsto no mês</span><b>'+brl(r.prev)+'</b><small>'+(r.nrec+r.nab+r.natr)+' alunos</small></div><div class="kpi"><span>A receber</span><b>'+brl(r.abr)+'</b><small>'+r.nab+' ainda no prazo</small></div><div class="kpi'+(r.natr?" warn":"")+'"><span>Em atraso</span><b>'+brl(r.atr)+'</b><small>'+r.natr+' aluno'+(r.natr===1?"":"s")+'</small></div></div>'+
+    '<div class="tb"><div class="chips">'+[["todos","Todos"],["aberto","Em aberto"],["atrasado","Atrasados"],["pago","Pagos"]].map(function(f){return '<button type="button" class="chip" data-mf="'+f[0]+'" aria-pressed="'+(S.mf===f[0])+'">'+f[1]+'</button>'}).join("")+'</div><select class="inp" id="m-t"><option value="">Todas as turmas</option>'+E().turmas.map(function(t){return '<option value="'+esc(t.id)+'"'+(S.mT===t.id?" selected":"")+'>'+esc(t.nome)+'</option>'}).join("")+'</select></div>'+
+    devCard()+'<h2 style="font-size:26px;margin-top:6px">Mensalidades de '+esc(mName(k))+'</h2>'+
+    '<div class="list">'+(L.length?L.map(function(x){return payRow(x.a,x.m,k)}).join(""):'<p class="empty"><b>Nada por aqui</b>'+(E().alunos.length?"Mude o filtro ou o mês.":"Cadastre os alunos com o valor da mensalidade.")+'</p>')+'</div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn ghost sm" type="button" id="m-csv">⬇ Baixar planilha do mês</button></div>';
+}
+AFTER.mensal=function(){
+  $("m-t").onchange=function(){S.mT=this.value;render()};
+  $("m-csv").onclick=function(){var k=S.mes,rows=[["Aluno","Turma","Responsável","WhatsApp","Valor","Vencimento","Situação","Pago em","Forma"]];E().alunos.forEach(function(a){var m=mensal(a,k);if(!m)return;var t=turma(a.turmaId);rows.push([a.nome,t?t.nome:"",a.resp||"",phone(a.whats),String(m.valor.toFixed(2)).replace(".",","),dmy(m.venc),m.st==="pago"?"Pago":m.st==="atrasado"?"Atrasado":"A pagar",m.p?dmy(m.p.data):"",m.p?m.p.forma||"":""])});
+    var csv="﻿"+rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"'}).join(";")}).join("\r\n");var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="mensalidades-formas-"+k+".csv";document.body.appendChild(a);a.click();a.remove()};
+};
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-mes],[data-mf],[data-pay],[data-unpay]");if(!b)return;
+  if(b.dataset.mes){S.mes=addM(S.mes,+b.dataset.mes);render()}
+  else if(b.dataset.mf){S.mf=b.dataset.mf;render()}
+  else if(b.dataset.unpay){var P=E().pag[b.dataset.unpay],k=b.dataset.k,old=P[k];delete P[k];touch();render();toast("Pagamento desfeito",function(){P[k]=old;touch();render()})}
+  else paySheet(b.dataset.pay,b.dataset.k);
+});
+function paySheet(aid,k){
+  var a=aluno(aid),m=mensal(a,k),f="Pix";
+  openSh(shHead("Recebi de <em>"+esc(first(a.nome))+"</em>")+'<form class="frm" id="pf"><p style="margin:-8px 0 0;color:var(--ink-soft)">Mensalidade de '+esc(mName(k))+'</p>'+
+    '<div class="g2"><div class="fld"><label for="p-v">Valor</label><input id="p-v" inputmode="decimal" value="'+esc(String(m.valor.toFixed(2)).replace(".",","))+'"></div><div class="fld"><label for="p-d">Data</label><input id="p-d" type="date" value="'+today()+'"></div></div>'+
+    '<div class="fld"><span>Forma de pagamento</span><div class="chips" id="p-f">'+FORMAS.map(function(x){return '<button type="button" class="chip" aria-pressed="'+(x===f)+'">'+x+'</button>'}).join("")+'</div></div>'+
+    '<div class="foot"><button class="btn ok" type="submit">Confirmar pagamento</button></div></form>',function(sh){
+      sh.querySelectorAll("#p-f .chip").forEach(function(b){b.onclick=function(){sh.querySelectorAll("#p-f .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)})}});
+      $("pf").onsubmit=function(ev){ev.preventDefault();var P=E().pag[aid]=E().pag[aid]||{};P[k]={pago:true,valor:num(val("p-v"))||m.valor,data:val("p-d")||today(),forma:sh.querySelector("#p-f [aria-pressed=true]").textContent};touch();closeSh();render();toast("Pagamento de "+first(a.nome)+" registrado ✦")};
+    });
+}
+
+
+/* ---------- Caixa ---------- */
+var CAT_E=["Matrícula","Espetáculo / ingressos","Evento","Aula avulsa","Outros"],CAT_S=["Aluguel","Professora / equipe","Figurino","Material","Água / luz / internet","Impostos","Outros"];
+function movs(k){
+  var L=[];
+  E().alunos.forEach(function(a){var P=E().pag[a.id]||{};Object.keys(P).forEach(function(mk_){var p=P[mk_];if(!p||!p.data||p.data.slice(0,7)!==k)return;var t=turma(a.turmaId);L.push({d:p.data,tipo:"e",orig:"Mensalidades",desc:"Mensalidade "+MESES[+mk_.slice(5)-1]+" · "+a.nome+(t?" ("+t.nome+")":""),v:num(p.valor)||0,forma:p.forma||"—"})})});
+  S.pedidos.forEach(function(x){if(!x.pago||String(x.pago).slice(0,7)!==k)return;var v=num(x.preco);v=isNaN(v)?0:v*(+x.qtd||1);L.push({d:x.pago,tipo:"e",orig:"Camarim",desc:"Camarim · "+(x.qtd||1)+"x "+x.produto+" · "+x.crianca,v:v,forma:x.forma||"—"})});
+  E().caixa.forEach(function(c){if(String(c.data).slice(0,7)!==k)return;L.push({d:c.data,tipo:c.tipo,orig:c.tipo==="e"?(c.cat||"Outras entradas"):(c.cat||"Despesa"),desc:c.desc||c.cat,v:num(c.valor)||0,forma:c.forma||"—",id:c.id})});
+  return L.sort(function(a,b){return a.d<b.d?1:-1});
+}
+function vCaixa(){
+  var k=S.cxMes||(S.cxMes=mk(new Date())),L=movs(k),ent=L.filter(function(x){return x.tipo==="e"}),sai=L.filter(function(x){return x.tipo==="s"});
+  var te=ent.reduce(function(s,x){return s+x.v},0),ts=sai.reduce(function(s,x){return s+x.v},0),r=resumoMes(k),dv=devedores(),dvt=dv.reduce(function(s,d){return s+d.total},0);
+  function grp(list,key){var o={};list.forEach(function(x){o[x[key]]=(o[x[key]]||0)+x.v});return o}
+  function bars2(o){var a=Object.entries(o).sort(function(x,y){return y[1]-x[1]}),m=a.length?a[0][1]:1;return a.length?a.map(function(x){return '<div class="srow w"><span>'+esc(x[0])+'</span><span class="tr"><i style="width:'+Math.max(3,x[1]*100/m)+'%"></i></span><b style="white-space:nowrap">'+brl(x[1])+'</b></div>'}).join(""):'<p class="empty" style="padding:4px">Sem movimento neste mês.</p>'}
+  var hist=[-5,-4,-3,-2,-1,0].map(function(n){var kk=addM(k,n),l=movs(kk);return{k:kk,e:l.filter(function(x){return x.tipo==="e"}).reduce(function(s,x){return s+x.v},0),s:l.filter(function(x){return x.tipo==="s"}).reduce(function(s,x){return s+x.v},0)}}),hm=Math.max(1,Math.max.apply(null,hist.map(function(h){return Math.max(h.e,h.s)})));
+  return '<div class="head"><div><h1>Caixa</h1><p>Tudo o que entrou e saiu em '+esc(mName(k))+'.</p></div><div class="mnav"><button class="ibtn" type="button" data-cx="-1" aria-label="Mês anterior">‹</button><b>'+esc(mName(k))+'</b><button class="ibtn" type="button" data-cx="1" aria-label="Próximo mês">›</button></div></div>'+
+  '<div class="kpis"><div class="kpi main"><span>Entradas</span><b>'+brl(te)+'</b><small>'+ent.length+' recebimento'+(ent.length===1?"":"s")+'</small></div><div class="kpi"><span>Saídas</span><b>'+brl(ts)+'</b><small>'+sai.length+' despesa'+(sai.length===1?"":"s")+'</small></div><div class="kpi'+(te-ts<0?" warn":"")+'"><span>Saldo do mês</span><b>'+brl(te-ts)+'</b><small>entradas − saídas</small></div><div class="kpi'+(dvt?" warn":"")+'"><span>A receber</span><b>'+brl(r.abr+dvt)+'</b><small>'+brl(r.abr)+' no prazo · '+brl(dvt)+' em atraso</small></div></div>'+
+  '<div class="tb"><button class="btn ok" type="button" data-lanc="e">＋ Lançar entrada</button><button class="btn red" type="button" data-lanc="s">− Lançar despesa</button><button class="btn ghost sm" type="button" id="cx-csv" style="margin-left:auto">⬇ Planilha do mês</button></div>'+
+  '<div class="grid2"><div class="card"><h2>De onde veio</h2><p class="note">Entradas do mês por origem.</p>'+bars2(grp(ent,"orig"))+'<h2 style="margin-top:20px">Como pagaram</h2><p class="note">Pix, dinheiro, cartão…</p>'+bars2(grp(ent,"forma"))+'</div>'+
+  '<div class="card"><h2>Para onde foi</h2><p class="note">Despesas do mês por categoria.</p>'+bars2(grp(sai,"orig"))+'<h2 style="margin-top:20px">Últimos 6 meses</h2><p class="note"><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--ok)"></i> entradas &nbsp; <i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--err)"></i> saídas</p><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;align-items:end;height:150px">'+hist.map(function(h){return '<div style="display:grid;gap:4px;justify-items:center;height:100%;align-content:end"><div style="display:flex;gap:3px;align-items:end;height:110px"><i style="width:14px;border-radius:4px 4px 0 0;background:var(--ok);height:'+(h.e/hm*100)+'%" title="Entradas '+brl(h.e)+'"></i><i style="width:14px;border-radius:4px 4px 0 0;background:var(--err);height:'+(h.s/hm*100)+'%" title="Saídas '+brl(h.s)+'"></i></div><small style="font-size:11px;font-weight:800;color:var(--ink-soft)">'+MESES[+h.k.slice(5)-1].slice(0,3)+'</small></div>'}).join("")+'</div></div></div>'+
+  '<div class="card"><h2>Movimentos de '+esc(mName(k))+'</h2><p class="note">Mensalidades marcadas como pagas, pedidos do Camarim pagos e os lançamentos feitos aqui.</p><div class="list">'+(L.length?L.map(function(x){return '<div class="row"><span class="av" style="--c:'+(x.tipo==="e"?"var(--ok)":"var(--err)")+';font-size:12px">'+dm(x.d)+'</span><div><div class="nm">'+esc(x.desc)+'</div><div class="mt"><span>'+esc(x.orig)+'</span><span>'+esc(x.forma)+'</span></div></div><div class="ac"><b class="money" style="color:'+(x.tipo==="e"?"var(--ok)":"var(--err)")+'">'+(x.tipo==="e"?"+ ":"− ")+brl(x.v)+'</b>'+(x.id?'<button class="ibtn" type="button" data-cxdel="'+esc(x.id)+'" aria-label="Apagar lançamento">'+ic("i-del")+'</button>':'')+'</div></div>'}).join(""):'<p class="empty"><b>Nenhum movimento</b>Marque as mensalidades pagas ou lance entradas e despesas.</p>')+'</div></div>'+
+  devCard(6);
+}
+AFTER.caixa=function(){$("cx-csv").onclick=function(){var k=S.cxMes,rows=[["Data","Tipo","Origem / categoria","Descrição","Forma","Valor"]];movs(k).forEach(function(x){rows.push([dmy(x.d),x.tipo==="e"?"Entrada":"Saída",x.orig,x.desc,x.forma,(x.tipo==="e"?"":"-")+String(x.v.toFixed(2)).replace(".",",")])});
+  var csv="﻿"+rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"'}).join(";")}).join("\r\n");var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="caixa-formas-"+k+".csv";document.body.appendChild(a);a.click();a.remove()}};
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-cx],[data-lanc],[data-cxdel]");if(!b)return;
+  if(b.dataset.cx){S.cxMes=addM(S.cxMes,+b.dataset.cx);render();return}
+  if(b.dataset.cxdel){var C=E().caixa,i=C.findIndex(function(c){return c.id===b.dataset.cxdel}),old=C[i];C.splice(i,1);touch();render();toast("Lançamento apagado",function(){C.splice(i,0,old);touch();render()});return}
+  var tp=b.dataset.lanc,cats=tp==="e"?CAT_E:CAT_S,f="Pix",cat=cats[0];
+  openSh(shHead(tp==="e"?"Lançar <em>entrada</em>":"Lançar <em>despesa</em>")+'<form class="frm" id="lf"><div class="fld"><span>Categoria</span><div class="chips" id="l-cat">'+cats.map(function(c,i){return '<button type="button" class="chip" aria-pressed="'+(i===0)+'">'+c+'</button>'}).join("")+'</div></div><div class="fld"><label for="l-d">Descrição</label><input id="l-d" placeholder="'+(tp==="e"?"Ex.: ingressos do espetáculo":"Ex.: aluguel da sala")+'"></div><div class="g2"><div class="fld"><label for="l-v">Valor</label><input id="l-v" inputmode="decimal" placeholder="0,00" required></div><div class="fld"><label for="l-dt">Data</label><input id="l-dt" type="date" value="'+today()+'"></div></div><div class="fld"><span>Forma</span><div class="chips" id="l-f">'+FORMAS.map(function(x){return '<button type="button" class="chip" aria-pressed="'+(x===f)+'">'+x+'</button>'}).join("")+'</div></div><div class="foot"><button class="btn '+(tp==="e"?"ok":"red")+'" type="submit">Salvar</button></div></form>',function(sh){
+    ["#l-cat","#l-f"].forEach(function(id){sh.querySelectorAll(id+" .chip").forEach(function(c){c.onclick=function(){sh.querySelectorAll(id+" .chip").forEach(function(x){x.setAttribute("aria-pressed",x===c)})}})});
+    $("lf").onsubmit=function(ev){ev.preventDefault();var v=num(val("l-v"));if(!(v>0)){$("l-v").focus();return}E().caixa.push({id:uid(),tipo:tp,cat:sh.querySelector("#l-cat [aria-pressed=true]").textContent,desc:val("l-d"),valor:v,data:val("l-dt")||today(),forma:sh.querySelector("#l-f [aria-pressed=true]").textContent});S.cxMes=(val("l-dt")||today()).slice(0,7);touch();closeSh();render();toast(tp==="e"?"Entrada lançada":"Despesa lançada")};
+  });
+});
+
+/* ---------- Fila de espera ---------- */
+function vFila(){
+  var T=E().turmas,outros=S.espera.filter(function(x){return !turma(x.turmaId)&&(x.status==="espera"||x.status==="avisado")});
+  var tot=S.espera.filter(function(x){return x.status==="espera"||x.status==="avisado"}).length;
+  var s='<div class="head"><div><h1>Fila de espera</h1><p>Na ordem em que as famílias entraram. Quando abrir vaga, toque em <b>Avisar</b> e depois em <b>Matricular</b>.</p></div><button class="btn rose" type="button" id="f-new">＋ Pôr na fila</button></div>';
+  if(!tot)s+='<div class="card"><p class="empty"><b>Fila vazia</b>Quando uma turma estiver completa, o site mostra o botão “Entrar na fila de espera”.</p></div>';
+  T.concat(outros.length?[{id:"",nome:"Outras / turma removida"}]:[]).forEach(function(t){
+    var L=t.id?filaDe(t.id):outros;if(!L.length)return;var cap=parseInt(t.cap,10),liv=t.id&&cap>0?cap-ativosNa(t.id).length:null;
+    s+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px"><h2>'+esc(t.nome)+'</h2>'+(liv!=null?'<span class="pill '+(liv>0?"ok":"")+'">'+(liv>0?liv+" vaga"+(liv===1?"":"s")+" livre"+(liv===1?"":"s")+" agora":"sem vagas")+'</span>':'')+'</div><div class="list">'+L.map(function(x,i){
+      var msg="Olá, "+first(x.nome)+"! Aqui é a Irene, da Formas Escola de Dança. Abriu uma vaga na turma "+(x.turma||t.nome)+" para "+first(x.crianca)+"! Quer garantir a vaga?"+sig();
+      return '<div class="row"><span class="av" style="--c:'+tcol(turma(t.id))+'">'+(i+1)+'º</span><div><div class="nm">'+esc(x.crianca)+(x.idade?' <small style="font-weight:600;color:var(--ink-soft)">'+esc(x.idade)+' anos</small>':'')+(x.status==="avisado"?' <span class="pill ok">Avisado '+(x.avisadoEm?dm(x.avisadoEm):"")+'</span>':'')+'</div><div class="mt"><span>'+esc(x.nome||"")+'</span><span>'+esc(phone(x.whatsapp))+'</span><span>entrou '+when(x.quando)+'</span><span>'+(x.origem==="site"?"pelo site":"manual")+'</span></div></div><div class="ac">'+(x.whatsapp?'<a class="btn sm wa" href="'+waLink(x.whatsapp,msg)+'" target="_blank" rel="noopener" data-avisa="'+esc(x.id)+'">'+ic("wa")+'Avisar</a>':'')+'<button class="btn sm ok" type="button" data-matr="'+esc(x.id)+'">Matricular</button><button class="ibtn" type="button" data-fdel="'+esc(x.id)+'" aria-label="Tirar da fila">'+ic("i-del")+'</button></div></div>'}).join("")+'</div></div>';
+  });
+  var mat=S.espera.filter(function(x){return x.status==="matriculado"}).length;
+  if(mat)s+='<p class="empty" style="padding:4px">'+mat+' pessoa'+(mat===1?"":"s")+' da fila já '+(mat===1?"foi matriculada":"foram matriculadas")+'.</p>';
+  return s;
+}
+AFTER.fila=function(){$("f-new").onclick=function(){filaSheet()}};
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-avisa],[data-matr],[data-fdel]");if(!b)return;
+  var id=b.dataset.avisa||b.dataset.matr||b.dataset.fdel,x=S.espera.find(function(y){return y.id===id});if(!x)return;
+  if(b.dataset.avisa){x.status="avisado";x.avisadoEm=today();setTimeout(function(){upItem("espera",x)},300)}
+  else if(b.dataset.matr){alunoSheet(null,{nome:x.crianca,turmaId:turma(x.turmaId)?x.turmaId:"",resp:x.nome,whats:x.whatsapp,_from:{kind:"espera",item:x}})}
+  else{var old=delItem("espera",id);toast("Tirado da fila",function(){upItem("espera",old)})}
+});
+function filaSheet(){
+  openSh(shHead("Pôr na <em>fila</em>")+'<form class="frm" id="ff"><div class="fld"><label for="q-t">Turma</label><select id="q-t">'+E().turmas.map(function(t){return '<option value="'+esc(t.id)+'">'+esc(t.nome)+'</option>'}).join("")+'</select></div><div class="g2"><div class="fld"><label for="q-c">Criança</label><input id="q-c" required></div><div class="fld"><label for="q-i">Idade</label><input id="q-i" type="number" min="1" max="20"></div></div><div class="g2"><div class="fld"><label for="q-n">Responsável</label><input id="q-n"></div><div class="fld"><label for="q-w">WhatsApp</label><input id="q-w" type="tel" inputmode="tel"></div></div><div class="foot"><button class="btn rose" type="submit">Adicionar</button></div></form>',function(){
+    $("ff").onsubmit=function(ev){ev.preventDefault();if(val("q-c").length<2)return;var t=turma(val("q-t"));upItem("espera",{id:uid(),quando:new Date().toISOString(),turmaId:t.id,turma:t.nome,crianca:val("q-c"),idade:val("q-i"),nome:val("q-n"),whatsapp:val("q-w").replace(/\D/g,""),status:"espera",origem:"manual"});closeSh();toast("Adicionado à fila")};
+  });
+}
+
+/* ---------- Camarim ---------- */
+function prodIcon(t){return ic("p-"+(["collant","sapatilha","saia","meia","coque"].indexOf(t)>=0?t:"outro"))}
+function vCamarim(){
+  var c=counts(),s='<div class="head"><div><h1>Camarim</h1><p>Pedidos das famílias e as peças que aparecem no site.</p></div><div class="seg"><button type="button" data-cam="pedidos" aria-pressed="'+(S.camTab==="pedidos")+'">Pedidos'+(c.ped?' <i class="bd">'+c.ped+'</i>':'')+'</button><button type="button" data-cam="produtos" aria-pressed="'+(S.camTab==="produtos")+'">Peças do site</button></div></div>';
+  if(S.camTab==="produtos"){
+    var P=E().site.produtos;
+    return s+'<div class="tb"><span style="color:var(--ink-soft);font-size:14px;flex:1">A ordem aqui é a ordem no site.</span><button class="btn rose" type="button" id="p-new">＋ Nova peça</button></div><div class="list">'+P.map(function(p,i){return '<div class="row prod-row'+(p.ativo===false?" off":"")+'"><span class="ph">'+(p.foto?'<img src="'+esc(p.foto)+'" alt="">':prodIcon(p.tipo))+'</span><div><div class="nm">'+esc(p.nome)+(p.ativo===false?' <span class="pill">Fora do site</span>':'')+'</div><div class="mt"><span class="money">'+(p.preco?brl(num(p.preco)):"Valor com a Irene")+'</span>'+(p.tamanhos?'<span>'+esc(p.tamanhos)+'</span>':'')+'</div></div><div class="ac"><button class="ibtn" type="button" data-pmv="'+i+'" data-d="-1"'+(i?"":" disabled")+' aria-label="Subir">'+ic("i-up")+'</button><button class="ibtn" type="button" data-pmv="'+i+'" data-d="1"'+(i<P.length-1?"":" disabled")+' aria-label="Descer">'+ic("i-down")+'</button><button class="btn sm ghost" type="button" data-ped-ed="'+esc(p.id)+'">Editar</button></div></div>'}).join("")+'</div>';
+  }
+  var L=S.pedidos.filter(function(x){return S.pf==="todos"||(x.status||"novo")===S.pf}).sort(function(a,b){return a.quando<b.quando?1:-1});
+  var aRec=S.pedidos.filter(function(x){return !x.pago&&x.status!=="cancelado"}).reduce(function(s,x){var v=num(x.preco);return s+(isNaN(v)?0:v*(+x.qtd||1))},0);
+  return s+'<div class="tb"><div class="chips">'+[["novo","Novos"],["separado","Separados"],["entregue","Entregues"],["todos","Todos"]].map(function(f){var n=f[0]==="todos"?0:S.pedidos.filter(function(x){return (x.status||"novo")===f[0]}).length;return '<button type="button" class="chip" data-pf="'+f[0]+'" aria-pressed="'+(S.pf===f[0])+'">'+f[1]+(n?' <span class="n">'+n+'</span>':'')+'</button>'}).join("")+'</div>'+(aRec?'<span class="pill warn" style="margin-left:auto">A receber: '+brl(aRec)+'</span>':'')+'</div>'+
+    '<div class="list">'+(L.length?L.map(function(x){var st=x.status||"novo";
+      var msg="Olá, "+(first(x.nome)||"tudo bem")+"! Aqui é a Irene, da Formas. "+(st==="separado"?"O pedido de "+first(x.crianca)+" ("+(x.qtd||1)+"x "+x.produto+(x.tamanho?" tam. "+x.tamanho:"")+") já está separado. Vamos combinar a entrega?":"Recebi o pedido de "+(x.qtd||1)+"x "+x.produto+(x.tamanho?" tam. "+x.tamanho:"")+" para "+first(x.crianca)+". ")+sig();
+      return '<div class="row"><span class="av" style="--c:var(--gold)">'+(x.qtd||1)+'x</span><div><div class="nm">'+esc(x.produto)+(x.tamanho?' · tam. '+esc(x.tamanho):'')+(x.cor?' · '+esc(x.cor):'')+(x.pago?' <span class="pill ok">Pago</span>':'')+'</div><div class="mt"><span><b>'+esc(x.crianca)+'</b>'+(x.turma?" · "+esc(x.turma):"")+'</span>'+(x.nome?'<span>'+esc(x.nome)+'</span>':'')+'<span>'+when(x.quando)+'</span>'+(x.preco?'<span class="money">'+brl(num(x.preco)*(+x.qtd||1))+'</span>':'')+'</div>'+(x.obs?'<div class="mt"><i>“'+esc(x.obs)+'”</i></div>':'')+'</div><div class="ac"><div class="steps3">'+[["novo","Novo"],["separado","Separado"],["entregue","Entregue"]].map(function(o){return '<button type="button" data-pst="'+o[0]+'" data-id="'+esc(x.id)+'" aria-pressed="'+(st===o[0])+'">'+o[1]+'</button>'}).join("")+'</div><button class="btn xs '+(x.pago?"ok":"ghost")+'" type="button" data-ppg="'+esc(x.id)+'">'+(x.pago?"✓ Pago":"Marcar pago")+'</button>'+(x.whatsapp?'<a class="ibtn wa" href="'+waLink(x.whatsapp,msg)+'" target="_blank" rel="noopener" aria-label="WhatsApp">'+ic("wa")+'</a>':'')+'<button class="ibtn" type="button" data-pdel="'+esc(x.id)+'" aria-label="Apagar">'+ic("i-del")+'</button></div></div>'}).join(""):'<p class="empty"><b>Nenhum pedido aqui</b>Os pedidos feitos no Camarim do site aparecem nesta lista.</p>')+'</div>';
+}
+AFTER.camarim=function(){if($("p-new"))$("p-new").onclick=function(){prodSheet(null)}};
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-cam],[data-pf],[data-pst],[data-ppg],[data-pdel],[data-pmv],[data-ped-ed]");if(!b)return;
+  if(b.dataset.cam){S.camTab=b.dataset.cam;render();return}
+  if(b.dataset.pf){S.pf=b.dataset.pf;render();return}
+  if(b.dataset.pmv){var i=+b.dataset.pmv,j=i+(+b.dataset.d),P=E().site.produtos,t=P[i];P[i]=P[j];P[j]=t;touch();render();return}
+  if(b.dataset.pedEd){prodSheet(b.dataset.pedEd);return}
+  var id=b.dataset.id||b.dataset.ppg||b.dataset.pdel,x=S.pedidos.find(function(y){return y.id===id});if(!x)return;
+  if(b.dataset.pst){x.status=b.dataset.pst;upItem("pedido",x)}
+  else if(b.dataset.ppg){x.pago=x.pago?"":today();upItem("pedido",x)}
+  else{var old=delItem("pedido",id);toast("Pedido apagado",function(){upItem("pedido",old)})}
+});
+function prodSheet(id){
+  var p=id?E().site.produtos.find(function(x){return x.id===id}):{id:"",nome:"",tipo:"outro",desc:"",preco:"",tamanhos:"",cores:"",tag:"",foto:"",ativo:true},foto=p.foto||"";
+  openSh(shHead(id?esc(p.nome):"Nova <em>peça</em>")+'<form class="frm" id="prf">'+
+    '<div style="display:flex;gap:14px;align-items:center"><span class="ph" id="pr-ph" style="width:90px;height:90px;border-radius:18px;background:var(--rose-soft);display:grid;place-items:center;overflow:hidden;flex:none"></span><div style="display:grid;gap:6px"><label class="btn sm ghost" style="cursor:pointer">📷 '+(foto?"Trocar foto":"Pôr foto")+'<input type="file" accept="image/*" id="pr-file" hidden></label><button class="lnk" type="button" id="pr-rm" style="justify-self:start"'+(foto?"":" hidden")+'>Tirar a foto</button><small style="color:var(--ink-soft)">Sem foto, aparece um desenho.</small></div></div>'+
+    '<div class="g2"><div class="fld"><label for="pr-n">Nome</label><input id="pr-n" value="'+esc(p.nome)+'" required></div><div class="fld"><label for="pr-t">Desenho</label><select id="pr-t">'+[["collant","Collant"],["meia","Meia-calça"],["sapatilha","Sapatilha"],["saia","Saia / tutu"],["coque","Coque / cabelo"],["outro","Outro (estrela)"]].map(function(o){return '<option value="'+o[0]+'"'+(p.tipo===o[0]?" selected":"")+'>'+o[1]+'</option>'}).join("")+'</select></div></div>'+
+    '<div class="fld"><label for="pr-d">Descrição</label><input id="pr-d" value="'+esc(p.desc)+'"></div>'+
+    '<div class="g2"><div class="fld"><label for="pr-p">Preço</label><input id="pr-p" inputmode="decimal" value="'+esc(p.preco)+'" placeholder="Vazio = “valor com a Irene”"></div><div class="fld"><label for="pr-g">Etiqueta</label><input id="pr-g" value="'+esc(p.tag||"")+'" placeholder="Ex.: Novo"></div></div>'+
+    '<div class="fld"><label for="pr-s">Tamanhos (separe por vírgula)</label><input id="pr-s" value="'+esc(p.tamanhos)+'" placeholder="Ex.: 2, 4, 6, 8"><small>Vazio: a mãe escreve o tamanho ou a numeração.</small></div>'+
+    '<div class="fld"><label for="pr-c">Cores (separe por vírgula)</label><input id="pr-c" value="'+esc(p.cores)+'" placeholder="Ex.: Rosa, Preto"></div>'+
+    '<label class="tog"><input type="checkbox" id="pr-a"'+(p.ativo!==false?" checked":"")+'> Mostrar no site</label>'+
+    '<div class="foot"><button class="btn rose" type="submit">Salvar peça</button>'+(id?'<button class="btn ghost" type="button" id="pr-del">'+ic("i-del")+'Excluir</button>':'')+'</div></form>',function(){
+      function ph(){$("pr-ph").innerHTML=foto?'<img src="'+esc(foto)+'" alt="" style="width:100%;height:100%;object-fit:cover">':'<span style="width:60%;height:60%;display:block;color:var(--plum)">'+prodIcon(val("pr-t"))+'</span>';$("pr-rm").hidden=!foto}
+      ph();$("pr-t").onchange=ph;
+      $("pr-file").onchange=function(){var f=this.files[0];if(!f)return;toast("Preparando a foto…");upPhoto(f,900).then(function(src){foto=src;ph()}).catch(function(m){toast(m||"Não deu para enviar a foto.")})};
+      $("pr-rm").onclick=function(){foto="";ph()};
+      $("prf").onsubmit=function(ev){ev.preventDefault();var n=val("pr-n");if(n.length<2)return;if(!id){p.id=uid();E().site.produtos.push(p)}
+        Object.assign(p,{nome:n,tipo:val("pr-t"),desc:val("pr-d"),preco:val("pr-p"),tag:val("pr-g"),tamanhos:val("pr-s"),cores:val("pr-c"),foto:foto,ativo:$("pr-a").checked});touch();closeSh();render();toast("Peça salva")};
+      if($("pr-del"))$("pr-del").onclick=function(){if(!this.dataset.sure){this.dataset.sure=1;this.className="btn red";this.textContent="Toque de novo para excluir";return}var P=E().site.produtos;P.splice(P.indexOf(p),1);touch();closeSh();render()};
+    });
+}
+function upPhoto(file,max){
+  return new Promise(function(res,rej){
+    var img=new Image(),u=URL.createObjectURL(file);
+    img.onload=function(){var s=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);
+      var d=c.toDataURL("image/jpeg",.82);if(S.test){res(d);return}
+      api("foto",{img:d}).then(function(r){if(r.ok)res(r.src);else rej(r.erro==="grande"?"Foto grande demais.":"Não deu para enviar a foto.")}).catch(function(){rej("Sem internet.")})};
+    img.onerror=function(){rej("Não consegui abrir essa imagem.")};img.src=u;
+  });
+}
+
+/* ---------- Contatos ---------- */
+function vContatos(){
+  var F={pend:function(x){return !x.contatado&&x.enviado!=="sim"},sent:function(x){return !x.contatado&&x.enviado==="sim"},done:function(x){return !!x.contatado},all:function(){return true}};
+  var L=S.leads.filter(F[S.lf]).sort(function(a,b){return a.quando<b.quando?1:-1});
+  return '<div class="head"><div><h1>Contatos do site</h1><p>Famílias que pediram a disponibilidade de uma turma. Chame quem começou e não chegou a enviar.</p></div></div>'+
+    '<div class="chips">'+[["pend","Não enviaram"],["sent","Enviaram"],["done","Já falei"],["all","Todos"]].map(function(f){var n=f[0]==="all"?0:S.leads.filter(F[f[0]]).length;return '<button type="button" class="chip" data-lf="'+f[0]+'" aria-pressed="'+(S.lf===f[0])+'">'+f[1]+(n?' <span class="n">'+n+'</span>':'')+'</button>'}).join("")+'</div>'+
+    '<div class="list">'+(L.length?L.map(function(x){var msg="Olá, "+(first(x.nome)||"tudo bem")+"! Aqui é a Irene, da Formas Escola de Dança. Vi que você procurou "+(x.turma?"a turma "+x.turma:"as turmas")+" para "+(first(x.crianca)||"sua criança")+" no site. Posso te ajudar?"+sig();
+      return '<div class="row lead-row'+(x.contatado?" done":x.enviado==="sim"?" sent":"")+'"><span class="pill '+(x.enviado==="sim"?"ok":"warn")+'">'+(x.enviado==="sim"?"📩 Enviou":"🕓 Não enviou")+'</span><div><div class="nm">'+esc(x.crianca||"(sem nome da criança)")+(x.idade?' <small style="font-weight:600;color:var(--ink-soft)">'+esc(x.idade)+' anos</small>':'')+'</div><div class="mt"><span>'+esc(x.turma||"Não sabe a turma")+(x.horario?" · "+esc(x.horario):"")+'</span>'+(x.nome?'<span>'+esc(x.nome)+'</span>':'')+(x.whatsapp?'<span>'+esc(phone(x.whatsapp))+'</span>':'')+'<span>'+when(x.quando)+'</span>'+(x.cidadeAprox?'<span>'+esc(x.cidadeAprox)+'</span>':'')+'</div></div><div class="ac">'+(x.whatsapp?'<a class="btn sm wa" href="'+waLink(x.whatsapp,msg)+'" target="_blank" rel="noopener">'+ic("wa")+'Chamar</a>':'<span class="pill">sem WhatsApp</span>')+'<button class="btn sm ghost" type="button" data-lc="'+esc(x.id)+'">'+(x.contatado?"Desmarcar":"Já falei")+'</button><button class="btn sm ghost" type="button" data-lm="'+esc(x.id)+'">Matricular</button><button class="btn sm ghost" type="button" data-lq="'+esc(x.id)+'">Pôr na fila</button><button class="ibtn" type="button" data-ld="'+esc(x.id)+'" aria-label="Apagar">'+ic("i-del")+'</button></div></div>'}).join(""):'<p class="empty"><b>Nada por aqui</b>Os pedidos de disponibilidade feitos no site aparecem nesta lista.</p>')+'</div>'+
+    '<p class="empty" style="font-size:12.5px">Aparece aqui quem escreveu o nome no formulário de disponibilidade. Quem só tocou no botão do WhatsApp aparece apenas como número na aba Acessos.</p>';
+}
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-lf],[data-lc],[data-lm],[data-lq],[data-ld]");if(!b)return;
+  if(b.dataset.lf){S.lf=b.dataset.lf;render();return}
+  var id=b.dataset.lc||b.dataset.lm||b.dataset.lq||b.dataset.ld,x=S.leads.find(function(y){return y.id===id});if(!x)return;
+  if(b.dataset.lc){x.contatado=x.contatado?"":today();upItem("lead",x)}
+  else if(b.dataset.lm){x.contatado=x.contatado||today();alunoSheet(null,{nome:x.crianca,turmaId:turma(x.turmaId)?x.turmaId:"",resp:x.nome,whats:x.whatsapp,_from:{kind:"lead",item:x}})}
+  else if(b.dataset.lq){var t=turma(x.turmaId)||E().turmas[0];upItem("espera",{id:uid(),quando:new Date().toISOString(),turmaId:t.id,turma:t.nome,crianca:x.crianca,idade:x.idade,nome:x.nome,whatsapp:x.whatsapp,status:"espera",origem:"manual"});x.contatado=x.contatado||today();upItem("lead",x);toast(first(x.crianca)+" entrou na fila de "+t.nome)}
+  else{var old=delItem("lead",id);toast("Contato apagado",function(){upItem("lead",old)})}
+});
+
+/* ---------- Acessos ---------- */
+function vAcessos(){
+  var s='<div class="head"><div><h1>Acessos ao site</h1><p id="ac-upd">Quantas pessoas visitaram e o que fizeram.</p></div></div>';
+  if(S.test)return s+'<div class="card"><p class="empty"><b>Liga quando o site estiver no ar</b>Com o site publicado na Vercel e o banco ligado, aqui aparecem as visitas, de onde as pessoas vieram, cidades, celular ou computador, turmas mais procuradas e peças mais pedidas.</p></div>';
+  s+='<div class="chips">'+[[1,"Hoje"],[7,"7 dias"],[30,"30 dias"],[90,"90 dias"],[365,"1 ano"]].map(function(r){return '<button type="button" class="chip" data-sr="'+r[0]+'" aria-pressed="'+(S.stR===r[0])+'">'+r[1]+'</button>'}).join("")+'<button type="button" class="chip" data-sr="0" aria-pressed="'+(S.stR===0)+'">📅 Outras datas</button></div>'+
+    (S.stR===0?'<div class="tb"><input class="inp" type="date" id="sd" value="'+esc(S.stDe)+'" style="flex:0 1 180px"><input class="inp" type="date" id="sa" value="'+esc(S.stAte)+'" style="flex:0 1 180px"><button class="btn sm" type="button" id="sgo">Ver período</button></div>':'');
+  var d=S.stats;if(!d)return s+'<div class="card"><p class="empty">Carregando…</p></div>';
+  if(d.erro)return s+'<div class="card"><p class="empty"><b>Não deu para carregar</b>'+esc(d.erro)+'</p></div>';
+  var V=d.dias.reduce(function(a,x){return a+(x.view||0)},0),W=d.dias.reduce(function(a,x){return a+(x.whatsapp||0)},0),r=d.retorno||{};
+  s+='<div class="kpis"><div class="kpi main"><span>Pessoas</span><b>'+d.pessoasPeriodo+'</b><small>diferentes no período</small></div><div class="kpi"><span>Aberturas do site</span><b>'+V+'</b><small>visitas</small></div><div class="kpi"><span>Novas x voltaram</span><b>'+(r.novos||0)+' · '+(r.voltaram||0)+'</b><small>primeira visita · retorno</small></div><div class="kpi"><span>Cliques no WhatsApp</span><b>'+W+'</b><small>contatos iniciados</small></div></div>';
+  s+='<div class="card"><h2>Por dia</h2><p class="note">Pessoas diferentes em cada dia.</p>'+chart(d.dias)+'</div>';
+  s+='<div class="grid2"><div class="card"><h2>Como chegaram</h2><p class="note">Instagram, Google, direto…</p>'+bars(d.origem)+'</div><div class="card"><h2>Aparelho</h2><p class="note">Celular ou computador.</p>'+bars(d.dispositivo)+'</div></div>';
+  s+='<div class="grid2"><div class="card"><h2>Turmas mais procuradas</h2><p class="note">Quem abriu “Ver disponibilidade”.</p>'+bars(d.turmas)+'</div><div class="card"><h2>Peças mais vistas no Camarim</h2><p class="note">Quem abriu o pedido de cada peça.</p>'+bars(d.loja)+'</div></div>';
+  s+='<div class="grid2"><div class="card"><h2>Cidades</h2><p class="note">Aproximadas, pela internet de quem acessou.</p>'+bars(d.cidade,function(k){return k.split("|")[0]})+'</div><div class="card"><h2>Estados</h2><p class="note">Estado ou região.</p>'+bars(d.estado,function(k){return k.split("|")[0]})+'</div></div>';
+  return s+'<p class="empty" style="font-size:12.5px">Robôs, prévias de link e as suas visitas nesta área não entram na contagem. Nenhum IP é guardado.</p>';
+}
+function bars(o,lbl){var a=Object.entries(o||{}).sort(function(x,y){return y[1]-x[1]}).slice(0,8),m=a.length?a[0][1]:1;if(!a.length)return '<p class="empty" style="padding:4px">Sem dados no período.</p>';return a.map(function(x){return '<div class="srow"><span>'+esc(lbl?lbl(x[0]):x[0])+'</span><span class="tr"><i style="width:'+(x[1]*100/m)+'%"></i></span><b>'+x[1]+'</b></div>'}).join("")}
+function chart(D){var n=D.length,w=Math.max(320,n*22),h=170,m=Math.max(1,Math.max.apply(null,D.map(function(x){return x.pessoas}))),bw=w/n*.7,td=today();
+  return '<div style="overflow-x:auto"><svg class="chart" viewBox="0 0 '+w+' '+(h+24)+'" style="min-width:'+Math.min(w,900)+'px">'+D.map(function(x,i){var bh=x.pessoas/m*(h-20),xx=i*w/n+(w/n-bw)/2;return '<g><rect class="bar'+(x.dia===td?" t":"")+'" x="'+xx+'" y="'+(h-bh)+'" width="'+bw+'" height="'+bh+'" rx="3"><title>'+dm(x.dia)+': '+x.pessoas+' pessoas</title></rect>'+(x.pessoas&&n<=31?'<text x="'+(xx+bw/2)+'" y="'+(h-bh-4)+'" text-anchor="middle">'+x.pessoas+'</text>':'')+(n<=31||i%Math.ceil(n/20)===0?'<text x="'+(xx+bw/2)+'" y="'+(h+16)+'" text-anchor="middle">'+dm(x.dia)+'</text>':'')+'</g>'}).join("")+'</svg></div>'}
+function loadStats(){if(S.test)return;var de,ate=today();if(S.stR===0){if(!S.stDe||!S.stAte)return;de=S.stDe;ate=S.stAte}else{var d=new Date();d.setDate(d.getDate()-(S.stR-1));de=iso(d)}
+  S.stats=null;render();api("stats",{de:de,ate:ate}).then(function(r){S.stats=r.ok?r:{erro:r.erro||"Tente de novo."};if(S.tab==="acessos")render()}).catch(function(){S.stats={erro:"Sem internet."};render()})}
+AFTER.acessos=function(){if($("sgo"))$("sgo").onclick=function(){S.stDe=val("sd");S.stAte=val("sa");loadStats()}};
+document.addEventListener("click",function(e){var b=e.target.closest("[data-sr]");if(!b)return;S.stR=+b.dataset.sr;if(S.stR)loadStats();else render()});
+
+/* ---------- Site ---------- */
+function vSite(){
+  var st=E().site;
+  return '<div class="head"><div><h1>Site</h1><p>O que você mudar aqui aparece no site em segundos.</p></div><a class="btn ghost" href="./" target="_blank" rel="noopener">Ver site</a></div>'+
+  '<div class="card frm" style="display:grid;gap:14px"><h2>Contato</h2><div class="g2"><div class="fld"><label for="s-w">WhatsApp que recebe os pedidos</label><input id="s-w" data-s="whatsapp" type="tel" inputmode="tel" value="'+esc(phone(st.whatsapp))+'"></div><div class="fld"><label for="s-i">Instagram (sem @)</label><input id="s-i" data-s="instagram" value="'+esc(st.instagram)+'"></div></div><div class="fld"><label for="s-e">Endereço da escola</label><input id="s-e" data-s="endereco" value="'+esc(st.endereco)+'" placeholder="Rua, número, bairro, cidade"><small>Com endereço, o site mostra o botão do mapa.</small></div><div class="fld"><label for="s-h">Horário de atendimento</label><input id="s-h" data-s="horario" value="'+esc(st.horario)+'" placeholder="Ex.: Seg a sex, 13h às 19h"></div></div>'+
+  '<div class="card frm" style="display:grid;gap:14px"><h2>Sobre a Irene</h2><div class="fld"><label for="s-s">Texto da seção “Por trás de cada forma, a Irene”</label><textarea id="s-s" data-s="sobre" style="min-height:150px">'+esc(st.sobre)+'</textarea></div></div>'+
+  '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><div><h2>Fotos</h2><p class="note" style="margin:0">Aparecem na seção “Momentos no palco e nas aulas”. Envie quantas quiser, de uma vez.</p></div><label class="btn rose sm" style="cursor:pointer">＋ Enviar fotos<input type="file" accept="image/*" multiple id="s-up" hidden></label></div><div class="ph-grid" style="margin-top:14px">'+st.fotos.map(function(f,i){return '<div class="ph-it"><img src="'+esc(f.src)+'" alt=""><div class="b"><input data-fl="'+i+'" value="'+esc(f.leg||"")+'" placeholder="Legenda"><div class="ac"><button class="ibtn" type="button" data-fmv="'+i+'" data-d="-1">'+ic("i-up")+'</button><button class="ibtn" type="button" data-fmv="'+i+'" data-d="1">'+ic("i-down")+'</button><button class="ibtn" type="button" data-frm="'+i+'">'+ic("i-del")+'</button></div></div></div>'}).join("")+'</div></div>'+
+  '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px"><div><h2>Vídeos (espetáculos, aulas, ensaios e bastidores)</h2><p class="note" style="margin:0">Cole o link do YouTube, do Instagram (reel) ou do Google Drive. Também aceita vídeo .mp4 na pasta <b>videos/</b> do site (ex.: <b>videos/espetaculo2025.mp4</b>).</p></div><button class="btn sm ghost" type="button" id="v-add">＋ Vídeo</button></div><div style="display:grid;gap:10px">'+(st.videos||[]).map(function(v,i){return '<div class="faq-it"><input class="inp" data-vt="'+i+'" value="'+esc(v.titulo||"")+'" placeholder="Título (ex.: O Quebra-Nozes 2025)"><input class="inp" data-vs="'+i+'" value="'+esc(v.src||"")+'" placeholder="Link do vídeo"><input class="inp" data-va="'+i+'" value="'+esc(v.ano||"")+'" placeholder="Legenda curta (ex.: Espetáculo de fim de ano)"><select class="inp" data-vc="'+i+'">'+[["espetaculo","Espetáculo"],["aula","Aula"],["ensaio","Ensaio"],["bastidores","Bastidores"]].map(function(o){return '<option value="'+o[0]+'"'+((v.cat||"espetaculo")===o[0]?" selected":"")+'>'+o[1]+'</option>'}).join("")+'</select><div class="ac"><button class="ibtn" type="button" data-vmv="'+i+'" data-d="-1">'+ic("i-up")+'</button><button class="ibtn" type="button" data-vmv="'+i+'" data-d="1">'+ic("i-down")+'</button><button class="ibtn" type="button" data-vrm="'+i+'">'+ic("i-del")+'</button></div></div>'}).join("")+((st.videos||[]).length?'':'<p class="empty" style="padding:6px">Nenhum vídeo ainda. No site aparece “As cortinas vão se abrir”.</p>')+'</div></div>'+
+  '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px"><div><h2>Dúvidas</h2><p class="note" style="margin:0">Perguntas e respostas da seção “Perguntas das famílias”.</p></div><button class="btn sm ghost" type="button" id="q-add">＋ Pergunta</button></div><div style="display:grid;gap:10px">'+st.faq.map(function(f,i){return '<div class="faq-it"><input class="inp" data-fq="'+i+'" value="'+esc(f.q)+'" placeholder="Pergunta"><textarea class="inp" data-fa="'+i+'" rows="3" placeholder="Resposta">'+esc(f.a)+'</textarea><div class="ac"><button class="ibtn" type="button" data-qmv="'+i+'" data-d="-1">'+ic("i-up")+'</button><button class="ibtn" type="button" data-qmv="'+i+'" data-d="1">'+ic("i-down")+'</button><button class="ibtn" type="button" data-qrm="'+i+'">'+ic("i-del")+'</button></div></div>'}).join("")+'</div></div>';
+}
+AFTER.site=function(){
+  var st=E().site;
+  document.querySelectorAll("[data-s]").forEach(function(i){i.oninput=function(){st[i.dataset.s]=i.dataset.s==="whatsapp"?i.value.replace(/\D/g,""):i.dataset.s==="instagram"?i.value.replace(/^@/,"").trim():i.value;touch()}});
+  document.querySelectorAll("[data-fl]").forEach(function(i){i.oninput=function(){st.fotos[+i.dataset.fl].leg=i.value;touch()}});
+  document.querySelectorAll("[data-fq]").forEach(function(i){i.oninput=function(){st.faq[+i.dataset.fq].q=i.value;touch()}});
+  document.querySelectorAll("[data-fa]").forEach(function(i){i.oninput=function(){st.faq[+i.dataset.fa].a=i.value;touch()}});
+  st.videos=st.videos||[];
+  document.querySelectorAll("[data-vt]").forEach(function(i){i.oninput=function(){st.videos[+i.dataset.vt].titulo=i.value;touch()}});
+  document.querySelectorAll("[data-vs]").forEach(function(i){i.oninput=function(){st.videos[+i.dataset.vs].src=i.value.trim();touch()}});
+  document.querySelectorAll("[data-va]").forEach(function(i){i.oninput=function(){st.videos[+i.dataset.va].ano=i.value;touch()}});
+  document.querySelectorAll("[data-vc]").forEach(function(i){i.onchange=function(){st.videos[+i.dataset.vc].cat=i.value;touch()}});
+  $("v-add").onclick=function(){st.videos.push({titulo:"",src:"",ano:""});touch();render();var l=document.querySelectorAll("[data-vt]");l[l.length-1].focus()};
+  $("q-add").onclick=function(){st.faq.push({q:"",a:""});touch();render();var l=document.querySelectorAll("[data-fq]");l[l.length-1].focus()};
+  $("s-up").onchange=function(){var fs=[].slice.call(this.files);if(!fs.length)return;toast("Enviando "+fs.length+" foto"+(fs.length>1?"s":"")+"…");
+    fs.reduce(function(p,f){return p.then(function(){return upPhoto(f,1400).then(function(src){st.fotos.push({src:src,leg:""});touch()}).catch(function(m){toast(m)})})},Promise.resolve()).then(function(){render();toast("Fotos publicadas ✦")})};
+};
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-fmv],[data-frm],[data-qmv],[data-qrm],[data-vmv],[data-vrm]");if(!b)return;var st=E().site;st.videos=st.videos||[];
+  function mv(A,i,d){var j=i+d;if(j<0||j>=A.length)return;var t=A[i];A[i]=A[j];A[j]=t}
+  if(b.dataset.fmv)mv(st.fotos,+b.dataset.fmv,+b.dataset.d);
+  else if(b.dataset.frm){var f=st.fotos.splice(+b.dataset.frm,1)[0];if(!S.test&&/\/api\/foto\?id=/.test(f.src))api("apagaFoto",{id:f.src.split("id=")[1]})}
+  else if(b.dataset.qmv)mv(st.faq,+b.dataset.qmv,+b.dataset.d);
+  else if(b.dataset.vmv)mv(st.videos,+b.dataset.vmv,+b.dataset.d);
+  else if(b.dataset.vrm)st.videos.splice(+b.dataset.vrm,1);
+  else st.faq.splice(+b.dataset.qrm,1);
+  touch();render();
+});
+
+/* ---------- app no celular ---------- */
+var deferred=null;addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferred=e;$("inst-now").hidden=false;if(S.tab==="inicio")render()});
+function standalone(){return matchMedia("(display-mode: standalone)").matches||navigator.standalone}
+function instCard(){try{if(standalone()||localStorage.getItem("formasInstX"))return ""}catch(x){}return '<div class="inst"><i class="ic"></i><div class="tx"><b>Tenha o app da Formas</b><span>Um ícone na tela do celular que abre direto aqui: chamada, mensalidades e pedidos na palma da mão.</span></div><button class="btn rose sm" type="button" data-howto>Instalar o app</button><button class="x" type="button" id="inst-x" aria-label="Fechar">×</button></div>'}
+document.addEventListener("click",function(e){
+  if(e.target.closest("[data-howto]")){if(deferred){deferred.prompt();return}var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);setOS(ios?"ios":"and");$("howto").showModal()}
+  if(e.target.id==="inst-x"){try{localStorage.setItem("formasInstX","1")}catch(x){}render()}
+  var o=e.target.closest("[data-os]");if(o)setOS(o.dataset.os);
+});
+function setOS(os){document.querySelectorAll("[data-os]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.os===os)});$("st-and").hidden=os!=="and";$("st-ios").hidden=os!=="ios"}
+$("inst-now").onclick=function(){if(deferred){deferred.prompt();$("howto").close()}};
+if("serviceWorker" in navigator&&API)navigator.serviceWorker.register("/adm-sw.js",{scope:"/"}).catch(function(){});
+
+/* ---------- entrar / sair / carregar ---------- */
+$("lshow").onclick=function(){var p=$("lp");p.type=p.type==="password"?"text":"password";this.textContent=p.type==="password"?"Mostrar":"Esconder"};
+$("lform").onsubmit=function(ev){ev.preventDefault();var u=val("lu"),p=$("lp").value,e=$("lerr");e.hidden=true;$("lgo").disabled=true;$("lgo").textContent="Entrando…";
+  function fail(m){e.textContent=m;e.hidden=false;$("lgo").disabled=false;$("lgo").textContent="Entrar"}
+  function testLogin(){if(u.toLowerCase()===TEST_USER&&p===TEST_PASS){S.test=true;S.tok="teste";try{if($("lkeep").checked)localStorage.setItem(LS_TOK,"teste")}catch(x){}start()}else fail("Login ou senha incorretos.")}
+  if(!API){testLogin();return}
+  api("login",{user:u,pass:p,lembrar:$("lkeep").checked}).then(function(r){
+    if(r.ok){S.tok=r.tok;S.test=false;try{localStorage.setItem(LS_TOK,r.tok)}catch(x){}if(!$("lkeep").checked)sessionStorage.setItem("formasTmp","1");start()}
+    else if(r.semBanco){testLogin()}
+    else fail(r.erro||"Não deu para entrar.");
+  }).catch(function(){fail("Sem internet. Tente de novo.")});
+};
+function logout(expired){if(!S.test)api("sair");try{localStorage.removeItem(LS_TOK)}catch(x){}location.reload()}
+$("out").onclick=function(){logout()};
+function seedDemo(){
+  var e=defEscola();e.demo=true;var T=e.turmas;
+  var cfg=[["baby",[2,4],"14:00","14:45",10,"140"],["pre",[2,4],"15:00","16:00",12,"150"],["inf1",[1,3],"15:00","16:00",12,"160"],["inf2",[1,3],"16:15","17:30",12,"170"],["juv",[5],"17:00","18:30",10,"180"]];
+  cfg.forEach(function(c){var t=T.find(function(x){return x.id===c[0]});Object.assign(t,{dias:c[1],hIni:c[2],hFim:c[3],cap:String(c[4]),valor:c[5]})});
+  var N=[["Alice","baby",3],["Helena","baby",4],["Laura","pre",5],["Manuela","pre",6],["Sofia","pre",5],["Valentina","inf1",7],["Cecília","inf1",8],["Antônio","inf1",7],["Beatriz","inf2",10],["Lívia","inf2",9],["Isadora","inf2",11],["Clara","juv",13],["Júlia","juv",14]];
+  var R=["Ana","Paula","Carla","Renata","Fernanda","Juliana","Mariana","Patrícia","Camila","Luciana","Daniela","Priscila","Tatiana"];
+  var k=mk(new Date()),k1=addM(k,-1),k2=addM(k,-2),now=new Date(),y=now.getFullYear();
+  N.forEach(function(n,i){var a={id:"d"+i,nome:n[0]+" "+["Souza","Lima","Costa","Alves","Rocha","Melo"][i%6],nasc:(y-n[2])+"-"+pad(1+i%12)+"-"+pad(3+i),turmaId:n[1],resp:R[i]+" "+["Souza","Lima","Costa","Alves","Rocha","Melo"][i%6],whats:"3199"+String(1000000+i*7919).slice(0,7),valor:"",venc:String([5,10,10,15][i%4]),inicio:k2+"-01",obs:"",ativo:true,criado:k2+"-01"};e.alunos.push(a);
+    e.pag[a.id]={};[k2,k1].forEach(function(m){if(i!==4||m!==k1)e.pag[a.id][m]={pago:true,valor:+T.find(function(t){return t.id===n[1]}).valor,data:m+"-0"+(3+i%5),forma:FORMAS[i%3]}});
+    if(i%3===0)e.pag[a.id][k]={pago:true,valor:+T.find(function(t){return t.id===n[1]}).valor,data:k+"-0"+(2+i%4),forma:"Pix"};
+  });
+  T.forEach(function(t){var C=e.cham[t.id]={};for(var d=new Date(now.getFullYear(),now.getMonth(),1);d<now;d.setDate(d.getDate()+1)){if(t.dias.indexOf(d.getDay())<0)continue;var day={};e.alunos.filter(function(a){return a.turmaId===t.id}).forEach(function(a,j){day[a.id]=(j+d.getDate())%9===0?"f":(j+d.getDate())%13===0?"j":"p"});C[iso(d)]=day}});
+  T.find(function(t){return t.id==="pre"}).cap="3";
+  var wd=new Date().getDay(),bb=T.find(function(t){return t.id==="baby"});if(!T.some(function(t){return t.dias.indexOf(wd)>=0}))bb.dias=bb.dias.concat([wd]);
+  var q=function(h){return new Date(Date.now()-h*3600e3).toISOString()};
+  S.espera=[{id:"e1",quando:q(70),turmaId:"pre",turma:"Pré-Ballet",crianca:"Lara Pinto",idade:"5",nome:"Bruna Pinto",whatsapp:"31988887777",status:"espera",origem:"site"},{id:"e2",quando:q(30),turmaId:"pre",turma:"Pré-Ballet",crianca:"Maya Ribeiro",idade:"6",nome:"Lúcia Ribeiro",whatsapp:"31977776666",status:"espera",origem:"site"}];
+  S.pedidos=[{id:"p1",quando:q(5),produtoId:"collant",produto:"Collant",tamanho:"6",cor:"",qtd:1,preco:"",crianca:"Laura Costa",turma:"Pré-Ballet",nome:"Carla Costa",whatsapp:"31991112222",obs:"Para a próxima aula",status:"novo"},{id:"p2",quando:q(28),produtoId:"sapatilha",produto:"Sapatilha meia-ponta",tamanho:"nº 27",qtd:1,preco:"",crianca:"Alice Souza",turma:"Baby Class",nome:"Ana Souza",whatsapp:"31993334444",status:"separado"}];
+  S.leads=[{id:"l1",quando:q(2),tipo:"disponibilidade",crianca:"Pietra",idade:"4",turmaId:"baby",turma:"Baby Class",nome:"Gabriela",whatsapp:"31995556666",enviado:"sim"},{id:"l2",quando:q(20),tipo:"disponibilidade",crianca:"Olívia",idade:"8",turmaId:"inf1",turma:"Ballet Infantil I",nome:"Simone",whatsapp:"31994443333",enviado:""}];
+  return e;
+}
+function start(){
+  $("login").hidden=true;$("app").hidden=false;document.documentElement.classList.remove("boot");
+  var h=(location.hash||"").slice(1);if(TABS.some(function(t){return t[0]===h}))S.tab=h;
+  if(S.test){
+    setSt("test","Modo de teste");
+    var raw=null,ib=inboxLocal();try{raw=JSON.parse(localStorage.getItem(LS_E)||"null")}catch(x){}
+    if(raw){S.escola=norm(raw);S.leads=ib.lead||[];S.espera=ib.espera||[];S.pedidos=ib.pedido||[]}
+    else{S.escola=seedDemo();saveInboxLocal();saveLocal()}
+    render();if(S.tab==="acessos")loadStats();return;
+  }
+  setSt("saving","Carregando…");
+  api("load").then(function(r){
+    if(r.sair){logout(true);return}
+    if(r.semBanco){S.test=true;start();return}
+    if(!r.ok){setSt("err","Não carregou");$("main").innerHTML='<div class="card"><p class="empty"><b>Não deu para carregar</b>'+esc(r.erro||"Confira a internet e tente de novo.")+'</p><button class="btn" onclick="location.reload()">Tentar de novo</button></div>';return}
+    S.rev=r.rev;S.leads=r.leads||[];S.espera=r.espera||[];S.pedidos=r.pedidos||[];
+    if(r.escola){S.escola=norm(r.escola);setSt("","Salvo")}else{S.escola=defEscola();save()}
+    render();if(S.tab==="acessos")loadStats();
+  }).catch(function(){setSt("err","Sem internet");$("main").innerHTML='<div class="card"><p class="empty"><b>Sem internet</b>Conecte e toque em tentar de novo.</p><button class="btn" onclick="location.reload()">Tentar de novo</button></div>'});
+}
+var _go=go;go=function(t){_go(t);if(t==="acessos"&&!S.stats)loadStats()};
+// atualiza a cada 2 minutos (novos pedidos, fila, contatos)
+setInterval(function(){if(S.test||!S.escola||document.hidden||!$("ov").hidden)return;api("load").then(function(r){if(!r.ok)return;S.leads=r.leads||[];S.espera=r.espera||[];S.pedidos=r.pedidos||[];if(r.rev!==S.rev&&!saving&&!$("st").classList.contains("saving")){S.escola=norm(r.escola);S.rev=r.rev}render()})},120000);
+(function boot(){var t="";try{t=localStorage.getItem(LS_TOK)||""}catch(x){}
+  if(t==="teste"){S.test=true;S.tok="teste";start();return}
+  if(t&&API){S.tok=t;start();return}
+  document.documentElement.classList.remove("boot");
+})();
+</script>
+</body>
+</html>
