@@ -154,7 +154,7 @@ for (let i = 0; i < 7; i++) {
 /* ============================================================
    A BAILARINA
    ============================================================ */
-const DS = 1.85, K = DS / 1.38; // bailarina maior; K reescala alturas pensadas para o tamanho antigo
+const DS = 2.25, K = DS / 1.38; // bailarina maior; K reescala alturas pensadas para o tamanho antigo
 const J = {};
 const dancerRoot = new THREE.Group(); dancerRoot.scale.setScalar(DS); dancerRoot.position.set(0, 0, 0); scene.add(dancerRoot);
 const dancer = new THREE.Group(); dancerRoot.add(dancer);
@@ -434,8 +434,8 @@ let W = 1, H = 1, PORT = false, entered = true, pop = 0, whirl = -1;
 const camS = { az: -.12, azT: -.12, dist: 15, distT: 11, ty: 6, tyT: 4.6, lk: .6, lkT: .6, px: 0, py: 0 };
 let focus = true;
 function setCamTargets() {
-  if (focus) { camS.distT = PORT ? 7.4 : (W / H > 1.7 ? 8.9 : 9.6); camS.tyT = PORT ? 2.9 : 3.3; camS.lkT = PORT ? 1.55 : 1.65; }
-  else { camS.distT = PORT ? 10.8 : (W / H > 1.7 ? 11.2 : 12.2); camS.tyT = PORT ? 4.4 : 4.6; camS.lkT = PORT ? 1.15 : 1.15; }
+  if (focus) { camS.distT = PORT ? 7.6 : (W / H > 1.7 ? 9.2 : 9.9); camS.tyT = PORT ? 3.1 : 3.5; camS.lkT = PORT ? 1.85 : 1.95; }
+  else { camS.distT = PORT ? 11.4 : (W / H > 1.7 ? 11.8 : 12.8); camS.tyT = PORT ? 4.6 : 4.8; camS.lkT = PORT ? 1.45 : 1.45; }
 }
 let inset = 0, offX = 0, offY = 0;
 function applyOffset() { cam.clearViewOffset(); if (inset || offX || offY) cam.setViewOffset(W, H, offX, offY + inset * .55, W, H); cam.updateProjectionMatrix(); }
@@ -443,7 +443,7 @@ function resize() {
   const r = cv.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); PORT = innerWidth < 860;
   R.setSize(W, H, false); cam.aspect = W / H; cam.fov = PORT ? 42 : 36;
   if (composer) { composer.setPixelRatio(R.getPixelRatio()); composer.setSize(W, H); }
-  offX = PORT ? 0 : -W * .03; offY = PORT ? 0 : -H * .02;
+  offX = PORT ? (W < 600 ? W * .14 : 0) : -W * .03; offY = PORT ? 0 : -H * .02;
   setCamTargets(); applyOffset();
   [orbs, burst, seqPts, seeds].forEach(p => p.material.uniforms.px.value = R.getPixelRatio());
 }
