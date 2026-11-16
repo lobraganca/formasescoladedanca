@@ -453,7 +453,7 @@ let W = 1, H = 1, PORT = false, entered = true, pop = 0, whirl = -1;
 const camS = { az: -.12, azT: -.12, dist: 15, distT: 11, ty: 6, tyT: 4.6, lk: .6, lkT: .6, px: 0, py: 0 };
 let focus = true;
 function setCamTargets() {
-  if (focus) { camS.distT = PORT ? 8.6 : (W / H > 1.7 ? 9.2 : 9.9); camS.tyT = PORT ? 3.1 : 3.5; camS.lkT = PORT ? 1.85 : 1.95; }
+  if (focus) { camS.distT = PORT ? 7.5 : (W / H > 1.7 ? 9.2 : 9.9); camS.tyT = PORT ? 3.1 : 3.5; camS.lkT = PORT ? 1.85 : 1.95; }
   else { camS.distT = PORT ? 11.4 : (W / H > 1.7 ? 11.8 : 12.8); camS.tyT = PORT ? 4.6 : 4.8; camS.lkT = PORT ? 1.45 : 1.45; }
 }
 let inset = 0, offX = 0, offY = 0;
@@ -462,7 +462,7 @@ function resize() {
   const r = cv.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); PORT = innerWidth < 860;
   R.setSize(W, H, false); cam.aspect = W / H; cam.fov = PORT ? 42 : 36;
   if (composer) { composer.setPixelRatio(R.getPixelRatio()); composer.setSize(W, H); }
-  offX = PORT ? (W < 600 ? W * .17 : 0) : -W * .03; offY = PORT ? -H * .19 : -H * .02;
+  offX = PORT ? (W < 600 ? W * .17 : 0) : -W * .03; offY = PORT ? -H * .035 : -H * .02;
   setCamTargets(); applyOffset();
   [orbs, burst, seqPts, seeds].forEach(p => p.material.uniforms.px.value = R.getPixelRatio());
 }
