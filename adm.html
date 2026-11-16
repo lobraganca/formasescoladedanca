@@ -875,7 +875,7 @@ function vAlunos(){
     '<div class="alist" id="a-list">'+(L.length?L.map(function(a){var t=turma(a.turmaId),m=mensal(a,k),ag=ageOf(a.nasc),fr=freqMes(a,k),pf=fr.t?Math.round(fr.p*100/fr.t):null;
       var st=a.ativo===false?'<span class="tg">Inativo'+(a.saida?' desde '+dmy(a.saida):'')+'</span>':m?'<span class="tg '+(m.st==="pago"?"ok":m.st==="atrasado"?"err":"warn")+'">'+(m.st==="pago"?"Mensalidade paga":m.st==="atrasado"?"Mensalidade em atraso":"Mensalidade a pagar")+'</span>':'';
       return '<div class="acard'+(a.ativo===false?" off":"")+'" data-al="'+esc(a.id)+'" role="button" tabindex="0" style="--c:'+tcol(t)+'"><span class="av">'+esc(ini(a.nome))+'</span>'+
-        '<div class="ai"><b>'+esc(a.nome)+'</b><small>'+(ag!=null?ag+' anos · ':'')+esc(t?t.nome:"Sem turma")+'</small>'+(a.resp||a.whats?'<small class="rs">'+(a.resp?'Resp.: '+esc(a.resp):'')+(a.resp&&a.whats?' · ':'')+(a.whats?esc(phone(a.whats)):'')+'</small>':'')+'<div class="tgs">'+st+(pf!=null?'<span class="tg '+(pf<75?"err":"")+'">Presença '+pf+'%</span>':'')+'</div></div>'+
+        '<div class="ai"><b>'+esc(a.nome)+'</b><small>'+(ag!=null?ag+' anos · ':'')+esc(t?t.nome:"Sem turma")+'</small>'+(a.resp?'<small class="rs">Resp.: '+esc(a.resp)+'</small>':'')+(a.whats?'<small class="rs">'+esc(phone(a.whats))+'</small>':'')+'<div class="tgs">'+st+(pf!=null?'<span class="tg '+(pf<75?"err":"")+'">Presença '+pf+'%</span>':'')+'</div></div>'+
         '<div class="aa">'+(a.whats?'<a class="ib wa" href="'+waLink(a.whats,"Olá, "+(first(a.resp)||"tudo bem")+"! Aqui é a Irene, da Formas.")+'" target="_blank" rel="noopener" aria-label="WhatsApp de '+esc(first(a.resp)||first(a.nome))+'">'+ic("wa")+'</a>':'')+'<span class="chv">'+CHV+'</span></div></div>'}).join(""):
       '<div class="empty-c"><span>'+(S.q?"🔎":"🩰")+'</span><b>'+(E().alunos.length?"Ninguém encontrado":"Nenhum aluno ainda")+'</b><p>'+(!E().alunos.length?"Toque em ＋ Novo aluno para começar.":S.q?"Ninguém com “"+esc(S.q)+"”"+(tn?" na turma "+esc(tn):"")+".":tn?"A turma "+esc(tn)+" não tem alunos "+(S.inat?"inativos":"ativos")+".":(S.inat?"Nenhum aluno inativo.":"Nenhum aluno ativo."))+'</p>'+(S.q||S.fT?'<button class="btn ghost sm" type="button" id="a-clr">Limpar busca e filtro</button>':'')+'</div>')+'</div>';
 }
@@ -1400,17 +1400,18 @@ $("lform").onsubmit=function(ev){ev.preventDefault();var u=val("lu"),p=$("lp").v
 function logout(expired){if(!S.test)api("sair");try{localStorage.removeItem(LS_TOK)}catch(x){}location.reload()}
 $("out").onclick=function(){logout()};
 function seedDemo(){
-  var e=defEscola();e.demo=true;var T=e.turmas;
-  var cfg=[["baby",[2,4],"14:00","14:45",10,"140"],["pre",[2,4],"15:00","16:00",12,"150"],["inf1",[1,3],"15:00","16:00",12,"160"],["inf2",[1,3],"16:15","17:30",12,"170"],["juv",[5],"17:00","18:30",10,"180"]];
+  var e=defEscola();e.demo=true;e.demoV=2;var T=e.turmas;
+  var cfg=[["baby",[2,4],"14:00","14:45",10,"140"],["pre",[2,4],"15:00","16:00",12,"150"],["inf1",[1,3],"15:00","16:00",12,"160"],["inf2",[1,3],"16:15","17:30",12,"170"],["juv",[5],"17:00","18:30",10,"180"],["adulto",[2,4],"19:00","20:15",12,"190"]];
   cfg.forEach(function(c){var t=T.find(function(x){return x.id===c[0]});Object.assign(t,{dias:c[1],hIni:c[2],hFim:c[3],cap:String(c[4]),valor:c[5]})});
-  var N=[["Alice","baby",3],["Helena","baby",4],["Laura","pre",5],["Manuela","pre",6],["Sofia","pre",5],["Valentina","inf1",7],["Cecília","inf1",8],["Antônio","inf1",7],["Beatriz","inf2",10],["Lívia","inf2",9],["Isadora","inf2",11],["Clara","juv",13],["Júlia","juv",14]];
-  var R=["Ana","Paula","Carla","Renata","Fernanda","Juliana","Mariana","Patrícia","Camila","Luciana","Daniela","Priscila","Tatiana"];
+  var N=[["Alice","baby",3],["Helena","baby",4],["Maitê","baby",3],["Laura","pre",5],["Manuela","pre",6],["Sofia","pre",5],["Valentina","inf1",7],["Cecília","inf1",8],["Antônio","inf1",7],["Beatriz","inf2",10],["Lívia","inf2",9],["Isadora","inf2",11],["Clara","juv",13],["Júlia","juv",14],["Rafaela","juv",16],["Marina","adulto",29],["Gabriela","adulto",35],["Teresa","adulto",48]];
+  var R=["Ana","Paula","Carla","Renata","Fernanda","Juliana","Mariana","Patrícia","Camila","Luciana","Daniela","Priscila","Tatiana","Simone","Adriana","Marina","Gabriela","Teresa"];
   var k=mk(new Date()),k1=addM(k,-1),k2=addM(k,-2),now=new Date(),y=now.getFullYear();
   N.forEach(function(n,i){var a={id:"d"+i,nome:n[0]+" "+["Souza","Lima","Costa","Alves","Rocha","Melo"][i%6],nasc:(y-n[2])+"-"+pad(1+i%12)+"-"+pad(3+i),turmaId:n[1],resp:R[i]+" "+["Souza","Lima","Costa","Alves","Rocha","Melo"][i%6],whats:"3199"+String(1000000+i*7919).slice(0,7),valor:"",venc:String([5,10,10,15][i%4]),inicio:k2+"-01",obs:"",ativo:true,criado:k2+"-01"};e.alunos.push(a);
     e.pag[a.id]={};[k2,k1].forEach(function(m){if(i!==4||m!==k1)e.pag[a.id][m]={pago:true,valor:+T.find(function(t){return t.id===n[1]}).valor,data:m+"-0"+(3+i%5),forma:FORMAS[i%3]}});
     if(i%3===0)e.pag[a.id][k]={pago:true,valor:+T.find(function(t){return t.id===n[1]}).valor,data:k+"-0"+(2+i%4),forma:"Pix"};
   });
   T.forEach(function(t){var C=e.cham[t.id]={};for(var d=new Date(now.getFullYear(),now.getMonth(),1);d<now;d.setDate(d.getDate()+1)){if(t.dias.indexOf(d.getDay())<0)continue;var day={};e.alunos.filter(function(a){return a.turmaId===t.id}).forEach(function(a,j){day[a.id]=(j+d.getDate())%9===0?"f":(j+d.getDate())%13===0?"j":"p"});C[iso(d)]=day}});
+  e.alunos.forEach(function(a){if(a.turmaId==="adulto")a.resp=""});
   T.find(function(t){return t.id==="pre"}).cap="3";
   var wd=new Date().getDay(),bb=T.find(function(t){return t.id==="baby"});if(!T.some(function(t){return t.dias.indexOf(wd)>=0}))bb.dias=bb.dias.concat([wd]);
   var q=function(h){return new Date(Date.now()-h*3600e3).toISOString()};
@@ -1425,6 +1426,7 @@ function start(){
   if(S.test){
     setSt("test","Modo de teste");
     var raw=null,ib=inboxLocal();try{raw=JSON.parse(localStorage.getItem(LS_E)||"null")}catch(x){}
+    if(raw&&raw.demo&&raw.demoV!==2)raw=null;
     if(raw){S.escola=norm(raw);S.leads=ib.lead||[];S.espera=ib.espera||[];S.pedidos=ib.pedido||[]}
     else{S.escola=seedDemo();saveInboxLocal();saveLocal()}
     render();if(S.tab==="acessos")loadStats();return;
