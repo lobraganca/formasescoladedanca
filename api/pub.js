@@ -1,4 +1,5 @@
 import { dbReady, pipeline } from "./_db.js";
+import { notifyQuick } from "./_push.js";
 
 // Recebe o que as famílias enviam pelo site:
 //  - lead:   pedido de disponibilidade de turma (enviou ou começou a preencher)
@@ -58,6 +59,15 @@ export default async function handler(req, res) {
       if (old.enviado === "sim") item.enviado = "sim";
     }
     await pipeline([["HSET", key, id, JSON.stringify(item)]]);
+    if (!existe) {
+      const quem = item.crianca || item.nome || "Alguém";
+      if (acao === "lead") await notifyQuick("Nova família pelo site 🩰", `${quem}${item.idade ? `, ${item.idade} anos` : ""}${item.turma ? ` · ${item.turma}` : ""}${item.nome && item.crianca ? ` · resp. ${item.nome}` : ""}`, "/adm#contatos");
+      else if (acao === "espera") await notifyQuick("Entrou na fila de espera ⏳", `${quem}${item.turma ? ` · ${item.turma}` : ""}`, "/adm#fila");
+      else if (/-1$/.test(id) || !/-\d+$/.test(id)) {
+        const n = (/Pedido com (\d+) itens/.exec(item.obs || "") || [])[1];
+        await notifyQuick("Novo pedido do Camarim 👜", `${quem}: ${item.qtd}× ${item.produto}${item.tamanho ? ` ${item.tamanho}` : ""}${n ? ` e mais ${n - 1} ${n - 1 === 1 ? "item" : "itens"}` : ""}`, "/adm#camarim");
+      }
+    }
     if (acao === "espera") {
       const [all] = await pipeline([["HVALS", key]]);
       const pos = (all || []).map(safe).filter((x) => x && x.turmaId === item.turmaId && x.status === "espera")

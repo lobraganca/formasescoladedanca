@@ -1,5 +1,5 @@
 // App da Área da Irene: permite instalar no celular e abrir mesmo sem internet (mostra a última cópia).
-const CACHE = "formas-adm-v1";
+const CACHE = "formas-adm-v2";
 const SHELL = ["/adm", "/adm-icon-192.png", "/adm.webmanifest"];
 
 self.addEventListener("install", (e) => {
@@ -23,4 +23,23 @@ self.addEventListener("fetch", (e) => {
     return;
   }
   if (SHELL.includes(url.pathname)) e.respondWith(caches.match(url.pathname).then((m) => m || fetch(req)));
+});
+
+// Avisos no celular: novos contatos, fila de espera e pedidos do Camarim
+self.addEventListener("push", (e) => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch { d = { body: e.data ? e.data.text() : "" }; }
+  e.waitUntil(self.registration.showNotification(d.title || "Formas", {
+    body: d.body || "", icon: "/adm-icon-192.png", badge: "/adm-icon-192.png", tag: "formas-" + Date.now(),
+    data: { url: d.url || "/adm" }, vibrate: [120, 60, 120],
+  }));
+});
+self.addEventListener("notificationclick", (e) => {
+  e.notification.close();
+  const url = (e.notification.data && e.notification.data.url) || "/adm";
+  e.waitUntil((async () => {
+    const all = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const c of all) if (new URL(c.url).pathname.startsWith("/adm")) { await c.focus(); try { await c.navigate(url); } catch {} return; }
+    await self.clients.openWindow(url);
+  })());
 });

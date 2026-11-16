@@ -508,6 +508,12 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
   .bnav button[aria-selected="true"]{color:#3A1B4C!important;background:#fff!important}
   .bnav .bd{background:#F2B544!important;color:#2E1240!important}
 }
+
+.pushc{display:flex;gap:12px;align-items:flex-start;background:linear-gradient(135deg,#FFF7E8,#FCEAF1);border-color:#F0D3A0}
+.pushc.on{background:var(--ok-soft);border-color:#BFE0CB}
+.pu-ic{font-size:26px;width:46px;height:46px;border-radius:14px;background:#fff;display:grid;place-items:center;flex:none}
+.pu-t{display:grid;gap:4px;min-width:0}.pu-t b{font-size:16px}.pu-t small{font-size:13.5px;color:var(--ink-soft);line-height:1.4}
+.pu-ac{display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -775,6 +781,7 @@ function vInicio(){
   if(c.fila)T.push('<div class="todo"><span class="tk">'+ic("i-fila")+'</span><div><b>'+c.fila+' na fila de espera</b><small>Avise quando abrir vaga</small></div><button class="btn sm ghost" type="button" data-t="fila" data-go>Ver</button></div>');
   var s='<div class="head"><div><h1>'+sau+', <em>Irene</em></h1><p>'+DIASL[new Date().getDay()]+", "+new Date().getDate()+" de "+MESES[new Date().getMonth()]+'</p></div></div>';
   s+='<div class="card todo-card"><h2>Para fazer hoje</h2>'+(T.length?'<div class="todos">'+T.join("")+'</div>':'<p class="empty"><b>Tudo em dia ✦</b>Nada pendente agora.</p>')+'</div>';
+  s+=pushCard();
   s+=contaCard();
   s+=anivCard();
   s+='<div class="mini"><button type="button" data-t="alunos" data-go><b>'+ativos+'</b><span>alunos ativos</span></button><button type="button" data-t="mensal" data-go><b>'+brl(r.rec)+'</b><span>recebido em '+MESES[new Date().getMonth()]+'</span></button><button type="button" data-t="mensal" data-go><b>'+brl(r.prev)+'</b><span>previsto no mês</span></button></div>';
@@ -786,6 +793,30 @@ document.addEventListener("click",function(e){var b=e.target.closest("[data-cham
 
 
 
+
+/* ---------- avisos no celular ---------- */
+function pushSup(){return "serviceWorker" in navigator&&"PushManager" in window&&"Notification" in window}
+function pushOn(){try{return localStorage.getItem("formasPush")==="1"&&Notification.permission==="granted"}catch(x){return false}}
+function pushCard(){
+  var ios=/iphone|ipad|ipod/i.test(navigator.userAgent),h='<div class="card pushc'+(pushOn()?' on':'')+'"><span class="pu-ic">🔔</span><div class="pu-t">';
+  if(pushOn())return h+'<b>Avisos ligados neste celular</b><small>Chega um aviso quando uma família pede vaga, entra na fila ou faz um pedido no Camarim.</small><div class="pu-ac"><button class="btn sm ghost" type="button" id="pu-test">Mandar um teste</button><button class="lnk" type="button" id="pu-off">Desligar</button></div></div></div>';
+  if(!API)return h+'<b>Avisos no celular</b><small>Funciona no site publicado (formasescoladedanca.com.br/adm), não neste modo de teste.</small></div></div>';
+  if(!pushSup())return h+'<b>Receber avisos no celular</b><small>'+(ios&&!standalone()?'No iPhone, primeiro instale o app da Formas na tela de início. Depois abra por ele e ligue os avisos aqui.':'Este navegador não aceita avisos. Use o Chrome (Android) ou o app instalado (iPhone).')+'</small>'+(ios&&!standalone()?'<div class="pu-ac"><button class="btn sm rose" type="button" data-howto>Como instalar</button></div>':'')+'</div></div>';
+  if(Notification.permission==="denied")return h+'<b>Avisos bloqueados</b><small>O celular está bloqueando os avisos deste site. Libere em Configurações → Notificações (ou no cadeado ao lado do endereço) e volte aqui.</small></div></div>';
+  return h+'<b>Receber avisos no celular</b><small>Saiba na hora quando uma família pedir vaga, entrar na fila ou fizer um pedido.</small><div class="pu-ac"><button class="btn sm rose" type="button" id="pu-on">🔔 Ligar avisos</button></div></div></div>';
+}
+function b64u(s){s=s.replace(/-/g,"+").replace(/_/g,"/");s+="===".slice((s.length+3)%4);var r=atob(s),o=new Uint8Array(r.length);for(var i=0;i<r.length;i++)o[i]=r.charCodeAt(i);return o}
+document.addEventListener("click",function(e){
+  if(e.target.id==="pu-on"){var b=e.target;b.disabled=true;b.textContent="Ligando…";
+    Notification.requestPermission().then(function(p){if(p!=="granted")throw new Error(p==="denied"?"Os avisos foram bloqueados no celular.":"Você não permitiu os avisos.");
+      return Promise.all([navigator.serviceWorker.register("/adm-sw.js",{scope:"/"}).then(function(){return navigator.serviceWorker.ready}),api("pushKey")])})
+    .then(function(r){if(!r[1].key)throw new Error(r[1].erro||"Não consegui falar com o servidor.");return r[0].pushManager.getSubscription().then(function(old){return old||r[0].pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64u(r[1].key)})})})
+    .then(function(sub){return api("pushSub",{sub:sub.toJSON(),ap:(standalone()?"app":"navegador")+" · "+(/iphone|ipad/i.test(navigator.userAgent)?"iPhone":/android/i.test(navigator.userAgent)?"Android":"computador")})})
+    .then(function(j){if(!j.ok)throw new Error(j.erro||"Não deu para salvar.");try{localStorage.setItem("formasPush","1")}catch(x){}render();toast("Avisos ligados ✦");api("pushTeste")})
+    .catch(function(err){toast(String(err&&err.message||err));render()})}
+  if(e.target.id==="pu-test"){api("pushTeste").then(function(j){toast(j.n?"Aviso de teste enviado ✦":"Nenhum celular recebeu. Desligue e ligue de novo.")})}
+  if(e.target.id==="pu-off"){navigator.serviceWorker.ready.then(function(r){return r.pushManager.getSubscription()}).then(function(sub){if(sub){api("pushOff",{endpoint:sub.endpoint});return sub.unsubscribe()}}).catch(function(){}).then(function(){try{localStorage.removeItem("formasPush")}catch(x){}render();toast("Avisos desligados")})}
+});
 /* ---------- alunos por turma ---------- */
 function contaCard(){
   var at=E().alunos.filter(function(a){return a.ativo!==false}),ina=E().alunos.length-at.length,sem=at.filter(function(a){return !turma(a.turmaId)}).length;

@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { dbReady, dbMissing, pipeline, dayKey, V, credOk, falhasLogin, limparFalhas } from "./_db.js";
+import { vapid, notify } from "./_push.js";
 
 // Área da Irene (/adm). Tudo aqui pede login (ou o código "manter conectado").
 //  login  → confere login e senha e devolve um código de sessão
@@ -84,6 +85,22 @@ async function main(req, res) {
     await pipeline([["HSET", key, id, s]]);
     return res.status(200).json({ ok: true });
   }
+
+  // ---- avisos no celular
+  if (b.acao === "pushKey") { const k = await vapid(); return res.status(200).json({ ok: true, key: k.publicKey }); }
+  if (b.acao === "pushSub") {
+    const sub = b.sub || {};
+    if (!/^https:\/\//.test(String(sub.endpoint || "")) || !sub.keys || !sub.keys.p256dh || !sub.keys.auth) return res.status(400).json({ ok: false });
+    const id = crypto.createHash("sha256").update(String(sub.endpoint)).digest("hex").slice(0, 24);
+    await pipeline([["HSET", "fm:push", id, JSON.stringify({ sub: { endpoint: sub.endpoint, keys: { p256dh: String(sub.keys.p256dh), auth: String(sub.keys.auth) } }, quando: new Date().toISOString(), ap: clean(b.ap, 60) })]]);
+    return res.status(200).json({ ok: true });
+  }
+  if (b.acao === "pushOff") {
+    const id = crypto.createHash("sha256").update(String(b.endpoint || "")).digest("hex").slice(0, 24);
+    await pipeline([["HDEL", "fm:push", id]]);
+    return res.status(200).json({ ok: true });
+  }
+  if (b.acao === "pushTeste") { const n = await notify("Avisos ligados ✦", "É assim que vão chegar os pedidos e contatos do site.", "/adm"); return res.status(200).json({ ok: true, n }); }
 
   if (b.acao === "foto") {
     const m = /^data:(image\/(?:jpeg|webp|png));base64,([A-Za-z0-9+/=]+)$/.exec(String(b.img || ""));
