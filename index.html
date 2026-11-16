@@ -2199,10 +2199,11 @@ function renderVideos(){
   $("vfilters").innerHTML=VCAT.filter(function(c){return c[0]==="todos"||L.some(function(v){return (v.cat||"espetaculo")===c[0]})}).map(function(c){return '<button type="button" data-vf="'+c[0]+'" aria-pressed="'+(VF===c[0])+'"><b><i>'+VICO[c[0]]+'</i></b>'+c[1]+'</button>'}).join("");
   var ep=0;
   $("videos").innerHTML=L.map(function(v,i){var cat=v.cat||"espetaculo";if(VF!=="todos"&&cat!==VF)return "";ep++;var x=demo?{}:vinfo(v),cap=v.capa||x.th||"",lbl={espetaculo:"Espetáculo",aula:"Aula",ensaio:"Ensaio",bastidores:"Bastidores"}[cat]||"Vídeo";var tt=String(v.titulo||"").trim();if(/^(img|vid|mov|trim|whatsapp)[\s_-]*\d/i.test(tt)||/^[0-9a-f]{6,}([\s-][0-9a-f]{4,}){2,}/i.test(tt))tt="";var leg=String(v.ano||"").trim();if(!tt&&leg){tt=leg;leg=""}
-    return '<button class="reel '+cat+'" type="button" '+(demo?'data-vsoon="1"':'data-vplay="'+i+'"')+' aria-label="'+esc(v.titulo||"Vídeo")+'">'+
+    var tg=x.t==="mp4"?"div":"button";
+    return '<'+tg+' class="reel '+cat+'" '+(tg==="button"?'type="button" ':'')+(demo?'data-vsoon="1"':x.t==="mp4"?'':'data-vplay="'+i+'"')+' aria-label="'+esc(tt||v.titulo||"Vídeo")+'">'+
       (x.t==="mp4"?'<video class="rl-vid" src="'+esc(x.src)+'#t=.1" muted autoplay playsinline loop preload="auto"></video>':cap?'<img class="rl-art" src="'+esc(cap)+'" alt="" loading="lazy">':'<span class="rl-art">'+VICO[cat]+'</span>')+
       (demo?'<span class="rl-soon">vídeo em breve</span>':x.t==="mp4"?'':'<span class="rl-play"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>')+
-      '<span class="rl-meta"><span class="rl-ep">'+esc(leg||lbl)+'</span><b>'+esc(tt||"Vídeo")+'</b></span></button>'}).join("");
+      '<span class="rl-meta"><span class="rl-ep">'+esc(leg||lbl)+'</span><b>'+esc(tt||"Vídeo")+'</b></span></'+tg+'>'}).join("");
   vObs();
 }
 var vio=null;
