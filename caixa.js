@@ -23,7 +23,7 @@ const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
 let R;
 try { R = new THREE.WebGLRenderer({ canvas: cv, antialias: true, preserveDrawingBuffer: true, powerPreference: "high-performance" }); }
 catch (e) { host.classList.add("no3d"); window.dispatchEvent(new Event("caixa-fail")); throw e; }
-R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.6 : 1.75));
+R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.6 : 1.25));
 R.outputColorSpace = THREE.SRGBColorSpace;
 R.toneMapping = THREE.ACESFilmicToneMapping;
 R.toneMappingExposure = .9;
@@ -520,7 +520,7 @@ if (!MOB) {
   const rt = new THREE.WebGLRenderTarget(256, 256, { type: THREE.HalfFloatType, samples: 4 });
   composer = new EffectComposer(R, rt);
   composer.addPass(new RenderPass(scene, cam));
-  if (!/nogtao/.test(location.search)) try { gtao = new GTAOPass(scene, cam, 256, 256); gtao.updateGtaoMaterial({ radius: .6, distanceExponent: 1.4, thickness: 1.2, scale: 1.1 }); gtao.blendIntensity = .85; composer.addPass(gtao); } catch (e) { gtao = null; }
+  if (/[?&]gtao/.test(location.search)) try { gtao = new GTAOPass(scene, cam, 256, 256); gtao.updateGtaoMaterial({ radius: .6, distanceExponent: 1.4, thickness: 1.2, scale: 1.1 }); gtao.blendIntensity = .85; composer.addPass(gtao); } catch (e) { gtao = null; }
   if (/bloom/.test(location.search)) composer.addPass(new UnrealBloomPass(new THREE.Vector2(256, 256), .3, .4, 2.4));
   composer.addPass(new OutputPass());
   composer.addPass(new ShaderPass(GradeShader));
@@ -669,7 +669,20 @@ function render(now) {
   if (composer) composer.render(); else R.render(scene, cam);
   window.dispatchEvent(new Event("caixa-frame"));
 }
-function loop(now) { if (visible) render(now); requestAnimationFrame(loop); }
+
+/* desempenho: se o computador estiver lento, baixa a resolução e depois as sombras */
+const GOV = { ema: 16, n: 0, lvl: 0, t0: performance.now() };
+function govern(dt) {
+  if (dt > 200) return; GOV.ema = GOV.ema * .95 + dt * .05; GOV.n++;
+  if (GOV.n < 90 || performance.now() - GOV.t0 < 2500) return;
+  if (GOV.ema > 24 && GOV.lvl < 2) {
+    GOV.lvl++; GOV.n = 0; GOV.t0 = performance.now(); GOV.ema = 16;
+    if (GOV.lvl === 1) { R.setPixelRatio(1); resize(); }
+    else { R.shadowMap.enabled = false; scene.traverse(o => { if (o.material) [].concat(o.material).forEach(m => m.needsUpdate = true); }); }
+  }
+}
+let govLast = performance.now();
+function loop(now) { if (visible) { render(now); govern(now - govLast); } govLast = now; requestAnimationFrame(loop); }
 new IntersectionObserver(es => { visible = es[0].isIntersecting; last = performance.now(); }).observe(host);
 render(performance.now());
 host.classList.add("ready3d");

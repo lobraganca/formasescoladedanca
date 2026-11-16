@@ -22,7 +22,7 @@ const SPRITE = /[?&]sprite=1/.test(location.search); // só para gerar as imagen
 let R;
 try { R = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: SPRITE, preserveDrawingBuffer: true, powerPreference: "high-performance" }); }
 catch (e) { host.classList.add("no3d"); window.dispatchEvent(new Event("reino-fail")); throw e; }
-R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.6 : 1.75));
+R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.6 : 1.25));
 R.outputColorSpace = THREE.SRGBColorSpace;
 R.toneMapping = THREE.ACESFilmicToneMapping;
 R.toneMappingExposure = .8;
@@ -453,7 +453,7 @@ function sparkleBurst(y = 1.3, n = 60, tint = null) {
 }
 
 let composer = null, bokeh = null;
-if (!MOB) {
+if (!MOB && /[?&]bokeh/.test(location.search)) {
   composer = new EffectComposer(R, new THREE.WebGLRenderTarget(256, 256, { type: THREE.HalfFloatType, samples: 4 }));
   composer.addPass(new RenderPass(scene, cam));
   try { bokeh = new BokehPass(scene, cam, { focus: 8, aperture: .0008, maxblur: .004 }); composer.addPass(bokeh); } catch (e) { bokeh = null; }
@@ -612,7 +612,20 @@ function fitHead() {
   const y = (1 - hv.y) / 2 * H, d = y - uiB;
   if (Math.abs(d) > 1.5) { offY = Math.max(-H * .4, Math.min(H * .3, offY + d * .25)); applyOffset(); }
 }
-function loop(now) { if (visible) { fitHead(); render(now); } requestAnimationFrame(loop); }
+
+/* desempenho: se o computador estiver lento, baixa a resolução e depois as sombras */
+const GOV = { ema: 16, n: 0, lvl: 0, t0: performance.now() };
+function govern(dt) {
+  if (dt > 200) return; GOV.ema = GOV.ema * .95 + dt * .05; GOV.n++;
+  if (GOV.n < 90 || performance.now() - GOV.t0 < 2500) return;
+  if (GOV.ema > 24 && GOV.lvl < 2) {
+    GOV.lvl++; GOV.n = 0; GOV.t0 = performance.now(); GOV.ema = 16;
+    if (GOV.lvl === 1) { R.setPixelRatio(1); resize(); }
+    else { R.shadowMap.enabled = false; scene.traverse(o => { if (o.material) [].concat(o.material).forEach(m => m.needsUpdate = true); }); }
+  }
+}
+let govLast = performance.now();
+function loop(now) { if (visible) { fitHead(); render(now); govern(now - govLast); } govLast = now; requestAnimationFrame(loop); }
 new IntersectionObserver(es => { visible = es[0].isIntersecting; last = performance.now(); }).observe(host);
 render(performance.now());
 host.classList.add("ready3d");
