@@ -436,6 +436,19 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
 .sh .foot .btn.big+.btn{flex:1 1 100%}
 #pf .fld input{height:52px;padding-top:0;padding-bottom:0}
 #pf .fld input[type=date]{line-height:50px}
+
+/* alunos por turma */
+.conta .ct-h{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.conta .ct-h h2{margin:0}.conta .ct-h .note{margin:2px 0 0}
+.ct-tot{flex:none;text-align:center;background:var(--plum);color:#fff;border-radius:18px;padding:10px 16px;display:grid;line-height:1.05}
+.ct-tot b{font-size:30px}.ct-tot small{font-size:11px;font-weight:700;opacity:.8}
+.ct-l{display:grid;gap:8px}
+.ct-r{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;text-align:left;border:1px solid var(--line);background:#FBF8F6;border-radius:16px;padding:11px 14px;cursor:pointer;font:inherit;color:var(--ink)}
+.ct-n{display:flex;align-items:center;gap:8px;min-width:0}.ct-n i{width:11px;height:11px;border-radius:50%;background:var(--c);flex:none}.ct-n b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ct-c{display:flex;align-items:baseline;gap:4px}.ct-c b{font-size:20px}.ct-c small{font-size:12.5px;color:var(--ink-soft);font-weight:700}
+.ct-b{grid-column:1/-1;height:8px;border-radius:99px;background:color-mix(in srgb,var(--c) 15%,#fff);overflow:hidden}.ct-b i{display:block;height:100%;border-radius:99px;background:var(--c)}
+.ct-v{grid-column:1/-1;font-size:12px;color:var(--ink-soft);font-weight:700;margin-top:-2px}
+.ct-r{padding:9px 12px}.ct-l{gap:6px}
 </style>
 </head>
 <body>
@@ -702,6 +715,7 @@ function vInicio(){
   if(c.fila)T.push('<div class="todo"><span class="tk">'+ic("i-fila")+'</span><div><b>'+c.fila+' na fila de espera</b><small>Avise quando abrir vaga</small></div><button class="btn sm ghost" type="button" data-t="fila" data-go>Ver</button></div>');
   var s='<div class="head"><div><h1>'+sau+', <em>Irene</em></h1><p>'+DIASL[new Date().getDay()]+", "+new Date().getDate()+" de "+MESES[new Date().getMonth()]+'</p></div></div>';
   s+='<div class="card todo-card"><h2>Para fazer hoje</h2>'+(T.length?'<div class="todos">'+T.join("")+'</div>':'<p class="empty"><b>Tudo em dia ✦</b>Nada pendente agora.</p>')+'</div>';
+  s+=contaCard();
   s+=anivCard();
   s+='<div class="mini"><button type="button" data-t="alunos" data-go><b>'+ativos+'</b><span>alunos ativos</span></button><button type="button" data-t="mensal" data-go><b>'+brl(r.rec)+'</b><span>recebido em '+MESES[new Date().getMonth()]+'</span></button><button type="button" data-t="mensal" data-go><b>'+brl(r.prev)+'</b><span>previsto no mês</span></button></div>';
   s+=secoes();
@@ -711,6 +725,17 @@ function vInicio(){
 document.addEventListener("click",function(e){var b=e.target.closest("[data-cham]");if(b){S.chT=b.dataset.cham;S.chD=today();go("chamada")}});
 
 
+
+/* ---------- alunos por turma ---------- */
+function contaCard(){
+  var at=E().alunos.filter(function(a){return a.ativo!==false}),ina=E().alunos.length-at.length,sem=at.filter(function(a){return !turma(a.turmaId)}).length;
+  var capT=0,h='<div class="card conta"><div class="ct-h"><div><h2>Alunos por <em>turma</em></h2><p class="note">Só alunos ativos'+(ina?' · '+ina+' inativo'+(ina===1?'':'s')+' fora da conta':'')+'</p></div><div class="ct-tot"><b>'+at.length+'</b><small>aluno'+(at.length===1?'':'s')+' no total</small></div></div><div class="ct-l">';
+  E().turmas.forEach(function(t){var n=ativosNa(t.id).length,cap=parseInt(t.cap,10)||0;capT+=cap;var pc=cap?Math.min(100,n*100/cap):0;
+    h+='<button type="button" class="ct-r" data-t="turmas" data-go style="--c:'+tcol(t)+'"><span class="ct-n"><i></i><b>'+esc(t.nome)+'</b></span><span class="ct-c"><b>'+n+'</b>'+(cap?'<small>de '+cap+'</small>':'')+'</span><span class="ct-b"><i style="width:'+(cap?pc:Math.min(100,n*8))+'%"></i></span><small class="ct-v">'+(cap?(n>=cap?'Turma cheia':Math.max(0,cap-n)+' vaga'+(cap-n===1?'':'s')):'sem limite definido')+'</small></button>'});
+  if(sem)h+='<button type="button" class="ct-r" data-t="alunos" data-go style="--c:#9A8AA3"><span class="ct-n"><i></i><b>Sem turma</b></span><span class="ct-c"><b>'+sem+'</b></span><span class="ct-b"><i style="width:'+Math.min(100,sem*8)+'%"></i></span><small class="ct-v">coloque numa turma</small></button>';
+  h+='</div>'+(capT?'<p class="note" style="margin:12px 0 0">Ocupação da escola: <b>'+at.length+' de '+capT+'</b> lugares ('+Math.round(at.length*100/capT)+'%).</p>':'')+'</div>';
+  return h;
+}
 /* ---------- aniversários do mês ---------- */
 function anivCard(){
   var now=new Date(),m=now.getMonth(),td=now.getDate(),DS=["dom","seg","ter","qua","qui","sex","sáb"];
@@ -804,7 +829,7 @@ function alunoSheet(id,pre){
 
 /* ---------- Turmas ---------- */
 function vTurmas(){
-  return '<div class="head"><div><h1>Turmas</h1><p>Ocupação, alunos e o que aparece no site. Para trocar alguém de turma, abra a lista e escolha a nova turma.</p></div><button class="btn rose" type="button" id="t-new">＋ Nova turma</button></div>'+
+  return '<div class="head"><div><h1>Turmas</h1><p><b>'+E().alunos.filter(function(a){return a.ativo!==false}).length+' alunos ativos no total</b> em '+E().turmas.length+' turmas. Ocupação, alunos e o que aparece no site. Para trocar alguém de turma, abra a lista e escolha a nova turma.</p></div><button class="btn rose" type="button" id="t-new">＋ Nova turma</button></div>'+
   '<div class="tgrid">'+E().turmas.map(function(t,i){var al=ativosNa(t.id).sort(function(a,b){return a.nome.localeCompare(b.nome)}),cap=parseInt(t.cap,10),fl=filaDe(t.id).length,ss=statusSite(t),open=S.open[t.id];
     return '<div class="tcard" style="--c:'+tcol(t)+'"><div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><h3>'+esc(t.nome)+'</h3><div class="mt">'+esc(ageTxt(t))+' · '+esc(diasTxt(t.dias)||"dias a definir")+(t.hIni?" · "+esc(t.hIni)+(t.hFim?"–"+esc(t.hFim):""):"")+'</div></div><div style="display:flex;gap:4px"><button class="ibtn" type="button" data-tmv="'+i+'" data-d="-1" aria-label="Subir"'+(i?"":" disabled")+'>'+ic("i-up")+'</button><button class="ibtn" type="button" data-tmv="'+i+'" data-d="1" aria-label="Descer"'+(i<E().turmas.length-1?"":" disabled")+'>'+ic("i-down")+'</button></div></div>'+
       '<div class="occ"><div class="tx"><span>'+al.length+(cap>0?" de "+cap:"")+' aluno'+(al.length===1?"":"s")+'</span><span>'+(cap>0?Math.max(0,cap-al.length)+" vaga"+(cap-al.length===1?"":"s")+" livre"+(cap-al.length===1?"":"s"):"defina a capacidade")+'</span></div><div class="tr"><i style="width:'+(cap>0?Math.min(100,al.length*100/cap):0)+'%"></i></div></div>'+
