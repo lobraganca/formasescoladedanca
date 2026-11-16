@@ -389,6 +389,39 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
 .an-t .pill{justify-self:start;margin-top:4px;font-size:11.5px}
 @media (max-width:520px){.an-w span{display:none}.an-w{padding:9px 11px!important}}
 .seg.sit{width:100%;grid-auto-columns:1fr}
+
+/* mensalidades: cartões claros */
+.tsel{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 16px;padding:2px 16px 4px}
+.tsel::-webkit-scrollbar{display:none}
+.tsel button{flex:none;display:inline-flex;align-items:center;gap:7px;height:42px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper);font:800 13.5px var(--body);color:var(--ink-soft);cursor:pointer;white-space:nowrap}
+.tsel button i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.tsel button small{font-size:11.5px;background:var(--bg-2);border-radius:999px;padding:1px 7px;color:var(--ink-soft)}
+.tsel button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tsel button[aria-pressed="true"] small{background:rgba(255,255,255,.18);color:#fff}
+.dev .dv-h{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.dev .dv-h h2{margin:0}.dev .dv-h .note{margin:4px 0 0}
+.dv-tot{text-align:right;flex:none;display:grid;line-height:1.15}.dv-tot b{font-size:20px;color:var(--err)}.dv-tot small{font-size:12.5px;color:var(--ink-soft);font-weight:700}
+.pcs{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr))}
+.pc{background:var(--paper);border:1px solid var(--line);border-left:5px solid #CDBFD3;border-radius:18px;padding:14px;display:grid;gap:12px}
+.pc.late{border-left-color:var(--err)}.pc.open{border-left-color:#E0A84B}.pc.paid{border-left-color:var(--ok)}
+.pc-top{display:flex;align-items:center;gap:12px}
+.pc-top .av{width:42px;height:42px;font-size:14px}
+.pc-n{flex:1;min-width:0;display:grid;line-height:1.25}.pc-n b{font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pc-n small{font-size:12.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-v{text-align:right;display:grid;line-height:1.15;flex:none}.pc-v b{font-size:17px;font-variant-numeric:tabular-nums}.pc-v small{font-size:12px;color:var(--ink-soft);font-weight:700}
+.pc.late .pc-v b{color:var(--err)}.pc.paid .pc-v b{color:var(--ok)}
+.pc-ms{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.pc-ms::-webkit-scrollbar{display:none}
+.pc-m{flex:none;display:grid;text-align:left;gap:1px;border:1.5px dashed #E6B8AA;background:var(--err-soft);border-radius:14px;padding:8px 12px;cursor:pointer;font:inherit;color:var(--ink)}
+.pc-m span{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--err)}.pc-m b{font-size:14.5px}.pc-m small{font-size:11.5px;color:var(--ink-soft)}
+.pc-m:active{transform:scale(.97)}
+.pc-st .pill{font-size:12.5px}
+.pc-ac{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px}
+.pc-ac .btn{height:46px;padding:0 12px;font-size:14.5px}
+.pc-ac .btn svg{width:18px;height:18px}
+.pc-nw{font-size:12.5px;color:var(--ink-soft);align-self:center}
+.ml-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 12px}
+.ml-h h2{font-size:24px;margin:0}
+.empty-c{grid-column:1/-1;text-align:center;background:var(--paper);border:1.5px dashed var(--line);border-radius:20px;padding:26px 18px;display:grid;gap:6px;justify-items:center}
+.empty-c span{font-size:30px}.empty-c b{font-size:17px}.empty-c p{margin:0;color:var(--ink-soft);font-size:14px;max-width:34ch}.empty-c .btn{margin-top:6px}
 </style>
 </head>
 <body>
@@ -581,11 +614,14 @@ function devedores(){
   return out.sort(function(x,y){return y.total-x.total||y.ms.length-x.ms.length});
 }
 function cobrarTudo(d){var a=d.a;return "Olá, "+(first(a.resp)||"tudo bem")+"! Aqui é a Irene, da Formas. Passando para lembrar das mensalidades de "+first(a.nome)+" em aberto:\n\n"+d.ms.map(function(x){return "• "+mName(x.k)+": "+brl(x.valor)+" (venceu "+dm(x.venc)+")"}).join("\n")+"\n\nTotal: "+brl(d.total)+". Qualquer dúvida, estou à disposição."+sig()}
-function devCard(lim){
-  var D=devedores(),tot=D.reduce(function(s,d){return s+d.total},0);
-  return '<div class="card dev"><div style="display:flex;justify-content:space-between;gap:10px;align-items:end;flex-wrap:wrap"><div><h2>Quem está devendo</h2><p class="note" style="margin:0">Mensalidades vencidas e não pagas, de todos os meses.</p></div>'+(D.length?'<span class="pill err" style="font-size:13px;padding:6px 12px">'+D.length+' aluno'+(D.length===1?"":"s")+' · '+brl(tot)+'</span>':'')+'</div><div class="list" style="margin-top:14px">'+
-    (D.length?D.slice(0,lim||999).map(function(d){var t=turma(d.a.turmaId);return '<div class="row"><span class="av" style="--c:'+tcol(t)+'">'+esc(ini(d.a.nome))+'</span><div><div class="nm">'+esc(d.a.nome)+' <span class="pill err">'+brl(d.total)+'</span></div><div class="mt"><span>'+esc(t?t.nome:"")+'</span>'+(d.a.resp?'<span>'+esc(d.a.resp)+'</span>':'')+'</div><div class="chips" style="margin-top:6px">'+d.ms.map(function(x){return '<button type="button" class="chip" data-pay="'+esc(d.a.id)+'" data-k="'+x.k+'" title="Marcar como pago">'+MESES[+x.k.slice(5)-1].slice(0,3)+'/'+x.k.slice(2,4)+' · '+brl(x.valor)+' ✓</button>'}).join("")+'</div></div><div class="ac">'+(d.a.whats?'<a class="btn sm wa" href="'+waLink(d.a.whats,cobrarTudo(d))+'" target="_blank" rel="noopener">'+ic("wa")+'Cobrar</a>':'<span class="pill">sem WhatsApp</span>')+'</div></div>'}).join("")+(lim&&D.length>lim?'<button class="lnk" type="button" data-t="mensal" data-go>Ver todos ('+D.length+')</button>':'')
-    :'<p class="empty"><b>Ninguém devendo ✦</b>Todas as mensalidades vencidas estão pagas.</p>')+'</div><p class="note" style="margin:12px 0 0">Toque no mês para marcar como pago.</p></div>';
+function devCard(lim,tid){
+  var D=devedores().filter(function(d){return !tid||d.a.turmaId===tid}),tot=D.reduce(function(s,d){return s+d.total},0),tn=tid&&turma(tid)?turma(tid).nome:"";
+  return '<div class="card dev"><div class="dv-h"><div><h2>Quem está devendo</h2><p class="note">'+(tn?'Turma '+esc(tn)+' · ':'')+'Mensalidades vencidas, de todos os meses.</p></div>'+(D.length?'<div class="dv-tot"><b>'+brl(tot)+'</b><small>'+D.length+' aluno'+(D.length===1?"":"s")+'</small></div>':'')+'</div>'+
+    (D.length?'<div class="pcs">'+D.slice(0,lim||999).map(function(d){var t=turma(d.a.turmaId),o=d.ms[0];
+      return '<div class="pc late"><div class="pc-top"><span class="av" style="--c:'+tcol(t)+'">'+esc(ini(d.a.nome))+'</span><div class="pc-n"><b>'+esc(d.a.nome)+'</b><small>'+esc([t?t.nome:"Sem turma",d.a.resp].filter(Boolean).join(" · "))+'</small></div><div class="pc-v"><b>'+brl(d.total)+'</b><small>'+d.ms.length+' '+(d.ms.length===1?"mês":"meses")+'</small></div></div>'+
+        '<div class="pc-ms">'+d.ms.map(function(x){return '<button type="button" class="pc-m" data-pay="'+esc(d.a.id)+'" data-k="'+x.k+'" title="Marcar '+esc(mName(x.k))+' como pago"><span>'+MESES[+x.k.slice(5)-1].slice(0,3)+'/'+x.k.slice(2,4)+'</span><b>'+brl(x.valor)+'</b><small>venceu '+dm(x.venc)+'</small></button>'}).join("")+'</div>'+
+        '<div class="pc-ac">'+(d.a.whats?'<a class="btn wa" href="'+waLink(d.a.whats,cobrarTudo(d))+'" target="_blank" rel="noopener">'+ic("wa")+'Cobrar</a>':'<span class="pc-nw">Sem WhatsApp no cadastro</span>')+'<button class="btn ok" type="button" data-pay="'+esc(d.a.id)+'" data-k="'+o.k+'">Recebi '+MESES[+o.k.slice(5)-1].slice(0,3)+'</button></div></div>'}).join("")+(lim&&D.length>lim?'<button class="lnk" type="button" data-t="mensal" data-go>Ver todos ('+D.length+')</button>':'')+'</div><p class="note" style="margin:12px 0 0">Toque em um mês para marcar só ele como pago.</p>'
+    :'<p class="empty"><b>Ninguém devendo ✦</b>'+(tn?'Ninguém da turma '+esc(tn)+' está com mensalidade atrasada.':'Todas as mensalidades vencidas estão pagas.')+'</p>')+'</div>';
 }
 function resumoMes(k){var r={prev:0,rec:0,nrec:0,abr:0,atr:0,natr:0,nab:0};E().alunos.forEach(function(a){var m=mensal(a,k);if(!m)return;r.prev+=m.valor;if(m.st==="pago"){r.rec+=m.valor;r.nrec++}else if(m.st==="atrasado"){r.atr+=m.valor;r.natr++}else{r.abr+=m.valor;r.nab++}});return r}
 function temAula(t,date){return (t.dias||[]).indexOf(pd(date).getDay())>=0}
@@ -876,23 +912,28 @@ function payRow(a,m,k,mini){
   var t=turma(a.turmaId),p=m.p;
   var cob="Olá, "+(first(a.resp)||"tudo bem")+"! Passando para lembrar da mensalidade de "+mName(k).split(" de ")[0]+" de "+first(a.nome)+(t?" ("+t.nome+")":"")+", no valor de "+brl(m.valor)+", com vencimento em "+dm(m.venc)+". Qualquer dúvida, estou à disposição."+sig();
   var rec=p?"Olá, "+(first(a.resp)||"tudo bem")+"! Recebi a mensalidade de "+mName(k).split(" de ")[0]+" de "+first(a.nome)+": "+brl(m.valor)+(p.forma?" ("+p.forma+")":"")+" em "+dm(p.data)+". Obrigada!"+sig():"";
-  return '<div class="row"><span class="av" style="--c:'+tcol(t)+'">'+esc(ini(a.nome))+'</span><div><div class="nm">'+esc(a.nome)+' <span class="pill '+(m.st==="pago"?"ok":m.st==="atrasado"?"err":"")+'">'+(m.st==="pago"?"Pago "+dm(p.data)+(p.forma?" · "+esc(p.forma):""):m.st==="atrasado"?"Atrasado":"A pagar")+'</span></div><div class="mt"><span class="money">'+brl(m.valor)+'</span><span>vence '+dm(m.venc)+'</span>'+(mini?"":'<span>'+esc(t?t.nome:"Sem turma")+'</span>')+(a.resp?'<span>'+esc(a.resp)+'</span>':'')+'</div></div><div class="ac">'+
-    (m.st==="pago"?(a.whats?'<a class="btn sm ghost" href="'+waLink(a.whats,rec)+'" target="_blank" rel="noopener">'+ic("wa")+'Recibo</a>':'')+(mini?'':'<button class="btn sm ghost" type="button" data-unpay="'+esc(a.id)+'" data-k="'+k+'">Desfazer</button>')
-    :(a.whats?'<a class="btn sm ghost" href="'+waLink(a.whats,cob)+'" target="_blank" rel="noopener">'+ic("wa")+'Cobrar</a>':'')+'<button class="btn sm ok" type="button" data-pay="'+esc(a.id)+'" data-k="'+k+'">Recebi</button>')+'</div></div>';
+  var st=m.st==="pago"?'<span class="pill ok">Pago em '+dm(p.data)+(p.forma?" · "+esc(p.forma):"")+'</span>':m.st==="atrasado"?'<span class="pill err">Atrasado · venceu '+dm(m.venc)+'</span>':'<span class="pill warn">A pagar · vence '+dm(m.venc)+'</span>';
+  return '<div class="pc '+(m.st==="pago"?"paid":m.st==="atrasado"?"late":"open")+'"><div class="pc-top"><span class="av" style="--c:'+tcol(t)+'">'+esc(ini(a.nome))+'</span><div class="pc-n"><b>'+esc(a.nome)+'</b><small>'+esc([mini?"":(t?t.nome:"Sem turma"),a.resp].filter(Boolean).join(" · "))+'</small></div><div class="pc-v"><b>'+brl(m.valor)+'</b></div></div>'+
+    '<div class="pc-st">'+st+'</div><div class="pc-ac">'+
+    (m.st==="pago"?(a.whats?'<a class="btn ghost" href="'+waLink(a.whats,rec)+'" target="_blank" rel="noopener">'+ic("wa")+'Enviar recibo</a>':'')+(mini?'':'<button class="btn ghost" type="button" data-unpay="'+esc(a.id)+'" data-k="'+k+'">Desfazer</button>')
+    :(a.whats?'<a class="btn wa" href="'+waLink(a.whats,cob)+'" target="_blank" rel="noopener">'+ic("wa")+'Cobrar</a>':'')+'<button class="btn ok" type="button" data-pay="'+esc(a.id)+'" data-k="'+k+'">Recebi</button>')+'</div></div>';
 }
 function vMensal(){
   var k=S.mes,r=resumoMes(k);
   var L=E().alunos.map(function(a){return{a:a,m:mensal(a,k)}}).filter(function(x){return x.m&&(!S.mT||x.a.turmaId===S.mT)&&(S.mf==="todos"||(S.mf==="aberto"&&x.m.st!=="pago")||x.m.st===S.mf)}).sort(function(x,y){var o={atrasado:0,aberto:1,pago:2};return o[x.m.st]-o[y.m.st]||x.a.nome.localeCompare(y.a.nome)});
   return '<div class="head"><div><h1>Mensalidades</h1><p>Marque quem pagou, cobre pelo WhatsApp e mande o recibo.</p></div><div class="mnav"><button class="mb" type="button" data-mes="-1" aria-label="Mês anterior"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><b>'+esc(mName(k))+'</b><button class="mb" type="button" data-mes="1" aria-label="Próximo mês"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div></div>'+
     '<div class="kpis"><div class="kpi main"><span>Recebido</span><b>'+brl(r.rec)+'</b><small>'+r.nrec+' pagamento'+(r.nrec===1?"":"s")+'</small></div><div class="kpi"><span>Previsto no mês</span><b>'+brl(r.prev)+'</b><small>'+(r.nrec+r.nab+r.natr)+' alunos</small></div><div class="kpi"><span>A receber</span><b>'+brl(r.abr)+'</b><small>'+r.nab+' ainda no prazo</small></div><div class="kpi'+(r.natr?" warn":"")+'"><span>Em atraso</span><b>'+brl(r.atr)+'</b><small>'+r.natr+' aluno'+(r.natr===1?"":"s")+'</small></div></div>'+
-    '<div class="tb"><div class="chips">'+[["todos","Todos"],["aberto","Em aberto"],["atrasado","Atrasados"],["pago","Pagos"]].map(function(f){return '<button type="button" class="chip" data-mf="'+f[0]+'" aria-pressed="'+(S.mf===f[0])+'">'+f[1]+'</button>'}).join("")+'</div><select class="inp" id="m-t"><option value="">Todas as turmas</option>'+E().turmas.map(function(t){return '<option value="'+esc(t.id)+'"'+(S.mT===t.id?" selected":"")+'>'+esc(t.nome)+'</option>'}).join("")+'</select></div>'+
+    '<div class="tsel" role="group" aria-label="Turma"><button type="button" data-mt="" aria-pressed="'+(!S.mT)+'">Todas as turmas</button>'+E().turmas.map(function(t){var n=E().alunos.filter(function(x){return x.turmaId===t.id&&mensal(x,k)}).length;return '<button type="button" data-mt="'+esc(t.id)+'" aria-pressed="'+(S.mT===t.id)+'" style="--c:'+tcol(t)+'"><i></i>'+esc(t.nome)+'<small>'+n+'</small></button>'}).join("")+'</div>'+
     (function(){var z=E().alunos.filter(function(a){return a.ativo!==false&&!valorDe(a)});return z.length?'<div class="card" style="border:1.5px solid #E9C27A;background:#FFF8EA"><h2 style="font-size:20px">'+z.length+' aluno'+(z.length===1?'':'s')+' sem valor de mensalidade</h2><p class="note" style="margin:4px 0 0">'+z.slice(0,6).map(function(a){return esc(first(a.nome))}).join(', ')+(z.length>6?'…':'')+'. Coloque o valor em <b>Turmas → Editar</b> (vale para a turma toda) ou no cadastro do aluno.</p></div>':''})()+
-    devCard()+'<h2 style="font-size:26px;margin-top:6px">Mensalidades de '+esc(mName(k))+'</h2>'+
-    '<div class="list">'+(L.length?L.map(function(x){return payRow(x.a,x.m,k)}).join(""):'<p class="empty"><b>Nada por aqui</b>'+(E().alunos.length?"Mude o filtro ou o mês.":"Cadastre os alunos com o valor da mensalidade.")+'</p>')+'</div>'+
+    devCard(0,S.mT)+'<div class="ml-h"><h2>Mensalidades de '+esc(mName(k))+'</h2><div class="chips">'+[["todos","Todos"],["aberto","Em aberto"],["atrasado","Atrasados"],["pago","Pagos"]].map(function(f){return '<button type="button" class="chip" data-mf="'+f[0]+'" aria-pressed="'+(S.mf===f[0])+'">'+f[1]+'</button>'}).join("")+'</div></div>'+
+    '<div class="pcs">'+(L.length?L.map(function(x){return payRow(x.a,x.m,k)}).join(""):(function(){var tn=S.mT&&turma(S.mT)?turma(S.mT).nome:"",fl={aberto:"em aberto",atrasado:"atrasado",pago:"pago"}[S.mf];
+      var msg=!E().alunos.length?"Cadastre os alunos com o valor da mensalidade.":tn&&!E().alunos.some(function(a){return a.turmaId===S.mT&&a.ativo!==false})?"A turma "+esc(tn)+" ainda não tem alunos ativos.":"Ninguém "+(tn?"da turma "+esc(tn)+" ":"")+(fl?"com mensalidade "+fl+" ":"com mensalidade ")+"em "+esc(mName(k))+".";
+      return '<div class="empty-c"><span>🩰</span><b>Ninguém por aqui</b><p>'+msg+'</p>'+(S.mT||S.mf!=="todos"?'<button class="btn ghost sm" type="button" id="m-clr">Ver todas as turmas</button>':'')+'</div>'})())+'</div>'+
     '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn ghost sm" type="button" id="m-csv">⬇ Baixar planilha do mês</button></div>';
 }
 AFTER.mensal=function(){
-  $("m-t").onchange=function(){S.mT=this.value;render()};
+  document.querySelectorAll("[data-mt]").forEach(function(b){b.onclick=function(){S.mT=b.dataset.mt;render();var on=document.querySelector("[data-mt][aria-pressed=true]");if(on&&on.scrollIntoView)on.scrollIntoView({inline:"center",block:"nearest"})}});
+  var c=$("m-clr");if(c)c.onclick=function(){S.mT="";S.mf="todos";render()};
   $("m-csv").onclick=function(){var k=S.mes,rows=[["Aluno","Turma","Responsável","WhatsApp","Valor","Vencimento","Situação","Pago em","Forma"]];E().alunos.forEach(function(a){var m=mensal(a,k);if(!m)return;var t=turma(a.turmaId);rows.push([a.nome,t?t.nome:"",a.resp||"",phone(a.whats),String(m.valor.toFixed(2)).replace(".",","),dmy(m.venc),m.st==="pago"?"Pago":m.st==="atrasado"?"Atrasado":"A pagar",m.p?dmy(m.p.data):"",m.p?m.p.forma||"":""])});
     var csv="﻿"+rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"'}).join(";")}).join("\r\n");var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="mensalidades-formas-"+k+".csv";document.body.appendChild(a);a.click();a.remove()};
 };
