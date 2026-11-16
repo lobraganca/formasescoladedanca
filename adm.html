@@ -553,6 +553,11 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
 .dcount{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .dc{display:grid;justify-items:center;padding:8px 4px;border-radius:14px;font-size:12px;font-weight:700;color:var(--ink-soft);background:#F4EEF3}
 .dc b{font-size:20px;line-height:1.1}.dc.p b{color:#2B8A55}.dc.f b{color:#C0392B}.dc.j b{color:#B07A1E}
+.toast{display:flex!important;align-items:center;gap:12px;border-radius:18px!important;padding:12px 12px 12px 16px!important;width:min(440px,calc(100% - 28px));box-sizing:border-box;line-height:1.25}
+.toast[hidden]{display:none!important}
+.toast .tx{flex:1;min-width:0;display:grid;gap:2px}.toast .tx b{font-size:14.5px}.toast .tx small{font-size:13px;font-weight:600;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toast .tic{width:36px;height:36px;flex:none;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.12);font-size:17px}
+.toast button{flex:none;padding:10px 14px!important;border-radius:12px!important;background:#fff!important;color:var(--ink)!important}
 </style>
 </head>
 <body>
@@ -684,7 +689,7 @@ function first(n){return String(n||"").trim().split(/\s+/)[0]||""}
 function waLink(num,txt){var n=String(num||"").replace(/\D/g,"");if(!n)return "";if(n.length<=11)n="55"+n;return "https://wa.me/"+n+"?text="+encodeURIComponent(txt||"")}
 function phone(n){n=String(n||"").replace(/\D/g,"");if(n.length>11)n=n.slice(-11);return n.length===11?"("+n.slice(0,2)+") "+n.slice(2,7)+"-"+n.slice(7):n.length===10?"("+n.slice(0,2)+") "+n.slice(2,6)+"-"+n.slice(6):n}
 function ic(n){return '<svg aria-hidden="true"><use href="#'+n+'"/></svg>'}
-function toast(t,undo){var e=$("toast");e.innerHTML=esc(t)+(undo?'<button type="button">Desfazer</button>':"");e.hidden=false;if(undo)e.querySelector("button").onclick=function(){e.hidden=true;undo()};clearTimeout(toast.t);toast.t=setTimeout(function(){e.hidden=true},undo?6000:2800)}
+function toast(t,undo){var e=$("toast"),m=String(t).match(/^(.*) (excluída\(o\)|apagad[oa])$/);e.className="toast"+(undo?" undo":"");e.innerHTML=(undo?'<span class="tic" aria-hidden="true">🗑</span>':"")+'<span class="tx">'+(m?'<b>'+(/excluída/.test(m[2])?"Aluno excluído":"Apagado")+'</b><small>'+esc(m[1])+'</small>':esc(t))+'</span>'+(undo?'<button type="button">Desfazer</button>':"");e.hidden=false;if(undo)e.querySelector("button").onclick=function(){e.hidden=true;undo()};clearTimeout(toast.t);toast.t=setTimeout(function(){e.hidden=true},undo?6000:2800)}
 function sig(){return "\n\nIrene · Formas Escola de Dança"}
 
 /* ---------- estado ---------- */
