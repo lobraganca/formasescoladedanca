@@ -2032,6 +2032,7 @@ function bagSheet(){
 }
 document.addEventListener("click",function(e){var b=e.target.closest("[data-ask],[data-wait],[data-prod]");if(!b)return;if(b.dataset.ask||b.dataset.wait){var t=turmasSite().find(function(x){return x.id===(b.dataset.ask||b.dataset.wait)});WZ.pref=t?t.id:"";if(t&&!(+$("w-ida").value>=t.idadeMin&&+$("w-ida").value<=t.idadeMax))$("w-ida").value=t.idadeMin;wzGo(1);$("wiz").scrollIntoView({behavior:"smooth",block:"center"});setTimeout(function(){var f=$(fv("w-res")?(fv("w-cri")?"w-go1":"w-cri"):"w-res");if(f)f.focus({preventScroll:true})},700)}else prodSheet(b.dataset.prod)});
 document.addEventListener("click",function(e){if(e.target.closest("#bag-open"))bagSheet()});
+document.addEventListener("click",function(e){var b=e.target.closest(".ft-bis");if(!b)return;e.preventDefault();try{scrollTo({top:0,behavior:"smooth"})}catch(x){scrollTo(0,0)}});
 document.addEventListener("click",function(e){if(!e.target.closest("#cta-fill"))return;e.preventDefault();WZ.pref="";wzGo(1);$("wiz").scrollIntoView({behavior:"smooth",block:"center"});setTimeout(function(){var f=$(fv("w-res")?(fv("w-cri")?"w-go1":"w-cri"):"w-res");if(f)f.focus({preventScroll:true})},700)});
 /* faixa: bailarinas dançando no palco */
 (function(){
