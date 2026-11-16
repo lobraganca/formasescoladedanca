@@ -2715,5 +2715,13 @@ function run(){if(busy)return;busy=true;stop();C.forEach(function(c,i){T.push(se
 C.forEach(function(c){c.addEventListener("click",function(){stop();busy=true;flip(c,!c.classList.contains("on"))})});
 if(window.IntersectionObserver)new IntersectionObserver(function(e){if(e[0].isIntersecting)run()},{threshold:.5}).observe(box);})();
 </script>
+<script>/* sempre a versão mais nova: ao voltar para a aba (ou reabrir do histórico), confere se o site mudou e recarrega */
+(function(){var tag=null,last=Date.now(),busy=false;
+function head(){return fetch(location.pathname+"?v="+Date.now(),{method:"HEAD",cache:"no-store"}).then(function(r){return r.headers.get("etag")||r.headers.get("last-modified")||""}).catch(function(){return ""})}
+head().then(function(t){tag=t});
+function check(force){if(busy||!tag)return;if(!force&&Date.now()-last<60000)return;busy=true;last=Date.now();head().then(function(t){busy=false;if(t&&tag&&t!==tag&&!document.querySelector("input:focus,textarea:focus"))location.reload()})}
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")check(false)});
+addEventListener("pageshow",function(e){if(e.persisted)check(true)});
+})();</script>
 </body>
 </html>
