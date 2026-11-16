@@ -17,12 +17,12 @@
 <script>try{if(localStorage.getItem("formasAdmTok"))document.documentElement.className+=" boot"}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Manrope:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Caveat:wght@500;700&family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <style>
 :root{
-  --bg:#F7F1EC;--bg-2:#EFE5DF;--paper:#FFFDFB;--ink:#1A1215;--ink-soft:#6E5A61;--line:#E6D9D3;
-  --rose:#A8526A;--rose-soft:#F6E2E0;--blush:#F3D3D0;--plum:#3A1E2A;--ok:#2B6B43;--ok-soft:#E3F1E7;--warn:#9A5A16;--warn-soft:#FCEBD6;--err:#B4432A;--err-soft:#FBE3DC;--wa:#1F8F5A;--gold:#C9A36A;
-  --display:"Bodoni Moda",Didot,Georgia,serif;--body:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif;
+  --bg:#F7F0F5;--bg-2:#EADDE8;--paper:#FFFFFF;--ink:#24112F;--ink-soft:#6A5672;--line:rgba(36,17,47,.12);
+  --rose:#C2386F;--rose-soft:rgba(194,56,111,.1);--blush:#F6D7E5;--plum:#24112F;--grad:linear-gradient(170deg,#6F5DB8 0%,#B8467E 55%,#E57B8F 100%);--hand:"Caveat","Segoe Print",cursive;--ok:#2B6B43;--ok-soft:#E3F1E7;--warn:#9A5A16;--warn-soft:#FCEBD6;--err:#B4432A;--err-soft:#FBE3DC;--wa:#1F8F5A;--gold:#C9A36A;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;--body:"Instrument Sans","Segoe UI",system-ui,-apple-system,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
@@ -272,6 +272,48 @@ button.kpi{cursor:pointer;font:inherit;color:inherit}
 .steps{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:s}
 .steps li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:12px;background:var(--bg);border-radius:16px;padding:12px 14px;font-size:14px}
 .steps li::before{content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--plum);color:#fff;display:grid;place-items:center;font-weight:800}
+/* Início organizado: tarefas do dia, números e seções */
+.demo{padding:8px 14px!important;font-size:12.5px!important;justify-content:space-between}
+.demo .lnk{border:0;background:none;color:#4A3655;font:800 12.5px var(--body,inherit);text-decoration:underline;cursor:pointer}
+.todo-card h2{margin-bottom:10px}
+.todos{display:grid;gap:8px}
+.todo{display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;padding:10px;border-radius:16px;background:var(--bg,#FBF7F4);border:1px solid var(--line)}
+.todo b{display:block;font-size:15px;line-height:1.25}.todo small{display:block;font-size:12.5px;color:var(--ink-soft,#6E5A61);margin-top:2px}
+.tk{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--c,#A8526A) 18%,#fff);color:var(--c,#A8526A)}
+.tk.warn{--c:#C0392B}
+.tk svg{width:22px;height:22px}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 6px}
+.mini button{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px 10px;text-align:left;cursor:pointer;color:inherit}
+.mini b{display:block;font-size:18px;font-family:var(--display,inherit);line-height:1.1}.mini span{font-size:11.5px;color:var(--ink-soft,#6E5A61)}
+.sg{margin-top:18px}.sg h3{margin:0 0 8px;font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft,#6E5A61)}
+.sg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.sg-b{position:relative;display:flex;align-items:center;gap:12px;text-align:left;border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px 14px;cursor:pointer;color:inherit;font:inherit}
+.sg-b:hover{border-color:var(--rose,#A8526A)}
+.sg-b svg{width:24px;height:24px;color:var(--rose,#A8526A);flex:none}
+.sg-b b{display:block;font-size:15px}.sg-b small{display:block;font-size:12px;color:var(--ink-soft,#6E5A61)}
+.sg-b .bd{position:absolute;top:8px;right:10px}
+#sh .sg:first-of-type{margin-top:6px}
+@media (max-width:560px){.mini b{font-size:15px}.sg-grid{grid-template-columns:1fr 1fr}.sg-b{flex-direction:column;align-items:flex-start;gap:6px;padding:12px}}
+/* mesmo visual da página inicial */
+h1,h2,h3{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.005em;line-height:1}
+h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.head h1{font-size:clamp(34px,8vw,52px)}
+.head p{font-size:14px;font-weight:600;color:var(--ink-soft)}
+.card h2{font-size:24px}
+.card,.sg-b,.mini button,.todo,.kpi,.row{border-radius:20px}
+.card{background:#fff;border:1px solid rgba(36,17,47,.08);box-shadow:0 30px 60px -44px rgba(40,10,60,.45)}
+.todo{background:var(--bg)}
+.btn.rose,.btn-rose{background:var(--rose)!important;color:#fff!important}
+.btn{border-radius:999px}
+.sg h3{font-family:var(--body);text-transform:uppercase;font-weight:800;letter-spacing:.2em;font-size:11px;color:var(--rose);display:flex;align-items:center;gap:8px}
+.sg h3::before{content:"";width:18px;height:18px;border-radius:5px;background:var(--rose);display:inline-block}
+.sg-b svg,.tk{color:var(--rose)}
+.mini b,.kpi b,.empty b{font-family:var(--display);font-weight:800}
+.mini b{font-size:22px}
+.kpi.main{background:var(--plum)}
+.login-card h1{font-size:44px}
+.top,header{backdrop-filter:blur(14px) saturate(1.3)}
+.hand,.mnav b{font-family:var(--hand)}
 </style>
 </head>
 <body>
@@ -492,7 +534,11 @@ function renderNav(){
 }
 function go(t){if(t==="mais"){moreSheet();return}S.tab=t;try{history.replaceState(null,"","#"+t)}catch(x){}closeSh();render();scrollTo(0,0)}
 document.addEventListener("click",function(e){var b=e.target.closest("[data-t]");if(b&&(b.closest("#tabs")||b.closest("#bnav")||b.closest(".more-grid")||b.hasAttribute("data-go")))go(b.dataset.t)});
-function moreSheet(){openSh('<div class="sh-h"><h2>Mais <em>seções</em></h2><button class="x" data-x>×</button></div><div class="more-grid">'+["turmas","caixa","fila","camarim","contatos","acessos","site"].map(function(id){var t=TABS.find(function(x){return x[0]===id}),n=badge(id);return '<button type="button" data-t="'+id+'">'+ic("i-"+id)+t[1]+(n?'<i class="bd">'+n+'</i>':'')+'</button>'}).join("")+'</div>')}
+var GRUPOS=[["Dia a dia",[["chamada","Marcar presença das turmas"],["alunos","Cadastro, turma e contato"],["mensal","Quem pagou e quem deve"],["caixa","Entradas e despesas"]]],
+  ["Famílias e pedidos",[["contatos","Quem pediu vaga pelo site"],["fila","Esperando abrir vaga"],["camarim","Pedidos de uniforme"]]],
+  ["Escola e site",[["turmas","Horários, idades e vagas"],["site","Textos, fotos e vídeos"],["acessos","Visitas do site"]]]];
+function secoes(){return GRUPOS.map(function(g){return '<div class="sg"><h3>'+g[0]+'</h3><div class="sg-grid">'+g[1].map(function(it){var t=TABS.find(function(x){return x[0]===it[0]}),n=badge(it[0]);return '<button type="button" class="sg-b" data-t="'+it[0]+'" data-go>'+ic("i-"+it[0])+'<span><b>'+t[1]+'</b><small>'+it[1]+'</small></span>'+(n?'<i class="bd">'+n+'</i>':'')+'</button>'}).join("")+'</div></div>'}).join("")}
+function moreSheet(){openSh('<div class="sh-h"><h2>Todas as <em>seções</em></h2><button class="x" data-x>×</button></div>'+secoes())}
 
 /* ---------- janela ---------- */
 function openSh(html,ready){$("sh").innerHTML=html;$("ov").hidden=false;document.body.style.overflow="hidden";if(ready)ready($("sh"))}
@@ -508,7 +554,7 @@ function val(id){var e=$(id);return e?String(e.value||"").trim():""}
 function render(){
   if(!S.escola)return;renderNav();
   var m=$("main"),h="";
-  if(S.test)h+='<div class="demo"><span>🧪 <b>Modo de teste.</b> '+(API?"O banco ainda não está ligado na Vercel: ":"Nesta prévia ")+'o que você salvar fica só neste aparelho.'+(E().demo?" Os alunos e pedidos são exemplos.":"")+'</span>'+(E().demo?'<button class="btn sm ghost" type="button" id="clr-demo">Apagar exemplos</button>':'')+'</div>';
+  if(S.test)h+='<div class="demo"><span>🧪 <b>Modo de teste</b>'+(E().demo?" · dados de exemplo":"")+'</span>'+(E().demo?'<button class="lnk" type="button" id="clr-demo">Apagar exemplos</button>':'')+'</div>';
   h+=({inicio:vInicio,alunos:vAlunos,turmas:vTurmas,chamada:vChamada,mensal:vMensal,caixa:vCaixa,fila:vFila,camarim:vCamarim,contatos:vContatos,acessos:vAcessos,site:vSite}[S.tab]||vInicio)();
   m.innerHTML=h;
   var c=$("clr-demo");if(c)c.onclick=function(){if(!confirm("Apagar todos os exemplos e começar do zero?"))return;S.escola=defEscola();S.leads=[];S.espera=[];S.pedidos=[];saveInboxLocal();saveLocal();render()};
@@ -521,20 +567,17 @@ function vInicio(){
   var h=new Date().getHours(),sau=h<12?"Bom dia":h<18?"Boa tarde":"Boa noite",k=mk(new Date()),r=resumoMes(k),c=counts(),td=today();
   var ativos=E().alunos.filter(function(a){return a.ativo!==false}).length,dv=devedores();
   var hoje=E().turmas.filter(function(t){return temAula(t,td)}).sort(function(a,b){return (a.hIni||"")<(b.hIni||"")?-1:1});
-  var atr=E().alunos.map(function(a){return{a:a,m:mensal(a,k)}}).filter(function(x){return x.m&&x.m.st==="atrasado"}).slice(0,5);
-  var nov=[].concat(S.leads.filter(function(x){return !x.contatado}).map(function(x){return{k:"contatos",t:"Contato",c:"rose",x:x,d:(x.crianca||x.nome)+(x.turma?" · "+x.turma:"")}}),
-    S.espera.filter(function(x){return x.status==="espera"}).map(function(x){return{k:"fila",t:"Fila",c:"lilac",x:x,d:x.crianca+" · "+(x.turma||"")}}),
-    S.pedidos.filter(function(x){return (x.status||"novo")==="novo"}).map(function(x){return{k:"camarim",t:"Camarim",c:"warn",x:x,d:(x.qtd||1)+"x "+x.produto+(x.tamanho?" ("+x.tamanho+")":"")+" · "+x.crianca}})).sort(function(a,b){return a.x.quando<b.x.quando?1:-1}).slice(0,6);
+  var T=[];
+  hoje.forEach(function(t){var ch=chamDe(t.id,td);if(!ch)T.push('<div class="todo"><span class="tk" style="--c:'+tcol(t)+'">'+ic("i-chamada")+'</span><div><b>Fazer a chamada · '+esc(t.nome)+'</b><small>'+(t.hIni?"às "+esc(t.hIni):"hoje")+' · '+ativosNa(t.id).length+' alunos</small></div><button class="btn sm rose" type="button" data-cham="'+esc(t.id)+'">Fazer</button></div>')});
+  if(dv.length)T.push('<div class="todo"><span class="tk warn">'+ic("i-mensal")+'</span><div><b>'+dv.length+' mensalidade'+(dv.length===1?"":"s")+' em atraso</b><small>'+brl(dv.reduce(function(s,d){return s+d.total},0))+' para receber</small></div><button class="btn sm rose" type="button" data-t="mensal" data-go>Cobrar</button></div>');
+  if(c.lead)T.push('<div class="todo"><span class="tk">'+ic("i-contatos")+'</span><div><b>'+c.lead+' contato'+(c.lead===1?"":"s")+' novo'+(c.lead===1?"":"s")+' do site</b><small>Famílias pedindo vaga</small></div><button class="btn sm rose" type="button" data-t="contatos" data-go>Responder</button></div>');
+  if(c.ped)T.push('<div class="todo"><span class="tk">'+ic("i-camarim")+'</span><div><b>'+c.ped+' pedido'+(c.ped===1?"":"s")+' do Camarim</b><small>Uniformes para separar</small></div><button class="btn sm rose" type="button" data-t="camarim" data-go>Separar</button></div>');
+  if(c.fila)T.push('<div class="todo"><span class="tk">'+ic("i-fila")+'</span><div><b>'+c.fila+' na fila de espera</b><small>Avise quando abrir vaga</small></div><button class="btn sm ghost" type="button" data-t="fila" data-go>Ver</button></div>');
   var s='<div class="head"><div><h1>'+sau+', <em>Irene</em></h1><p>'+DIASL[new Date().getDay()]+", "+new Date().getDate()+" de "+MESES[new Date().getMonth()]+'</p></div></div>';
+  s+='<div class="card todo-card"><h2>Para fazer hoje</h2>'+(T.length?'<div class="todos">'+T.join("")+'</div>':'<p class="empty"><b>Tudo em dia ✦</b>Nada pendente agora.</p>')+'</div>';
+  s+='<div class="mini"><button type="button" data-t="alunos" data-go><b>'+ativos+'</b><span>alunos ativos</span></button><button type="button" data-t="mensal" data-go><b>'+brl(r.rec)+'</b><span>recebido em '+MESES[new Date().getMonth()]+'</span></button><button type="button" data-t="mensal" data-go><b>'+brl(r.prev)+'</b><span>previsto no mês</span></button></div>';
+  s+=secoes();
   s+=instCard();
-  s+='<div class="kpis"><button class="kpi main" type="button" data-t="alunos" data-go><span>Alunos ativos</span><b>'+ativos+'</b><small>em '+E().turmas.length+' turmas</small></button>'+
-    '<button class="kpi" type="button" data-t="mensal" data-go><span>Recebido em '+MESES[new Date().getMonth()]+'</span><b>'+brl(r.rec)+'</b><small>de '+brl(r.prev)+' previstos</small></button>'+
-    '<button class="kpi'+(dv.length?" warn":"")+'" type="button" data-t="mensal" data-go><span>Devendo</span><b>'+dv.length+'</b><small>'+(dv.length?brl(dv.reduce(function(s,d){return s+d.total},0))+" em atraso":"tudo em dia ✦")+'</small></button>'+
-    '<button class="kpi" type="button" data-t="fila" data-go><span>Fila de espera</span><b>'+c.fila+'</b><small>'+c.ped+' pedido'+(c.ped===1?"":"s")+' novo'+(c.ped===1?"":"s")+' no Camarim</small></button></div>';
-  s+='<div class="grid2"><div class="card"><h2>Aulas de hoje</h2><p class="note">Toque para fazer a chamada.</p><div class="list">'+
-    (hoje.length?hoje.map(function(t){var n=ativosNa(t.id).length,ch=chamDe(t.id,td);return '<div class="row"><span class="av" style="--c:'+tcol(t)+';font-size:11.5px">'+esc((t.hIni||"--").slice(0,5))+'</span><div><div class="nm">'+esc(t.nome)+'</div><div class="mt">'+n+' aluno'+(n===1?"":"s")+(t.hFim?" · até "+esc(t.hFim):"")+'</div></div><div class="ac">'+(ch?'<span class="pill ok">Chamada feita</span>':'')+'<button class="btn sm '+(ch?"ghost":"rose")+'" type="button" data-cham="'+esc(t.id)+'">'+(ch?"Ver":"Fazer chamada")+'</button></div></div>'}).join(""):'<p class="empty"><b>Sem aulas hoje</b>Cadastre os dias de cada turma na aba Turmas.</p>')+'</div></div>';
-  s+=devCard(5)+'</div>';
-  s+='<div class="card"><h2>Novidades do site</h2><p class="note">Contatos, fila de espera e pedidos do Camarim que ainda pedem atenção.</p><div class="list">'+(nov.length?nov.map(function(n){return '<div class="row"><span class="pill '+n.c+'">'+n.t+'</span><div><div class="nm">'+esc(n.d)+'</div><div class="mt">'+esc(n.x.nome||"")+' · '+when(n.x.quando)+'</div></div><div class="ac"><button class="btn sm ghost" type="button" data-t="'+n.k+'" data-go>Abrir</button></div></div>'}).join(""):'<p class="empty">Nada novo por enquanto.</p>')+'</div></div>';
   return s;
 }
 document.addEventListener("click",function(e){var b=e.target.closest("[data-cham]");if(b){S.chT=b.dataset.cham;S.chD=today();go("chamada")}});
