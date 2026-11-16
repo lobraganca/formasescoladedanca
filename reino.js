@@ -22,7 +22,7 @@ const SPRITE = /[?&]sprite=1/.test(location.search); // só para gerar as imagen
 let R;
 try { R = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: SPRITE, preserveDrawingBuffer: true, powerPreference: "high-performance" }); }
 catch (e) { host.classList.add("no3d"); window.dispatchEvent(new Event("reino-fail")); throw e; }
-R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.6 : 1.25));
+R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.6 : 2));
 R.outputColorSpace = THREE.SRGBColorSpace;
 R.toneMapping = THREE.ACESFilmicToneMapping;
 R.toneMappingExposure = .8;
