@@ -179,7 +179,6 @@ function scroll(g, x, y, s, dir) { g.beginPath(); g.moveTo(x, y); g.bezierCurveT
 }
 // a tampa (dobradiça atrás) com medalhão de veludo
 const lid = new THREE.Group(); lid.position.set(0, -.1, -BD / 2); stage.add(lid);
-let mirror;
 {
   const slab = rbox(BW + .06, .26, BD + .06, .07, M.lacquer); slab.position.set(0, .13, BD / 2); lid.add(slab);
   const gb = rbox(BW + .1, .04, BD + .1, .02, M.gold); gb.position.set(0, .02, BD / 2); lid.add(gb);
@@ -194,21 +193,8 @@ let mirror;
   })); td.rotation.x = -Math.PI / 2; td.position.set(0, .322, BD / 2); lid.add(td);
   const clasp = rbox(.34, .2, .06, .02, M.gold); clasp.position.set(0, .12, BD + .05); lid.add(clasp);
   const cg = sphere(.05, M.gem, 16, 12); cg.position.set(0, .12, BD + .085); lid.add(cg);
-  // forro de veludo
+  // forro de veludo (sem espelho nem medalhão)
   const lin = new THREE.Mesh(new THREE.PlaneGeometry(BW - .1, BD - .1), M.velvet); lin.rotation.x = Math.PI / 2; lin.position.set(0, -.008, BD / 2); lid.add(lin);
-  const og = new THREE.CircleGeometry(1, 72); og.scale(1.5, 1.08, 1);
-  // sem espelho: um medalhão de veludo acolchoado com a letra F bordada
-  const quilt = canvasTex(1024, 768, (g, w, h) => {
-    const gr = g.createRadialGradient(w / 2, h / 2, 40, w / 2, h / 2, w / 2); gr.addColorStop(0, "#C2457A"); gr.addColorStop(1, "#6E1A45"); g.fillStyle = gr; g.fillRect(0, 0, w, h);
-    g.strokeStyle = "rgba(255,210,230,.22)"; g.lineWidth = 3; for (let k = -h; k < w; k += 64) { g.beginPath(); g.moveTo(k, 0); g.lineTo(k + h, h); g.stroke(); g.beginPath(); g.moveTo(k + h, 0); g.lineTo(k, h); g.stroke(); }
-    g.fillStyle = "rgba(255,236,210,.9)"; for (let x = 0; x < w + 64; x += 64) for (let y = 0; y < h + 64; y += 64) { const ox = (Math.round(y / 64) % 2) * 32; g.beginPath(); g.arc(x + ox, y, 3.5, 0, 7); g.fill(); }
-    g.font = "italic 400 300px 'Bodoni Moda', Didot, Georgia, serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillStyle = "rgba(246,221,168,.95)"; g.fillText("F", w / 2, h / 2 + 10);
-  });
-  mirror = SH(new THREE.Mesh(og, phys({ map: quilt, roughness: .9, sheen: 1, sheenRoughness: .5, sheenColor: new THREE.Color(0xFFB7CF) })), false, true);
-  mirror.rotation.x = Math.PI / 2; mirror.position.set(0, -.02, BD / 2); lid.add(mirror);
-  const frameG = new THREE.TorusGeometry(1, .05, 14, 140); frameG.scale(1.5, 1.08, 1);
-  const frame = SH(new THREE.Mesh(frameG, M.gold)); frame.rotation.x = Math.PI / 2; frame.position.set(0, -.04, BD / 2); lid.add(frame);
-  for (let i = 0; i < 18; i++) { const a = i / 18 * Math.PI * 2; const p = sphere(.035, M.pearl, 12, 8); p.position.set(Math.cos(a) * 1.5 * 1.1, -.03, BD / 2 + Math.sin(a) * 1.08 * 1.12); lid.add(p); }
 }
 // a chavinha de dar corda (lado direito)
 const key = new THREE.Group(); key.position.set(BW / 2 + .03, -.92, 0); stage.add(key);
@@ -251,8 +237,8 @@ const torso = lathe(torsoP, M.skin); torso.scale.z = .74; J.spine.add(torso);
   const gemG = new THREE.OctahedronGeometry(.0055);
   for (let k = 0; k < 26; k++) { const y = .0 + (k % 9) * .03, x = ((k / 9 | 0) - 1) * .028 + (k % 2 ? .008 : -.008); const tp = torsoP.find(q => q[1] >= y); const r = (tp ? tp[0] : .08) + .007; if (Math.abs(x) > r) continue; const gm = new THREE.Mesh(gemG, M.gem); gm.position.set(x, y, Math.sqrt(r * r - x * x) * .76); J.spine.add(gm); }
 }
-const neck = lathe([[0, .37], [.032, .375], [.027, .43], [.024, .48], [0, .5]], M.skin); J.spine.add(neck);
-J.head = new THREE.Group(); J.head.position.y = .47; J.head.scale.setScalar(1.08); J.spine.add(J.head);
+const neck = lathe([[0, .37], [.036, .375], [.031, .42], [.029, .46], [0, .49]], M.skin); J.spine.add(neck);
+J.head = new THREE.Group(); J.head.position.y = .455; J.head.scale.setScalar(1.3); J.spine.add(J.head);
 const headC = new THREE.Vector3(0, .1, .006);
 const head = sphere(.08, M.skin, 48, 32); head.scale.set(.86, 1.06, .95); head.position.copy(headC); J.head.add(head);
 // queixo delicado
@@ -297,14 +283,14 @@ const flowers = new THREE.Group(); J.head.add(flowers);
 function arm(side) {
   const s = side === "R" ? 1 : -1;
   const sh = new THREE.Group(); sh.position.set(.104 * s, .362, 0); J.spine.add(sh);
-  sh.add(sphere(.028, M.skin));
-  sh.add(lathe(limbProf(.25, .032, .021, t => .003 * Math.sin(Math.PI * t)), M.skin, 28));
-  const el = new THREE.Group(); el.position.y = -.25; sh.add(el);
-  el.add(sphere(.018, M.skin, 16, 12));
-  el.add(lathe(limbProf(.22, .021, .013, t => .0025 * Math.sin(Math.PI * t * .8)), M.skin, 28));
-  const wr = new THREE.Group(); wr.position.y = -.22; el.add(wr);
-  const palm = lathe(limbProf(.055, .012, .009), M.skin, 20); palm.scale.set(1.1, 1, .5); wr.add(palm);
-  for (let k = 0; k < 4; k++) { const f = lathe(limbProf(.04 - Math.abs(k - 1.5) * .004, .0035, .0025), M.skin, 10); f.position.set((k - 1.5) * .0055, -.055, 0); f.rotation.z = (k - 1.5) * .08; wr.add(f); }
+  sh.add(sphere(.036, M.skin));
+  sh.add(lathe(limbProf(.22, .037, .027, t => .004 * Math.sin(Math.PI * t)), M.skin, 32));
+  const el = new THREE.Group(); el.position.y = -.22; sh.add(el);
+  el.add(sphere(.026, M.skin, 20, 14));
+  el.add(lathe(limbProf(.2, .027, .018, t => .004 * Math.sin(Math.PI * t * .8)), M.skin, 32));
+  const wr = new THREE.Group(); wr.position.y = -.2; el.add(wr);
+  const palm = sphere(.024, M.skin, 20, 14); palm.scale.set(.9, 1.7, .55); palm.position.y = -.034; wr.add(palm);
+  const thumb = sphere(.009, M.skin, 12, 8); thumb.scale.set(.8, 1.8, .8); thumb.position.set(-s * .014, -.03, .006); thumb.rotation.z = -s * .5; wr.add(thumb);
   J["sh" + side] = sh; J["el" + side] = el; J["wr" + side] = wr;
 }
 arm("R"); arm("L");
@@ -313,12 +299,12 @@ const markers = [];
 function leg(side) {
   const s = side === "R" ? 1 : -1;
   const hip = new THREE.Group(); hip.position.set(.052 * s, -.035, 0); pelvis.add(hip);
-  hip.add(lathe(limbProf(.4, .064, .038, t => .006 * Math.sin(Math.PI * t * .9)), M.tights, 32));
+  hip.add(lathe(limbProf(.4, .072, .046, t => .008 * Math.sin(Math.PI * t * .9)), M.tights, 40));
   const kn = new THREE.Group(); kn.position.y = -.4; hip.add(kn);
-  kn.add(sphere(.032, M.tights, 20, 14));
-  kn.add(lathe(limbProf(.38, .038, .021, t => .012 * Math.exp(-(((t - .27) / .17) ** 2))), M.tights, 32));
+  kn.add(sphere(.042, M.tights, 24, 16));
+  kn.add(lathe(limbProf(.38, .045, .024, t => .015 * Math.exp(-(((t - .27) / .17) ** 2))), M.tights, 40));
   const an = new THREE.Group(); an.position.y = -.38; kn.add(an);
-  const shoe = lathe(limbProf(.145, .021, .013, t => .002 * Math.sin(Math.PI * t)), M.shoe, 28); shoe.scale.z = .9; an.add(shoe);
+  const shoe = lathe(limbProf(.145, .025, .015, t => .003 * Math.sin(Math.PI * t)), M.shoe, 32); shoe.scale.z = .9; an.add(shoe);
   const box = SH(new THREE.Mesh(new THREE.CylinderGeometry(.012, .012, .006, 16), M.shoe)); box.position.y = -.157; an.add(box);
   for (const r of [1.1, -1.1]) { const rb = SH(new THREE.Mesh(new THREE.TorusGeometry(.0205, .0024, 6, 28), M.shoe)); rb.rotation.x = r; rb.position.y = .006; an.add(rb); }
   const tip = new THREE.Object3D(); tip.position.y = -.162; an.add(tip);
@@ -335,7 +321,7 @@ const tutuLayers = [];
   const NL = MOB ? 7 : 10, RS = MOB ? 120 : 180, RR = 10;
   for (let l = 0; l < NL; l++) {
     const k = l / (NL - 1);
-    const L = { rIn: .074, rOut: .46 - k * .09, drop: .28 - k * .15, y0: k * .022, seed: l * 1.9, RS, RR, l, amp: .011 + (1 - k) * .006, freq: 9 + (l % 3) * 2 };
+    const L = { rIn: .078, rOut: .5 - k * .1, drop: .13 - k * .07, y0: k * .016, seed: l * 1.9, RS, RR, l, amp: .016 + (1 - k) * .008, freq: 11 + (l % 3) * 2 };
     const pos = new Float32Array((RR + 1) * (RS + 1) * 3), idx = [];
     for (let j = 0; j < RR; j++) for (let i = 0; i < RS; i++) { const a = j * (RS + 1) + i, b = a + RS + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
     const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.BufferAttribute(pos, 3)); g.setIndex(idx);
@@ -560,7 +546,6 @@ addEventListener("pointerup", e => {
   const hk = first(key); if (hk) { keySpin = 8; if (!boxOpen) { openBox(); } turnT = 8; ev("corda"); seedBurst(hk.point, 30, .6); return; }
   if (!boxOpen) { if (first(stage)) { openBox(); ev("abrir"); } return; }
   if (risen && first(dancer)) { window.dispatchEvent(new CustomEvent("caixa-tap")); return; }
-  const hm = first(mirror); if (hm) { mirrorFlash = 1.4; seedBurst(hm.point, 60, .8); ev("espelho"); return; }
   if (first(lid)) { closeBox(); ev("fechar"); return; }
   const hp = first(pearls); if (hp) { seedBurst(hp.point, 40, .7); ev("perolas"); return; }
   const hs = first(stage); if (hs) { seedBurst(hs.point, 24, .6); return; }

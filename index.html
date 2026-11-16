@@ -1332,31 +1332,60 @@ html:not(.shop) #camarim{display:none!important}
 #dk-go:disabled{display:none!important}
 .ft-grid{grid-template-columns:1fr!important;width:min(520px,100%)!important}
 .ft-bis{font-family:var(--body)!important;font-style:normal!important;font-weight:800;font-size:15px!important}
+/* abertura: fundo branco e a Irene fazendo 3 passos rápidos */
+.loader{background:#fff!important}
+.loader .lg{gap:0}
+.ld3 svg{display:block;overflow:visible}
+.ld3 .p{opacity:0;animation:ldp 1.8s steps(1,end) infinite}
+.ld3 .p1{animation-delay:0s}.ld3 .p2{animation-delay:-1.2s}.ld3 .p3{animation-delay:-.6s}
+@keyframes ldp{0%{opacity:1}33.33%{opacity:0}100%{opacity:0}}
+.ld3{animation:ldhop .6s ease-in-out infinite}
+@keyframes ldhop{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){.ld3,.ld3 .p{animation:none}.ld3 .p2{opacity:1}}
 </style>
 </head>
 <body>
 <div class="loader" id="loader" aria-hidden="true"><div class="lg">
-  <div class="ld-stage"><span class="ld-glow"></span><svg class="ld-ring" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="2"/><circle cx="100" cy="100" r="92" fill="none" stroke="url(#ldrg)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="150 430"/><circle cx="100" cy="8" r="4.5" fill="#FFF3CF"/><defs><linearGradient id="ldrg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF3CF"/><stop offset="1" stop-color="#E8C27A" stop-opacity="0"/></linearGradient></defs></svg><span class="ld-spk s1">✦</span><span class="ld-spk s2">✧</span><span class="ld-spk s3">✦</span>
-    <span class="ld-note n1">♪</span><span class="ld-note n2">♫</span><span class="ld-note n3">♪</span>
-    <div class="ld-pir"><svg viewBox="0 0 120 210" width="124" height="216"><defs><radialGradient id="ldck" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#F28CA8" stop-opacity=".75"/><stop offset="1" stop-color="#F28CA8" stop-opacity="0"/></radialGradient></defs>
-      <path d="M50 76C37 57 41 30 60 25C79 30 83 57 70 76" fill="none" stroke="#EDC3A6" stroke-width="5.2" stroke-linecap="round"/>
-      <path d="M59.5 120L60.5 182" stroke="#231A26" stroke-width="7.5" stroke-linecap="round"/><path d="M60.5 182L59.6 193" stroke="#F4A9BE" stroke-width="6.5" stroke-linecap="round"/>
-      <path d="M62 122C74 129 83 139 81 147C75 154 68 156 62 158" fill="none" stroke="#2B2030" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M48.5 73Q60 67 71.5 73L69.5 103Q67 119 60 122Q53 119 50.5 103Z" fill="#231A26"/>
-      <path d="M53 72.5Q60 80 67 72.5" fill="#EDC3A6"/><path d="M52 98Q60 101 68 98" stroke="#F4A9BE" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <rect x="56.5" y="59" width="7" height="10" rx="3.5" fill="#EDC3A6"/>
-      <circle cx="60" cy="46" r="15.5" fill="#EDC3A6"/>
-      <path d="M44 48C43 33 51 27 60 27C69 27 77 33 76 48C74 40 68 35.5 60 35.5C52 35.5 46 40 44 48Z" fill="#4A2F22"/>
-      <path d="M44.5 46C42 52 43 58 46 61M75.5 46C78 52 77 58 74 61" stroke="#4A2F22" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-      <circle cx="60" cy="25" r="8" fill="#4A2F22"/><path d="M53.5 24.5Q60 20 66.5 24.5" stroke="#6B4632" stroke-width="1.4" fill="none"/>
-      <path d="M52.5 47.5q2.6 2.2 5.2 0M62.3 47.5q2.6 2.2 5.2 0" stroke="#3A2030" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <circle cx="51" cy="53.5" r="4" fill="url(#ldck)"/><circle cx="69" cy="53.5" r="4" fill="url(#ldck)"/>
-      <path d="M56.5 55.5q3.5 2.6 7 0" stroke="#B5466F" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-    </svg></div>
-    <svg class="ld-base" viewBox="0 0 120 30" aria-hidden="true"><ellipse cx="60" cy="9" rx="44" ry="7" fill="#F6DDA8"/><path d="M16 9v9c0 4 20 8 44 8s44-4 44-8V9c0 4-20 8-44 8S16 13 16 9Z" fill="#D9A867"/><ellipse cx="60" cy="9" rx="44" ry="7" fill="none" stroke="#fff" stroke-opacity=".6"/><g class="ld-key" style="transform-origin:107px 16px"><path d="M104 16h7" stroke="#C9974F" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="114" cy="12.5" rx="2.6" ry="3.4" fill="none" stroke="#C9974F" stroke-width="1.8"/><ellipse cx="114" cy="19.5" rx="2.6" ry="3.4" fill="none" stroke="#C9974F" stroke-width="1.8"/></g></svg>
-    <span class="ld-shadow"></span>
-  </div>
-  </div><span class="ld-sky" aria-hidden="true"></span></div>
+  <div class="ld3"><svg viewBox="0 0 120 210" width="150" height="262">
+    <ellipse cx="60" cy="196" rx="30" ry="5" fill="rgba(60,20,60,.12)"/>
+    <g class="p p1"><!-- plié: joelhos para fora, braços em baixo -->
+      <path d="M56 121L45 152L52 188" stroke="#231A26" stroke-width="7.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M64 121L75 152L68 188" stroke="#231A26" stroke-width="7.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M52 188L47 192M68 188L73 192" stroke="#F4A9BE" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <g transform="translate(0 8)"><path d="M50 76C40 92 44 106 55 111M70 76C80 92 76 106 65 111" stroke="#EDC3A6" stroke-width="5.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="56.5" y="59" width="7" height="10" rx="3.5" fill="#EDC3A6"/>
+        <path d="M48.5 73Q60 67 71.5 73L69.5 103Q67 119 60 122Q53 119 50.5 103Z" fill="#231A26"/><path d="M53 72.5Q60 80 67 72.5" fill="#EDC3A6"/><path d="M52 98Q60 101 68 98" stroke="#F4A9BE" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="60" cy="46" r="15.5" fill="#EDC3A6"/>
+        <path d="M44 48C43 33 51 27 60 27C69 27 77 33 76 48C74 40 68 35.5 60 35.5C52 35.5 46 40 44 48Z" fill="#4A2F22"/>
+        <circle cx="60" cy="25" r="8" fill="#4A2F22"/>
+        <path d="M52.5 47.5q2.6 2.2 5.2 0M62.3 47.5q2.6 2.2 5.2 0" stroke="#3A2030" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <circle cx="51" cy="53.5" r="3.6" fill="#F28CA8" opacity=".45"/><circle cx="69" cy="53.5" r="3.6" fill="#F28CA8" opacity=".45"/>
+        <path d="M56.5 55.5q3.5 2.6 7 0" stroke="#B5466F" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>
+    </g>
+    <g class="p p2"><!-- relevé em passé, braços em coroa -->
+      <path d="M59.5 120L60.5 182" stroke="#231A26" stroke-width="7.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M60.5 182L59.6 193" stroke="#F4A9BE" stroke-width="6.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M62 122C74 129 83 139 81 147C75 154 68 156 62 158" stroke="#2B2030" stroke-width="7.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <g transform="translate(0 -6)"><path d="M50 76C37 57 41 30 60 25C79 30 83 57 70 76" stroke="#EDC3A6" stroke-width="5.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="56.5" y="59" width="7" height="10" rx="3.5" fill="#EDC3A6"/>
+        <path d="M48.5 73Q60 67 71.5 73L69.5 103Q67 119 60 122Q53 119 50.5 103Z" fill="#231A26"/><path d="M53 72.5Q60 80 67 72.5" fill="#EDC3A6"/><path d="M52 98Q60 101 68 98" stroke="#F4A9BE" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="60" cy="46" r="15.5" fill="#EDC3A6"/>
+        <path d="M44 48C43 33 51 27 60 27C69 27 77 33 76 48C74 40 68 35.5 60 35.5C52 35.5 46 40 44 48Z" fill="#4A2F22"/>
+        <circle cx="60" cy="25" r="8" fill="#4A2F22"/>
+        <path d="M52.5 47.5q2.6 2.2 5.2 0M62.3 47.5q2.6 2.2 5.2 0" stroke="#3A2030" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <circle cx="51" cy="53.5" r="3.6" fill="#F28CA8" opacity=".45"/><circle cx="69" cy="53.5" r="3.6" fill="#F28CA8" opacity=".45"/>
+        <path d="M56.5 55.5q3.5 2.6 7 0" stroke="#B5466F" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>
+    </g>
+    <g class="p p3"><!-- arabesque -->
+      <path d="M59 120L60 186" stroke="#231A26" stroke-width="7.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 186L65 192" stroke="#F4A9BE" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M61 118L104 104" stroke="#2B2030" stroke-width="7.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M104 104L112 101" stroke="#F4A9BE" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <g transform="rotate(-10 60 120)"><path d="M50 76L20 58M70 76L98 86" stroke="#EDC3A6" stroke-width="5.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="56.5" y="59" width="7" height="10" rx="3.5" fill="#EDC3A6"/>
+        <path d="M48.5 73Q60 67 71.5 73L69.5 103Q67 119 60 122Q53 119 50.5 103Z" fill="#231A26"/><path d="M53 72.5Q60 80 67 72.5" fill="#EDC3A6"/><path d="M52 98Q60 101 68 98" stroke="#F4A9BE" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="60" cy="46" r="15.5" fill="#EDC3A6"/>
+        <path d="M44 48C43 33 51 27 60 27C69 27 77 33 76 48C74 40 68 35.5 60 35.5C52 35.5 46 40 44 48Z" fill="#4A2F22"/>
+        <circle cx="60" cy="25" r="8" fill="#4A2F22"/>
+        <path d="M52.5 47.5q2.6 2.2 5.2 0M62.3 47.5q2.6 2.2 5.2 0" stroke="#3A2030" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <circle cx="51" cy="53.5" r="3.6" fill="#F28CA8" opacity=".45"/><circle cx="69" cy="53.5" r="3.6" fill="#F28CA8" opacity=".45"/>
+        <path d="M56.5 55.5q3.5 2.6 7 0" stroke="#B5466F" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>
+    </g>
+  </svg></div>
+</div></div>
 <canvas id="trail" aria-hidden="true"></canvas>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
