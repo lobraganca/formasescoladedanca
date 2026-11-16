@@ -29,8 +29,9 @@ export default async function handler(req, res) {
       const tz = String(body?.tz || "").slice(0, 40);
       const tzBR = /^America\/(Sao_Paulo|Bahia|Fortaleza|Recife|Belem|Maceio|Araguaina|Manaus|Cuiaba|Campo_Grande|Porto_Velho|Boa_Vista|Rio_Branco|Santarem|Eirunepe|Noronha)$/.test(tz);
       if (country && country !== "BR") {
-        if (!tz || /^(UTC|Etc\/|GMT)/.test(tz)) return res.status(204).end();
-        if (tzBR) { country = "BR"; region = ""; city = ""; }
+        // fora do Brasil só conta se o aparelho estiver no fuso do Brasil (brasileira viajando); o resto é robô de servidor
+        if (!tzBR) return res.status(204).end();
+        country = "BR"; region = ""; city = "";
       }
       const add = (name, field) => { if (field) cmds.push(["HINCRBY", k(name), field, 1], ["EXPIRE", k(name), TTL]); };
       add("dev", device);
