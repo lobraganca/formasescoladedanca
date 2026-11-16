@@ -1634,6 +1634,17 @@ html.shop .metam{display:none!important}
 .tcard .chip.ask::before{background:#7E5BC8!important;box-shadow:0 0 0 0 rgba(126,91,200,.6)!important;animation:chpulse 1.6s ease-out infinite}
 @keyframes chpulse{0%{box-shadow:0 0 0 0 rgba(126,91,200,.6)}70%{box-shadow:0 0 0 8px rgba(126,91,200,0)}100%{box-shadow:0 0 0 0 rgba(126,91,200,0)}}
 @media (prefers-reduced-motion:reduce){.tcard .chip.ask::before{animation:none}}
+/* endereço com mapinha no rodapé */
+.ft-map{position:relative;z-index:2;display:grid;gap:12px;padding:16px;border-radius:22px;background:#FFF9F4;color:#2A1236;box-shadow:0 26px 44px -26px rgba(0,0,0,.7);max-width:440px;width:100%;box-sizing:border-box}
+.fm-h{display:flex;align-items:center;gap:12px}
+.fm-ic{width:42px;height:42px;flex:none;border-radius:13px;display:grid;place-items:center;background:#F8DDE7;color:#B12E64}
+.fm-h div{display:grid;gap:1px}.fm-h small{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#B8577A}
+.fm-h b{font-size:17px;font-weight:800}.fm-h span{font-size:14px;color:#5B4262}
+.fm-frame{border-radius:14px;overflow:hidden;aspect-ratio:16/10;background:#EDE3E8}
+.fm-frame iframe{width:100%;height:100%;border:0;display:block}
+.fm-go{justify-self:start;display:inline-flex;align-items:center;gap:6px;padding:10px 16px;border-radius:999px;background:#2A1838;color:#fff;font-weight:800;font-size:14px;text-decoration:none}
+.ft-grid{display:grid!important;gap:20px!important;justify-items:center}
+@media (min-width:900px){.ft-grid{grid-template-columns:repeat(2,minmax(0,440px));justify-content:center;align-items:start}}
 </style>
 </head>
 <body>
@@ -2006,6 +2017,11 @@ html.shop .metam{display:none!important}
           </div>
           <div class="tk-stub" aria-hidden="true"><b>Admite 1 bailarina</b><i class="tk-bar"></i></div>
         </div>
+        <div class="ft-map">
+          <div class="fm-h"><span class="fm-ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span><div><small>Onde são as aulas</small><b>Rua Carlos Michel, nº 1</b><span>Centro · Itabirito, MG</span></div></div>
+          <div class="fm-frame"><iframe title="Mapa: Formas Escola de Dança, Rua Carlos Michel, 1, Centro, Itabirito" src="https://www.google.com/maps?q=Rua+Carlos+Michel,+1,+Centro,+Itabirito+-+MG&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+          <a class="fm-go" href="https://www.google.com/maps/search/?api=1&query=Rua+Carlos+Michel,+1,+Centro,+Itabirito+-+MG" target="_blank" rel="noopener">Como chegar <span aria-hidden="true">→</span></a>
+        </div>
       </div>
       <a class="ft-bis" href="#top">Voltar ao topo <span aria-hidden="true">↑</span></a>
     </div>
@@ -2039,7 +2055,7 @@ html.shop .metam{display:none!important}
 window.fairyAt=function(){};
 var API=(/^https?:$/.test(location.protocol)&&!/claude|anthropic|usercontent|localhost|127\.0\.0\.1/.test(location.host))?"/api":"";
 var DEFAULT_SITE={
-  whatsapp:"31984552588",instagram:"formasescoladedanca",endereco:"",horario:"",
+  whatsapp:"31984552588",instagram:"formasescoladedanca",endereco:"Rua Carlos Michel, 1 - Centro, Itabirito - MG",horario:"",
   sobre:"Irene Melillo dá aula para crianças, adolescentes e adultos, conduz cada turma de perto e conhece cada aluno pelo nome.\nNa sala dela, a técnica do balé caminha junto com a música, a expressão e o respeito pelo tempo de cada um. Cada pessoa encontra a sua forma de dançar.",
   turmas:[
     {id:"baby",nome:"Baby Class",idadeMin:3,idadeMax:4,desc:"O primeiro contato com a dança: música, imaginação e coordenação.",dias:[],hIni:"",hFim:"",status:"consultar",site:true},
@@ -2251,7 +2267,7 @@ function renderContact(){
   if(SITE.endereco)h+='<a class="crow" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(SITE.endereco)+'" target="_blank" rel="noopener"><span class="ic"><svg><use href="#pin"/></svg></span><div><small>Endereço</small><b>'+esc(SITE.endereco)+'</b></div></a>';
   if(SITE.horario)h+='<div class="crow"><span class="ic"><svg><use href="#clock"/></svg></span><div><small>Atendimento</small><b>'+esc(SITE.horario)+'</b></div></div>';
   $("cinfo").innerHTML=h;
-  var fe=$("f-end");if(SITE.endereco){fe.hidden=false;fe.textContent=SITE.endereco;fe.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(SITE.endereco)}
+  var fe=$("f-end");if(SITE.endereco){fe.hidden=true;fe.textContent=SITE.endereco;fe.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(SITE.endereco)}
   $("f-ig").href="https://www.instagram.com/"+ig;$("f-ig").textContent="@"+ig;
   renderSobre();wireWa();
 }
