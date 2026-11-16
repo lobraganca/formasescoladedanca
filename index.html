@@ -2231,7 +2231,7 @@ function openLB(kind,list,i){LB={k:kind,l:list,i:i};drawLB();$("lb").classList.a
 function drawLB(){
   var it=LB.l[LB.i],h="";
   if(LB.k==="f")h='<img src="'+esc(it.src)+'" alt="'+esc(it.leg||"")+'">'+(it.leg?'<p>'+esc(it.leg)+'</p>':'');
-  else{var x=vinfo(it);h='<div class="vid'+(x.tall?" tall":"")+'">'+(x.t==="mp4"?'<video src="'+esc(x.src)+'" controls autoplay playsinline></video>':'<iframe src="'+esc(x.emb)+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="'+esc(it.titulo||"Vídeo")+'"></iframe>')+'</div>'+(it.titulo?'<p>'+esc(it.titulo)+'</p>':'')}
+  else{var x=vinfo(it);h='<div class="vid'+(x.tall?" tall":"")+'">'+(x.t==="mp4"?'<video src="'+esc(x.src)+'" controls autoplay muted playsinline></video>':'<iframe src="'+esc(x.emb)+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="'+esc(it.titulo||"Vídeo")+'"></iframe>')+'</div>'+(it.titulo?'<p>'+esc(it.titulo)+'</p>':'')}
   $("lb-box").innerHTML=h;$("lb-p").hidden=$("lb-n").hidden=LB.l.length<2;
 }
 function closeLB(){$("lb").classList.remove("on");$("lb-box").innerHTML="";document.body.style.overflow=""}
