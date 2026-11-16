@@ -52,9 +52,9 @@ const rnd = (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 21
 const M = {
   gold: phys({ color: 0xE6C27A, metalness: 1, roughness: .2, envMapIntensity: 1.15 }),
   // caixinha
-  lacquer: phys({ color: 0xF2BFD0, roughness: .3, clearcoat: 1, clearcoatRoughness: .06, sheen: .25, sheenColor: new THREE.Color(0xFFE8F0), envMapIntensity: .8 }),
+  lacquer: phys({ color: 0x5A2366, roughness: .22, clearcoat: 1, clearcoatRoughness: .04, sheen: .3, sheenColor: new THREE.Color(0xC9A6FF), envMapIntensity: 1.1 }),
   ivory: phys({ color: 0xFFF3EC, roughness: .38, clearcoat: .8, clearcoatRoughness: .12, envMapIntensity: .7 }),
-  velvet: phys({ color: 0xB8416E, roughness: 1, sheen: 1, sheenRoughness: .45, sheenColor: new THREE.Color(0xFFB7CF), envMapIntensity: .3 }),
+  velvet: phys({ color: 0xD9708F, roughness: 1, sheen: 1, sheenRoughness: .45, sheenColor: new THREE.Color(0xFFB7CF), envMapIntensity: .3 }),
   pearl: phys({ color: 0xFFF8F1, roughness: .12, clearcoat: 1, clearcoatRoughness: .05, iridescence: .7, iridescenceIOR: 1.5, sheen: .5, envMapIntensity: 1 }),
   // bailarina
   skin: phys({ color: 0xE9BC9C, roughness: .5, sheen: .5, sheenRoughness: .5, sheenColor: new THREE.Color(0xffd9cc), clearcoat: .2, clearcoatRoughness: .55 }),

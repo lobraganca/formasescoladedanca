@@ -357,7 +357,7 @@ var BNAV=["inicio","chamada","mensal","alunos","mais"];
 
 function defSite(){return{
   whatsapp:"31984552588",instagram:"formasescoladedanca",endereco:"",horario:"",
-  sobre:"Irene Melillo conduz cada aula de perto, conhece cada bailarina pelo nome e recebe as famílias como parte da escola.\nNa sala dela, a técnica do balé caminha junto com a brincadeira, a música e o respeito pelo tempo de cada criança. Cada uma encontra a sua forma de dançar.",
+  sobre:"Irene Melillo dá aula para crianças, adolescentes e adultos, conduz cada turma de perto e conhece cada aluno pelo nome.\nNa sala dela, a técnica do balé caminha junto com a música, a expressão e o respeito pelo tempo de cada um. Cada pessoa encontra a sua forma de dançar.",
   produtos:[
     {id:"collant",nome:"Collant",tipo:"collant",desc:"Collant do uniforme da turma.",preco:"",tamanhos:"2, 4, 6, 8, 10, 12, 14",cores:"",ativo:true},
     {id:"meia",nome:"Meia-calça",tipo:"meia",desc:"Meia-calça de balé.",preco:"",tamanhos:"P, M, G",cores:"",ativo:true},
@@ -377,7 +377,8 @@ function defTurmas(){return[
   {id:"pre",nome:"Pré-Ballet",idadeMin:5,idadeMax:6,desc:"Os primeiros passos do balé, com postura, ritmo e muita diversão.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[1],site:true,status:"auto"},
   {id:"inf1",nome:"Ballet Infantil I",idadeMin:7,idadeMax:8,desc:"Técnica clássica com base sólida: posições, barra e centro.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[2],site:true,status:"auto"},
   {id:"inf2",nome:"Ballet Infantil II",idadeMin:9,idadeMax:11,desc:"Mais técnica, giros e as primeiras coreografias completas.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[3],site:true,status:"auto"},
-  {id:"juv",nome:"Ballet Juvenil",idadeMin:12,idadeMax:17,desc:"Para quem quer ir além: técnica, expressão e palco.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[4],site:true,status:"auto"}]}
+  {id:"juv",nome:"Ballet Juvenil",idadeMin:12,idadeMax:17,desc:"Para adolescentes que querem ir além: técnica, expressão e palco.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[4],site:true,status:"auto"},
+  {id:"adulto",nome:"Ballet Adulto",idadeMin:18,idadeMax:99,desc:"Nunca é tarde para começar: técnica, alongamento e expressão, no seu ritmo.",dias:[],hIni:"",hFim:"",cap:"",valor:"",cor:TCOL[5],site:true,status:"auto"}]}
 function defEscola(){return{v:1,turmas:defTurmas(),alunos:[],pag:{},cham:{},hist:[],caixa:[],site:defSite()}}
 
 /* ---------- utilidades ---------- */
@@ -612,7 +613,7 @@ document.addEventListener("change",function(e){
   a.turmaId=to;E().hist.unshift({q:new Date().toISOString(),a:a.id,t:"Mudou de "+((turma(from)||{}).nome||"sem turma")+" para "+tt.nome});S.open[to]=true;touch();render();
   toast(first(a.nome)+" agora está em "+tt.nome,function(){a.turmaId=from;E().hist.shift();touch();render()});
 });
-function ageTxt(t){if(!t.idadeMin&&!t.idadeMax)return "todas as idades";if(+t.idadeMax>=17)return t.idadeMin+"+ anos";return t.idadeMin+" a "+t.idadeMax+" anos"}
+function ageTxt(t){if(!t.idadeMin&&!t.idadeMax)return "todas as idades";if(+t.idadeMax>=60)return t.idadeMin+"+ anos";return t.idadeMin+" a "+t.idadeMax+" anos"}
 function diasTxt(d){d=(d||[]).slice().sort();return d.map(function(i){return DIAS[i]}).join(", ")}
 function turmaSheet(id){
   var t=id?turma(id):{id:"",nome:"",idadeMin:"",idadeMax:"",desc:"",dias:[],hIni:"",hFim:"",cap:"",valor:"",prof:"",cor:TCOL[E().turmas.length%TCOL.length],site:true,status:"auto"};

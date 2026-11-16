@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Formas Escola de Dança · A caixinha de música do balé</title>
-<meta name="description" content="Formas Escola de Dança: balé infantil. Abra a caixinha de música, faça a bailarina dançar, veja os espetáculos, encontre a turma da sua criança e peça o uniforme no Camarim.">
+<meta name="description" content="Formas Escola de Dança: balé para crianças, adolescentes e adultos. Abra a caixinha de música, faça a bailarina dançar, veja os espetáculos, encontre a turma da sua criança e peça o uniforme no Camarim.">
 <meta name="theme-color" content="#E7E1F7">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Formas Escola de Dança · A caixinha de música do balé">
-<meta property="og:description" content="Toda criança tem a sua forma de dançar. Turmas de balé infantil, espetáculos, fila de espera e Camarim com tudo o que sua bailarina precisa.">
+<meta property="og:description" content="Cada pessoa tem a sua forma de dançar. Turmas de balé para crianças, adolescentes e adultos, espetáculos, fila de espera e Camarim com tudo o que sua bailarina precisa.">
 <meta property="og:image" content="https://www.formasescoladedanca.com.br/og.jpg">
 <meta property="og:url" content="https://www.formasescoladedanca.com.br/">
 <meta name="twitter:card" content="summary_large_image">
@@ -1305,6 +1305,29 @@ html:not(.shop) #camarim{display:none!important}
 @keyframes ldtw{from{opacity:.25}to{opacity:1}}
 .loader .lg{z-index:2}
 @media (prefers-reduced-motion:reduce){.ld-ring,.ld-sky,.ld-sky::after{animation:none}}
+.sb-say::before{content:none!important;display:none!important}
+/* rodapé: sanefa limpa e selo do ingresso sem cortar texto */
+.ft-valance{height:40px!important;-webkit-mask:none!important;mask:none!important;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35));background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='40' viewBox='0 0 64 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%237A1A45'/%3E%3Cstop offset='1' stop-color='%23A8326A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 0H64V14Q64 38 32 38Q0 38 0 14Z' fill='url(%23g)'/%3E%3Cpath d='M0 14Q0 38 32 38Q64 38 64 14' fill='none' stroke='%23E8C27A' stroke-width='2'/%3E%3C/svg%3E") 0 0/64px 40px repeat-x!important}
+.ft-valance::after{top:0!important;height:4px!important}
+.tk-stub{flex-basis:84px!important;gap:10px!important}
+.tk-stub small{display:none!important}
+.tk-stub b{font-size:16px!important}
+.tk-stub::after{content:"✦";color:#B8577A;font-size:16px}
+.ft-ticket{-webkit-mask:radial-gradient(circle at calc(100% - 84px) 0,transparent 12px,#000 13px) top/100% 51% no-repeat,radial-gradient(circle at calc(100% - 84px) 100%,transparent 12px,#000 13px) bottom/100% 51% no-repeat!important;mask:radial-gradient(circle at calc(100% - 84px) 0,transparent 12px,#000 13px) top/100% 51% no-repeat,radial-gradient(circle at calc(100% - 84px) 100%,transparent 12px,#000 13px) bottom/100% 51% no-repeat!important}
+.tk-main .ft-h{letter-spacing:.14em}
+/* celular: sem painel branco embaixo da bailarina, só o botão */
+@media (max-width:860px){
+  #reino .h3-dock{background:transparent!important;box-shadow:none!important;margin-top:-86px!important;z-index:7}
+  #reino .h3-dock .dock-h,#reino .h3-dock .roster{display:none!important}
+  #reino .h3-dock .dock-in{padding-top:0!important;padding-bottom:18px!important}
+  #reino .h3-dock #dk-go{box-shadow:0 14px 30px -12px rgba(194,56,111,.75)}
+  #reino .h3-dock #dk-go:disabled{opacity:.92;background:rgba(255,255,255,.85)!important;color:var(--ink)!important;border:1.5px solid rgba(58,40,80,.15)}
+}
+/* título do topo: "Formas" grande e "escola de dança" numa linha só */
+.hero3d h1 .g{display:block;font-size:.4em!important;letter-spacing:.04em;line-height:1.05;margin-top:.14em;white-space:nowrap}
+.hero3d h1{font-size:clamp(64px,8vw,128px)!important;line-height:.88!important}
+@media (max-width:860px){.hero3d h1{font-size:clamp(66px,21vw,92px)!important;margin-bottom:10px!important}.hero3d h1 .g{font-size:.37em!important}.h3-ui{padding-top:84px!important}.hero3d .hero-sub{font-size:14.5px;margin:6px 0 12px;max-width:34ch}.hero3d .tag-l{font-size:11px}}
+@media (max-width:860px){.hero3d .tag-l{letter-spacing:.06em!important;white-space:nowrap;font-size:10.5px!important}}
 </style>
 </head>
 <body>
@@ -1371,8 +1394,8 @@ html:not(.shop) #camarim{display:none!important}
   <img class="r-fb" src="logo-white.png" alt="">
   <div class="wrap h3-ui">
     <div class="h3-copy">
-      <p class="tag-l"><b>Balé</b>infantil com a Irene</p>
-      <h1><span>Formas</span><span class="g">escola de</span><span class="g">dança</span></h1>
+      <p class="tag-l"><b>Balé</b>crianças, adolescentes e adultos</p>
+      <h1><span>Formas</span><span class="g">escola de dança</span></h1>
       <p class="hero-sub">Monte a sua bailarina: escolha a pele, o vestido e a sapatilha. Depois, veja ela dançar na caixinha de música.</p>
       <a class="h3-go" href="#turmas"><span class="dot"></span><span>Ver vagas e horários</span><b>→</b></a>
     </div>
@@ -1401,7 +1424,7 @@ html:not(.shop) #camarim{display:none!important}
       <small class="h3k">Coreografia</small><p class="co-t">Monte a sua coreografia: toque nos passos na ordem que quiser (até 8).</p>
       <div class="co-add"><button type="button" data-co="plie"><svg aria-hidden="true"><use href="#s-plie"/></svg>Plié</button><button type="button" data-co="releve"><svg aria-hidden="true"><use href="#s-releve"/></svg>Relevé</button><button type="button" data-co="arabesque"><svg aria-hidden="true"><use href="#s-arab"/></svg>Arabesque</button><button type="button" data-co="pirouette"><svg aria-hidden="true"><use href="#s-pir"/></svg>Pirouette</button></div>
       <div class="co-seq" id="co-seq"></div>
-      <div class="dact"><div class="dact"><button class="btn goldb" type="button" id="co-play">▶ Dançar a coreografia</button><button class="btn ghost" type="button" id="co-clr">Limpar</button></div>
+      <div class="dact"><button class="btn goldb" type="button" id="co-play">▶ Dançar a coreografia</button><button class="btn ghost" type="button" id="co-clr">Limpar</button></div>
     </div>
     <div id="dk-vestir" hidden><small class="h3k">Vestir a bailarina</small><div class="dress" id="dress"></div></div>
   </div>
@@ -1428,10 +1451,10 @@ html:not(.shop) #camarim{display:none!important}
         </div>
         <div class="wz-blk">
           <div class="wz-bh"><span class="wz-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.6" r="2.4" fill="currentColor"/><path d="M12 7.5v6M8 9.5l4 1.5 4-1.5M12 13.5l-2.6 7M12 13.5l2.6 7" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M6.5 13.5Q12 11 17.5 13.5Q16 15.5 12 15Q8 15.5 6.5 13.5Z" fill="currentColor"/></svg></span><div><b>A bailarina</b><small>a idade mostra as turmas certas</small></div></div>
-          <label class="wf ic-b"><span>Nome da bailarina</span><input id="w-cri" autocomplete="off" placeholder="Nome da criança"></label>
+          <label class="wf ic-b"><span>Nome da bailarina</span><input id="w-cri" autocomplete="off" placeholder="Nome de quem vai dançar"></label>
           <div class="wf"><span>Idade <em class="w-tap">👆 toque na idade da bailarina</em></span>
             <div class="w-ages" id="w-ages" role="radiogroup" aria-label="Idade da bailarina"></div>
-            <div class="w-age" hidden><button type="button" id="w-am" aria-label="Menos um ano">−</button><input id="w-ida" type="number" inputmode="numeric" min="2" max="17" value="5" aria-label="Idade"><b>anos</b><button type="button" id="w-ap" aria-label="Mais um ano">+</button></div>
+            <div class="w-age" hidden><button type="button" id="w-am" aria-label="Menos um ano">−</button><input id="w-ida" type="number" inputmode="numeric" min="2" max="99" value="5" aria-label="Idade"><b>anos</b><button type="button" id="w-ap" aria-label="Mais um ano">+</button></div>
             <p class="w-hint" id="w-hint"></p>
           </div>
         </div>
@@ -1447,9 +1470,6 @@ html:not(.shop) #camarim{display:none!important}
       </div>
       <div class="wz-p" id="wz3" hidden></div>
     </div>
-    <div class="sec-h rv" style="margin-top:clamp(70px,9vw,110px)"><span class="eyebrow"><b class="n">✦</b>Escolha a turma</span><h2 style="font-size:clamp(34px,4.4vw,58px)">Todas as <em>turmas</em></h2><p id="age-out"></p></div>
-    <div class="tbelt-nav"><button type="button" id="tb-p" aria-label="Turma anterior">‹</button><button type="button" id="tb-n" aria-label="Próxima turma">›</button></div>
-    <div class="tgrid" id="tgrid"></div>
   </div>
 </section>
 
@@ -1477,6 +1497,14 @@ html:not(.shop) #camarim{display:none!important}
 
 
 </div>
+
+<section class="sec stars" id="turmas-lista">
+  <div class="wrap">
+    <div class="sec-h rv"><span class="eyebrow"><b class="n">✦</b>Escolha a turma</span><h2 style="font-size:clamp(34px,4.4vw,58px)">Todas as <em>turmas</em></h2><p id="age-out"></p></div>
+    <div class="tbelt-nav"><button type="button" id="tb-p" aria-label="Turma anterior">‹</button><button type="button" id="tb-n" aria-label="Próxima turma">›</button></div>
+    <div class="tgrid" id="tgrid"></div>
+  </div>
+</section>
 
 
 <section class="sec stars" id="espetaculos">
@@ -1598,7 +1626,7 @@ html:not(.shop) #camarim{display:none!important}
       <div class="ft-spot">
         <span class="ft-beam" aria-hidden="true"></span>
         <img class="ft-logo" src="logo-white.png" alt="Formas Escola de Dança" width="728" height="536" loading="lazy">
-        <p class="ft-tag">Toda criança tem a sua forma de dançar.</p>
+        <p class="ft-tag">Cada pessoa tem a sua forma de dançar.</p>
         <p class="ft-fim"><span>fim do primeiro ato</span></p>
       </div>
       <div class="ft-grid">
@@ -1656,13 +1684,14 @@ window.fairyAt=function(){};
 var API=(/^https?:$/.test(location.protocol)&&!/claude|anthropic|usercontent|localhost|127\.0\.0\.1/.test(location.host))?"/api":"";
 var DEFAULT_SITE={
   whatsapp:"31984552588",instagram:"formasescoladedanca",endereco:"",horario:"",
-  sobre:"Irene Melillo conduz cada aula de perto, conhece cada bailarina pelo nome e recebe as famílias como parte da escola.\nNa sala dela, a técnica do balé caminha junto com a brincadeira, a música e o respeito pelo tempo de cada criança. Cada uma encontra a sua forma de dançar.",
+  sobre:"Irene Melillo dá aula para crianças, adolescentes e adultos, conduz cada turma de perto e conhece cada aluno pelo nome.\nNa sala dela, a técnica do balé caminha junto com a música, a expressão e o respeito pelo tempo de cada um. Cada pessoa encontra a sua forma de dançar.",
   turmas:[
     {id:"baby",nome:"Baby Class",idadeMin:3,idadeMax:4,desc:"O primeiro contato com a dança: música, imaginação e coordenação.",dias:[],hIni:"",hFim:"",status:"consultar",site:true},
     {id:"pre",nome:"Pré-Ballet",idadeMin:5,idadeMax:6,desc:"Os primeiros passos do balé, com postura, ritmo e muita diversão.",dias:[],hIni:"",hFim:"",status:"consultar",site:true},
     {id:"inf1",nome:"Ballet Infantil I",idadeMin:7,idadeMax:8,desc:"Técnica clássica com base sólida: posições, barra e centro.",dias:[],hIni:"",hFim:"",status:"consultar",site:true},
     {id:"inf2",nome:"Ballet Infantil II",idadeMin:9,idadeMax:11,desc:"Mais técnica, giros e as primeiras coreografias completas.",dias:[],hIni:"",hFim:"",status:"consultar",site:true},
-    {id:"juv",nome:"Ballet Juvenil",idadeMin:12,idadeMax:17,desc:"Para quem quer ir além: técnica, expressão e palco.",dias:[],hIni:"",hFim:"",status:"consultar",site:true}
+    {id:"juv",nome:"Ballet Juvenil",idadeMin:12,idadeMax:17,desc:"Para adolescentes que querem ir além: técnica, expressão e palco.",dias:[],hIni:"",hFim:"",status:"consultar",site:true},
+    {id:"adulto",nome:"Ballet Adulto",idadeMin:18,idadeMax:99,desc:"Nunca é tarde para começar: técnica, alongamento e expressão, no seu ritmo.",dias:[],hIni:"",hFim:"",status:"consultar",site:true}
   ],
   produtos:[
     {id:"collant",nome:"Collant",tipo:"collant",desc:"Collant do uniforme da turma.",preco:"",tamanhos:"2, 4, 6, 8, 10, 12, 14",cores:"",ativo:true},
@@ -1703,7 +1732,7 @@ function pub(acao,item){
 }
 
 /* ---------- turmas (portais) ---------- */
-function ageTxt(t){if(!t.idadeMin&&!t.idadeMax)return "Todas as idades";if(t.idadeMax>=17)return t.idadeMin+"+ anos";if(t.idadeMin===t.idadeMax)return t.idadeMin+" anos";return t.idadeMin+" a "+t.idadeMax+" anos"}
+function ageTxt(t){if(!t.idadeMin&&!t.idadeMax)return "Todas as idades";if(t.idadeMax>=60)return t.idadeMin+"+ anos";if(t.idadeMin===t.idadeMax)return t.idadeMin+" anos";return t.idadeMin+" a "+t.idadeMax+" anos"}
 function diasTxt(d){d=(d||[]).slice().sort();if(!d.length)return "";var n=d.map(function(i){return DIAS[i]});return n.length>1?n.slice(0,-1).join(", ")+" e "+n[n.length-1]:n[0]}
 function hTxt(h){if(!h)return "";var p=h.split(":");return +p[0]+"h"+(p[1]&&p[1]!=="00"?p[1]:"")}
 function statusOf(t){
@@ -1715,7 +1744,7 @@ function statusOf(t){
 }
 function turmasSite(){return (SITE.turmas||[]).filter(function(t){return t.site!==false})}
 var ROM=["I","II","III","IV","V","VI","VII","VIII","IX","X"];
-var FEAT={baby:["Música e imaginação","Coordenação motora","Brincadeiras dançadas"],pre:["Postura e ritmo","Primeiras posições","Expressão e alegria"],inf1:["Barra e centro","Posições clássicas","Disciplina com leveza"],inf2:["Giros e saltos","Coreografias completas","Técnica clássica"],juv:["Técnica avançada","Expressão cênica","Palco e espetáculos"]};
+var FEAT={baby:["Música e imaginação","Coordenação motora","Brincadeiras dançadas"],pre:["Postura e ritmo","Primeiras posições","Expressão e alegria"],inf1:["Barra e centro","Posições clássicas","Disciplina com leveza"],inf2:["Giros e saltos","Coreografias completas","Técnica clássica"],juv:["Técnica avançada","Expressão cênica","Palco e espetáculos"],adulto:["Do básico ao avançado","Alongamento","Bem-estar e expressão"]};
 var FEATG=[FEAT.baby,FEAT.pre,FEAT.inf1,FEAT.inf2,FEAT.juv];
 function poseSVG(i){
   var P=[
@@ -1743,7 +1772,7 @@ function renderTurmas(){
   observe(g.querySelectorAll(".rv"));tilt();setAge(+$("w-ida").value||5);
 }
 function setAge(a){
-  a=Math.max(2,Math.min(17,a||0));
+  a=Math.max(2,Math.min(99,a||0));
   var T=turmasSite(),m=T.filter(function(t){return a>=(t.idadeMin||0)&&a<=(t.idadeMax||99)});
   document.querySelectorAll(".tcard").forEach(function(el){var ok=m.some(function(t){return t.id===el.dataset.id}),hl=ok&&m.length<T.length;el.classList.toggle("match",hl);el.classList.toggle("dim",!ok&&m.length>0);el.querySelector(".arch-n").textContent=hl?"Indicada":el.dataset.n});
   $("age-out").innerHTML=m.length?"Para "+a+" anos, a turma indicada é <b>"+m.map(function(t){return esc(t.nome)}).join("</b> ou <b>")+"</b>.":"";
@@ -2007,8 +2036,8 @@ var WZ={sel:"",pref:"",lid:uid()};
 function wzGo(n){[1,2,3].forEach(function(i){$("wz"+i).hidden=i!==n;var li=document.querySelector('[data-ws="'+i+'"]');li.classList.toggle("on",i===n);li.classList.toggle("done",i<n)})}
 function wzData(){var t=turmasSite().find(function(x){return x.id===WZ.sel});return{id:WZ.lid,tipo:"disponibilidade",crianca:fv("w-cri"),idade:fv("w-ida"),nome:fv("w-res"),whatsapp:fv("w-tel").replace(/\D/g,""),turmaId:t?t.id:"",turma:t?t.nome:"",horario:t?schedTxt(t):"",enviado:""}}
 function schedTxt(t){var d=diasTxt(t.dias),h=t.hIni?hTxt(t.hIni)+(t.hFim?" às "+hTxt(t.hFim):""):"";return (d?d:"")+(d&&h?" · ":"")+h}
-function wzAge(n){var v=Math.max(2,Math.min(17,(+$("w-ida").value||5)+n));$("w-ida").value=v;setAge(v);drawAges()}
-function drawAges(){var el=$("w-ages");if(!el)return;var v=+$("w-ida").value||5,h="";for(var a=3;a<=15;a++){var on=a===v||(a===15&&v>15);h+='<button type="button" role="radio" aria-checked="'+on+'" data-age="'+a+'"><b>'+a+(a===15?"+":"")+'</b><small>'+(a===15?"anos":"anos")+'</small></button>'}el.innerHTML=h;
+function wzAge(n){var v=Math.max(2,Math.min(99,(+$("w-ida").value||5)+n));$("w-ida").value=v;setAge(v);drawAges()}
+function drawAges(){var el=$("w-ages");if(!el)return;var v=+$("w-ida").value||5,h="";for(var a=3;a<=18;a++){var on=a===v||(a===18&&v>18);h+='<button type="button" role="radio" aria-checked="'+on+'" data-age="'+a+'"><b>'+a+(a===18?"+":"")+'</b><small>'+(a===18?"adulto":"anos")+'</small></button>'}el.innerHTML=h;
   var T=turmasSite(),m=T.filter(function(t){return v>=(t.idadeMin||0)&&v<=(t.idadeMax||99)});$("w-hint").innerHTML=m.length?'✦ Turma indicada: <b>'+m.map(function(t){return esc(t.nome)}).join("</b> ou <b>")+'</b>':'✦ A Irene vai indicar a melhor turma';
   var on=el.querySelector('[aria-checked="true"]');if(on&&el.scrollWidth>el.clientWidth)el.scrollLeft=on.offsetLeft-el.clientWidth/2+on.offsetWidth/2}
 $("w-ages").addEventListener("click",function(e){var b=e.target.closest("[data-age]");if(!b)return;$("wiz").classList.add("aged");$("w-ida").value=b.dataset.age;setAge(+b.dataset.age);drawAges();b.classList.add("pop");if(typeof chime==="function")chime([79,84],.06)});
