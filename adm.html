@@ -449,6 +449,65 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
 .ct-b{grid-column:1/-1;height:8px;border-radius:99px;background:color-mix(in srgb,var(--c) 15%,#fff);overflow:hidden}.ct-b i{display:block;height:100%;border-radius:99px;background:var(--c)}
 .ct-v{grid-column:1/-1;font-size:12px;color:var(--ink-soft);font-weight:700;margin-top:-2px}
 .ct-r{padding:9px 12px}.ct-l{gap:6px}
+
+/* mensalidades em abas, sem repetir aluno */
+.mtabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 8px}
+.mtabs button{border:1.5px solid var(--line);background:var(--paper);border-radius:18px;padding:10px 8px;display:grid;justify-items:center;gap:1px;cursor:pointer;font:inherit;color:var(--ink-soft)}
+.mtabs span{font-size:12.5px;font-weight:800}.mtabs b{font-size:22px;color:var(--ink);line-height:1.1}.mtabs small{font-size:11.5px;font-weight:700}
+.mtabs .atrasado[aria-selected="true"]{background:var(--err);border-color:var(--err)}
+.mtabs .aberto[aria-selected="true"]{background:#C98418;border-color:#C98418}
+.mtabs .pago[aria-selected="true"]{background:var(--ok);border-color:var(--ok)}
+.mtabs [aria-selected="true"],.mtabs [aria-selected="true"] b{color:#fff}
+.mt-note{margin:0 0 12px;font-size:13px;color:var(--ink-soft)}
+.mc{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:12px 12px 12px 14px;display:grid;gap:10px}
+.mc-top{display:flex;align-items:center;gap:11px}
+.mc-top .av{width:40px;height:40px;font-size:13.5px}
+.mc-n{flex:1;min-width:0;display:grid;line-height:1.25}.mc-n b{font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mc-n small{font-size:12.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-v b{font-size:17px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mc.late .mc-v b{color:var(--err)}.mc.paid .mc-v b{color:var(--ok)}
+.mc-st{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--ink-soft)}
+.mc-st i{width:8px;height:8px;border-radius:50%;background:#C98418}.mc.late .mc-st i{background:var(--err)}.mc.paid .mc-st i{background:var(--ok)}
+.mc.late .mc-st{color:var(--err)}
+.mc .pc-m{padding:6px 11px}.mc .pc-m b{font-size:14px}
+.mc-ac{display:flex;gap:8px}
+.mc-ac .btn{flex:1;height:46px;font-size:15px;gap:7px}
+.ib{width:46px;height:46px;flex:none;border-radius:50%;display:grid;place-items:center;text-decoration:none}
+.ib svg{width:21px;height:21px}
+.ib.wa{background:var(--wa);color:#fff}.ib.ghost{box-shadow:inset 0 0 0 1.5px var(--line);color:var(--wa)}
+.mprog{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:12px 14px;margin-bottom:14px;display:grid;gap:8px}
+.mp-t{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px;font-weight:700;color:var(--ink-soft)}.mp-t b{font-size:18px;color:var(--ink)}.mp-t small{font-size:12.5px;color:var(--ink-soft)}
+.mp-b{height:10px;border-radius:99px;background:var(--bg-2);overflow:hidden}.mp-b i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#3E9A64,var(--ok))}
+.mp-t b{white-space:nowrap}.mp-t span{min-width:0}
+
+.per{display:grid;gap:6px}
+.per-r{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;background:#FBF8F6;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13.5px}
+.per-r b{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}.per-r span{font-weight:800;justify-self:end}
+.per-r small{grid-column:1/-1;color:var(--ink-soft)}
+.per-r.on{border-color:var(--ok);background:var(--ok-soft)}
+.tl{list-style:none;margin:6px 0 0;padding:0 0 0 14px;border-left:2px solid var(--line);display:grid;gap:10px}
+.tl li{position:relative;display:grid;line-height:1.3}
+.tl li::before{content:"";position:absolute;left:-20px;top:4px;width:10px;height:10px;border-radius:50%;background:#CDBFD3;border:2px solid var(--paper)}
+.tl li.out::before{background:var(--err)}.tl li.back::before,.tl li.in::before{background:var(--ok)}.tl li.pay::before{background:var(--gold)}
+.tl small{font-size:11.5px;color:var(--ink-soft);font-weight:700}.tl span{font-size:14px}
+
+/* troca de mês */
+.mnav2{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:8px;box-shadow:0 10px 24px -18px rgba(46,18,64,.5);min-width:min(100%,360px)}
+.mn-a{height:52px;min-width:64px;border:0;border-radius:16px;background:var(--bg-2);color:var(--ink);display:flex;align-items:center;justify-content:center;gap:4px;padding:0 10px;font:800 13px var(--body);text-transform:capitalize;cursor:pointer;transition:transform .15s,background .2s}
+.mn-a:active{transform:scale(.94)}.mn-a:hover{background:#E8DCEB}
+.mn-a svg{flex:none}
+.mn-c{display:grid;justify-items:center;text-align:center;line-height:1.1;min-width:0}
+.mn-c b{font:800 22px var(--body);text-transform:capitalize;color:var(--ink)}
+.mn-c small{font-size:12.5px;font-weight:700;color:var(--ink-soft);margin-top:2px}
+.mn-h{margin-top:5px;border:0;background:var(--rose-soft);color:var(--rose);border-radius:999px;padding:4px 10px;font:800 11.5px var(--body);cursor:pointer}
+@media (max-width:760px){.mnav2{width:100%;box-sizing:border-box}}
+
+/* barra fixa de baixo (celular) em ameixa, igual ao topo */
+@media (max-width:860px){
+  .bnav{background:linear-gradient(100deg,#2E1240 0%,#4A1D5C 55%,#7A2A63 100%)!important;border-top:0!important;box-shadow:0 -10px 26px -14px rgba(46,18,64,.6)}
+  .bnav button{color:rgba(255,255,255,.72)!important}
+  .bnav button[aria-selected="true"]{color:#3A1B4C!important;background:#fff!important}
+  .bnav .bd{background:#F2B544!important;color:#2E1240!important}
+}
 </style>
 </head>
 <body>
@@ -631,6 +690,7 @@ function mensal(a,k){
   if(!p&&k<ini)return null;
   var d=pd(k+"-01"),dim=new Date(d.getFullYear(),d.getMonth()+1,0).getDate(),vd=Math.min(+a.venc||10,dim),venc=k+"-"+pad(vd);
   if(!p&&a.ativo===false&&(!a.saida||a.saida<venc))return null;
+  if(!p&&(a.pausas||[]).some(function(z){return z.de&&z.de<venc&&(!z.ate||venc<z.ate)}))return null;
   var ini0=String(a.inicio||a.criado||"").slice(0,10);if(ini0.slice(0,7)===k&&ini0>venc){var v2=pd(ini0);v2.setDate(v2.getDate()+5);venc=iso(v2)}
   var st=p?"pago":(today()>venc?"atrasado":"aberto");
   return{p:p,valor:p?num(p.valor)||valorDe(a):valorDe(a),venc:venc,st:st};
@@ -780,7 +840,7 @@ function freqMes(a,k){var r={p:0,f:0,j:0,t:0};Object.keys(E().cham).forEach(func
 function alunoSheet(id,pre){
   S.fqA=id||null;
   var a=id?aluno(id):Object.assign({id:"",nome:"",nasc:"",turmaId:S.fT||"",resp:"",whats:"",valor:"",venc:"10",inicio:today(),obs:"",ativo:true},pre||{});
-  var k=mk(new Date()),hs=id?E().hist.filter(function(h){return h.a===id}).slice(0,6):[];
+  var k=mk(new Date()),hs=[];
   var pays=id?[0,-1,-2,-3,-4,-5].map(function(n){var mk_=addM(k,n),m=mensal(a,mk_);return m?'<span class="pill '+(m.st==="pago"?"ok":m.st==="atrasado"?"err":"")+'">'+MESES[+mk_.slice(5)-1].slice(0,3)+': '+(m.st==="pago"?"pago":m.st==="atrasado"?"atrasado":"a pagar")+'</span>':""}).join(" "):"";
   var fr=null;
   openSh(shHead(id?esc(a.nome):"Novo <em>aluno</em>")+'<form class="frm" id="al-f">'+
@@ -800,11 +860,12 @@ function alunoSheet(id,pre){
     '<div class="fsec"><h3><span>'+ic("i-edit")+'</span>Observações</h3><div class="fld"><textarea id="al-o" aria-label="Observações" placeholder="Alergias, quem busca, tamanho do uniforme…">'+esc(a.obs)+'</textarea></div></div>'+
     (id?'<div class="fsec"><h3><span>'+ic("i-alunos")+'</span>Situação</h3><div class="seg sit" id="al-sit"><button type="button" data-sit="1" aria-pressed="'+(a.ativo!==false)+'">Ativo</button><button type="button" data-sit="0" aria-pressed="'+(a.ativo===false)+'">Inativo</button></div>'+
       '<div id="al-sx"'+(a.ativo===false?'':' hidden')+'><div class="g2"><div class="fld"><label for="al-sd">Saiu em</label><input id="al-sd" type="date" value="'+esc(a.saida||today())+'"></div><div class="fld"><label for="al-sm">Motivo (opcional)</label><input id="al-sm" value="'+esc(a.motivo||"")+'" placeholder="Ex.: mudou de cidade"></div></div><p class="hint">A partir dessa data o aluno sai da chamada e não gera mais mensalidade. O que ficou em aberto antes continua aparecendo.</p></div>'+
+      (a.ativo===false?'<div id="al-vx" hidden><div class="fld"><label for="al-sv">Voltou em</label><input id="al-sv" type="date" value="'+today()+'"></div><p class="hint">Os meses em que ficou fora não geram mensalidade. Tudo fica guardado no histórico.</p></div>':'')+
       '<input type="hidden" id="al-a" value="'+(a.ativo===false?"0":"1")+'"></div>':'')+
-    (id?'<div class="fld"><span>Mensalidades</span><div class="chips">'+pays+'</div></div>'+'<div class="fld fq"><span>Frequência</span><div class="seg sm" id="fq-p"><button type="button" data-fq="1" aria-pressed="true">Este mês</button><button type="button" data-fq="3" aria-pressed="false">3 meses</button><button type="button" data-fq="12" aria-pressed="false">Este ano</button></div><div id="fq-box">'+freqAlunoHtml(a,1)+'</div></div>'+(hs.length?'<div class="fld"><span>Histórico</span>'+hs.map(function(h){return '<small>'+dmy(h.q)+' · '+esc(h.t)+'</small>'}).join("")+'</div>':''):'')+
+    (id?'<div class="fld"><span>Mensalidades</span><div class="chips">'+pays+'</div></div>'+'<div class="fld fq"><span>Frequência</span><div class="seg sm" id="fq-p"><button type="button" data-fq="1" aria-pressed="true">Este mês</button><button type="button" data-fq="3" aria-pressed="false">3 meses</button><button type="button" data-fq="12" aria-pressed="false">Este ano</button></div><div id="fq-box">'+freqAlunoHtml(a,1)+'</div></div>'+'<div class="fsec"><h3><span>'+ic("i-chamada")+'</span>Histórico</h3>'+histHtml(a)+'</div>':'')+
     '<div class="foot"><button class="btn rose" type="submit">Salvar</button>'+(id?'<button class="btn ghost" type="button" id="al-del">'+ic("i-del")+'Excluir</button>':'')+'</div></form>',function(){
       $("al-tp").onclick=function(e){var b=e.target.closest("[data-tp]");if(!b)return;$("al-t").value=b.dataset.tp;this.querySelectorAll("[data-tp]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});var t=turma(b.dataset.tp);$("al-v").placeholder=t&&t.valor?String(t.valor).replace(/^R\$\s*/,""):"da turma"};
-      if($("al-sit"))$("al-sit").onclick=function(e){var b=e.target.closest("[data-sit]");if(!b)return;$("al-a").value=b.dataset.sit;this.querySelectorAll("[data-sit]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});$("al-sx").hidden=b.dataset.sit==="1"};
+      if($("al-sit"))$("al-sit").onclick=function(e){var b=e.target.closest("[data-sit]");if(!b)return;$("al-a").value=b.dataset.sit;this.querySelectorAll("[data-sit]").forEach(function(x){x.setAttribute("aria-pressed",x===b)});$("al-sx").hidden=b.dataset.sit==="1";if($("al-vx"))$("al-vx").hidden=b.dataset.sit!=="1"};
       $("al-b").oninput=function(){var g=ageOf(this.value);$("al-age").textContent=g!=null&&g>=0&&g<100?g+" anos":""};
       $("al-v").oninput=function(){$("al-vh").textContent=this.value?"":"Deixe em branco para usar o valor da turma."};
       $("al-f").onsubmit=function(ev){ev.preventDefault();
@@ -814,7 +875,8 @@ function alunoSheet(id,pre){
         Object.assign(a,{nome:n,nasc:val("al-b"),turmaId:tNew,resp:val("al-r"),whats:val("al-w").replace(/\D/g,""),valor:val("al-v"),venc:val("al-d")||"10",inicio:val("al-i"),obs:$("al-o").value.trim()});
         if($("al-a")){var wasOn=a.ativo!==false,on=$("al-a").value==="1";a.ativo=on;
           if(!on){a.saida=val("al-sd")||today();a.motivo=val("al-sm");if(wasOn)E().hist.unshift({q:new Date().toISOString(),a:a.id,t:"Inativado em "+dmy(a.saida)+(a.motivo?" ("+a.motivo+")":"")})}
-          else if(!wasOn){E().hist.unshift({q:new Date().toISOString(),a:a.id,t:"Voltou a ficar ativo"+(a.saida?" (tinha saído em "+dmy(a.saida)+")":"")});delete a.saida;delete a.motivo}}
+          else if(!wasOn){var vt=($("al-sv")&&val("al-sv"))||today();(a.pausas=a.pausas||[]).push({de:a.saida||"",ate:vt,motivo:a.motivo||""});
+            E().hist.unshift({q:new Date().toISOString(),a:a.id,t:"Voltou em "+dmy(vt)+(a.saida?" (tinha saído em "+dmy(a.saida)+")":"")});delete a.saida;delete a.motivo}}
         if(novo){E().hist.unshift({q:new Date().toISOString(),a:a.id,t:"Matrícula"+(tNew?" em "+turma(tNew).nome:"")})}
         else if(tOld!==tNew){E().hist.unshift({q:new Date().toISOString(),a:a.id,t:"Mudou de "+((turma(tOld)||{}).nome||"sem turma")+" para "+((turma(tNew)||{}).nome||"sem turma")})}
         if(pre&&pre._from){var f=pre._from;f.item.status="matriculado";f.item.alunoId=a.id;upItem(f.kind,f.item)}
@@ -827,6 +889,14 @@ function alunoSheet(id,pre){
     });
 }
 
+
+function histHtml(a){
+  var H=E().hist.filter(function(h){return h.a===a.id}),per=[];
+  var ini=a.inicio||a.criado;(a.pausas||[]).forEach(function(z){per.push({de:ini,ate:z.de,mot:z.motivo});ini=z.ate});per.push({de:ini,ate:a.ativo===false?a.saida:"",mot:a.ativo===false?a.motivo:""});
+  var h='<div class="per">'+per.map(function(x,i){return '<div class="per-r'+(!x.ate?' on':'')+'"><b>'+(i+1)+'º período</b><span>'+(x.de?dmy(x.de):"?")+' → '+(x.ate?dmy(x.ate):'hoje')+'</span>'+(x.mot?'<small>Saiu: '+esc(x.mot)+'</small>':'')+'</div>'}).join("")+'</div>';
+  if(!H.length)return h+'<p class="hint">Ainda sem registros.</p>';
+  return h+'<ol class="tl">'+H.map(function(x){var c=/^Inativado/.test(x.t)?"out":/^Voltou/.test(x.t)?"back":/^Pag/.test(x.t)?"pay":/^Matr/.test(x.t)?"in":"";return '<li class="'+c+'"><small>'+dmy(iso(new Date(x.q)))+'</small><span>'+esc(x.t)+'</span></li>'}).join("")+'</ol>';
+}
 /* ---------- Turmas ---------- */
 function vTurmas(){
   return '<div class="head"><div><h1>Turmas</h1><p><b>'+E().alunos.filter(function(a){return a.ativo!==false}).length+' alunos ativos no total</b> em '+E().turmas.length+' turmas. Ocupação, alunos e o que aparece no site. Para trocar alguém de turma, abra a lista e escolha a nova turma.</p></div><button class="btn rose" type="button" id="t-new">＋ Nova turma</button></div>'+
@@ -957,21 +1027,47 @@ function payRow(a,m,k,mini){
     (m.st==="pago"?(a.whats?'<a class="btn ghost" href="'+waLink(a.whats,rec)+'" target="_blank" rel="noopener">'+ic("wa")+'Enviar recibo</a>':'')+(mini?'':'<button class="btn ghost unpay" type="button" data-unpay="'+esc(a.id)+'" data-k="'+k+'">Tirar pagamento</button>')
     :(a.whats?'<a class="btn wa" href="'+waLink(a.whats,cob)+'" target="_blank" rel="noopener">'+ic("wa")+'Cobrar</a>':'')+'<button class="btn ok paybtn" type="button" data-pay="'+esc(a.id)+'" data-k="'+k+'"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Marcar pago</button>')+'</div></div>';
 }
-function vMensal(){
-  var k=S.mes,r=resumoMes(k);
-  var L=E().alunos.map(function(a){return{a:a,m:mensal(a,k)}}).filter(function(x){return x.m&&(!S.mT||x.a.turmaId===S.mT)&&(S.mf==="todos"||(S.mf==="aberto"&&x.m.st!=="pago")||x.m.st===S.mf)}).sort(function(x,y){var o={atrasado:0,aberto:1,pago:2};return o[x.m.st]-o[y.m.st]||x.a.nome.localeCompare(y.a.nome)});
-  return '<div class="head"><div><h1>Mensalidades</h1><p>Marque quem pagou, cobre pelo WhatsApp e mande o recibo.</p></div><div class="mnav"><button class="mb" type="button" data-mes="-1" aria-label="Mês anterior"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><b>'+esc(mName(k))+'</b><button class="mb" type="button" data-mes="1" aria-label="Próximo mês"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div></div>'+
-    '<div class="kpis"><div class="kpi main"><span>Recebido</span><b>'+brl(r.rec)+'</b><small>'+r.nrec+' pagamento'+(r.nrec===1?"":"s")+'</small></div><div class="kpi"><span>Previsto no mês</span><b>'+brl(r.prev)+'</b><small>'+(r.nrec+r.nab+r.natr)+' alunos</small></div><div class="kpi"><span>A receber</span><b>'+brl(r.abr)+'</b><small>'+r.nab+' ainda no prazo</small></div><div class="kpi'+(r.natr?" warn":"")+'"><span>Em atraso</span><b>'+brl(r.atr)+'</b><small>'+r.natr+' aluno'+(r.natr===1?"":"s")+'</small></div></div>'+
-    '<div class="tsel" role="group" aria-label="Turma"><button type="button" data-mt="" aria-pressed="'+(!S.mT)+'">Todas as turmas</button>'+E().turmas.map(function(t){var n=E().alunos.filter(function(x){return x.turmaId===t.id&&mensal(x,k)}).length;return '<button type="button" data-mt="'+esc(t.id)+'" aria-pressed="'+(S.mT===t.id)+'" style="--c:'+tcol(t)+'"><i></i>'+esc(t.nome)+'<small>'+n+'</small></button>'}).join("")+'</div>'+
-    (function(){var z=E().alunos.filter(function(a){return a.ativo!==false&&!valorDe(a)});return z.length?'<div class="card" style="border:1.5px solid #E9C27A;background:#FFF8EA"><h2 style="font-size:20px">'+z.length+' aluno'+(z.length===1?'':'s')+' sem valor de mensalidade</h2><p class="note" style="margin:4px 0 0">'+z.slice(0,6).map(function(a){return esc(first(a.nome))}).join(', ')+(z.length>6?'…':'')+'. Coloque o valor em <b>Turmas → Editar</b> (vale para a turma toda) ou no cadastro do aluno.</p></div>':''})()+
-    devCard(0,S.mT)+'<div class="ml-h"><h2>Mensalidades de '+esc(mName(k))+'</h2><div class="chips">'+[["todos","Todos"],["aberto","Em aberto"],["atrasado","Atrasados"],["pago","Pagos"]].map(function(f){return '<button type="button" class="chip" data-mf="'+f[0]+'" aria-pressed="'+(S.mf===f[0])+'">'+f[1]+'</button>'}).join("")+'</div></div>'+
-    '<div class="pcs">'+(L.length?L.map(function(x){return payRow(x.a,x.m,k)}).join(""):(function(){var tn=S.mT&&turma(S.mT)?turma(S.mT).nome:"",fl={aberto:"em aberto",atrasado:"atrasado",pago:"pago"}[S.mf];
-      var msg=!E().alunos.length?"Cadastre os alunos com o valor da mensalidade.":tn&&!E().alunos.some(function(a){return a.turmaId===S.mT&&a.ativo!==false})?"A turma "+esc(tn)+" ainda não tem alunos ativos.":"Ninguém "+(tn?"da turma "+esc(tn)+" ":"")+(fl?"com mensalidade "+fl+" ":"com mensalidade ")+"em "+esc(mName(k))+".";
-      return '<div class="empty-c"><span>🩰</span><b>Ninguém por aqui</b><p>'+msg+'</p>'+(S.mT||S.mf!=="todos"?'<button class="btn ghost sm" type="button" id="m-clr">Ver todas as turmas</button>':'')+'</div>'})())+'</div>';
+function mnavHtml(k,at){
+  var cur=mk(new Date()),d=(+cur.slice(0,4)-(+k.slice(0,4)))*12+(+cur.slice(5)-(+k.slice(5))),pv=addM(k,-1),nx=addM(k,1),sh=function(x){return MESES[+x.slice(5)-1].slice(0,3)};
+  var L='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',R='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>';
+  return '<div class="mnav2"><button class="mn-a" type="button" data-'+at+'="-1" aria-label="Ir para '+esc(mName(pv))+'">'+L+'<span>'+sh(pv)+'</span></button>'+
+    '<div class="mn-c"><b>'+MESES[+k.slice(5)-1]+'</b><small>'+k.slice(0,4)+(d===0?' · este mês':'')+'</small>'+(d!==0?'<button type="button" class="mn-h" data-'+at+'="'+d+'">↺ voltar para este mês</button>':'')+'</div>'+
+    '<button class="mn-a" type="button" data-'+at+'="1" aria-label="Ir para '+esc(mName(nx))+'"><span>'+sh(nx)+'</span>'+R+'</button></div>';
 }
+function vMensal(){
+  var k=S.mes,r=resumoMes(k),tid=S.mT,inT=function(a){return !tid||a.turmaId===tid};
+  var ATR=devedores().filter(function(d){return inT(d.a)});
+  var ABE=E().alunos.map(function(a){return{a:a,m:mensal(a,k)}}).filter(function(x){return x.m&&x.m.st==="aberto"&&inT(x.a)}).sort(function(x,y){return x.m.venc<y.m.venc?-1:x.m.venc>y.m.venc?1:x.a.nome.localeCompare(y.a.nome)});
+  var PAG=E().alunos.map(function(a){return{a:a,m:mensal(a,k)}}).filter(function(x){return x.m&&x.m.st==="pago"&&inT(x.a)}).sort(function(x,y){return x.a.nome.localeCompare(y.a.nome)});
+  if(["atrasado","aberto","pago"].indexOf(S.mf)<0)S.mf=ATR.length?"atrasado":ABE.length?"aberto":"pago";
+  var tabs=[["atrasado","Atrasados",ATR.length,ATR.reduce(function(s,d){return s+d.total},0)],["aberto","A vencer",ABE.length,ABE.reduce(function(s,x){return s+x.m.valor},0)],["pago","Pagos",PAG.length,PAG.reduce(function(s,x){return s+x.m.valor},0)]];
+  var tn=tid&&turma(tid)?turma(tid).nome:"";
+  function empty(){var m=!E().alunos.length?"Cadastre os alunos com o valor da mensalidade.":tn&&!E().alunos.some(function(a){return a.turmaId===tid&&a.ativo!==false})?"A turma "+esc(tn)+" ainda não tem alunos ativos.":
+      S.mf==="atrasado"?"Ninguém "+(tn?"da turma "+esc(tn)+" ":"")+"com mensalidade atrasada. ✦":S.mf==="aberto"?"Ninguém "+(tn?"da turma "+esc(tn)+" ":"")+"com mensalidade a vencer em "+esc(mName(k))+".":"Nenhum pagamento "+(tn?"da turma "+esc(tn)+" ":"")+"em "+esc(mName(k))+" ainda.";
+    return '<div class="empty-c"><span>'+(S.mf==="atrasado"?"🎉":"🩰")+'</span><b>'+(S.mf==="atrasado"&&E().alunos.length?"Tudo em dia":"Ninguém por aqui")+'</b><p>'+m+'</p>'+(tid?'<button class="btn ghost sm" type="button" id="m-clr">Ver todas as turmas</button>':'')+'</div>'}
+  var body="";
+  if(S.mf==="atrasado")body=ATR.map(function(d){var o=d.ms[0],one=d.ms.length===1;
+    return mcard(d.a,"late",brl(d.total),one?"Venceu "+dm(o.venc)+" · "+MESES[+o.k.slice(5)-1]:d.ms.length+" meses atrasados",
+      one?"":'<div class="pc-ms">'+d.ms.map(function(x){return '<button type="button" class="pc-m" data-pay="'+esc(d.a.id)+'" data-k="'+x.k+'"><span>'+MESES[+x.k.slice(5)-1].slice(0,3)+'/'+x.k.slice(2,4)+'</span><b>'+brl(x.valor)+'</b></button>'}).join("")+'</div>',
+      (d.a.whats?'<a class="ib wa" href="'+waLink(d.a.whats,cobrarTudo(d))+'" target="_blank" rel="noopener" aria-label="Cobrar no WhatsApp">'+ic("wa")+'</a>':'')+'<button class="btn ok paybtn" type="button" data-pay="'+esc(d.a.id)+'" data-k="'+o.k+'"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Recebi'+(one?'':' '+MESES[+o.k.slice(5)-1].slice(0,3))+'</button>')}).join("");
+  else if(S.mf==="aberto")body=ABE.map(function(x){var a=x.a,m=x.m,t=turma(a.turmaId);var cob="Olá, "+(first(a.resp)||"tudo bem")+"! Passando para lembrar da mensalidade de "+mName(k).split(" de ")[0]+" de "+first(a.nome)+(t?" ("+t.nome+")":"")+", no valor de "+brl(m.valor)+", com vencimento em "+dm(m.venc)+". Qualquer dúvida, estou à disposição."+sig();
+    return mcard(a,"open",brl(m.valor),"Vence "+dm(m.venc),"",(a.whats?'<a class="ib wa" href="'+waLink(a.whats,cob)+'" target="_blank" rel="noopener" aria-label="Lembrar no WhatsApp">'+ic("wa")+'</a>':'')+'<button class="btn ok paybtn" type="button" data-pay="'+esc(a.id)+'" data-k="'+k+'"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Recebi</button>')}).join("");
+  else body=PAG.map(function(x){var a=x.a,m=x.m,p=m.p;var rec="Olá, "+(first(a.resp)||"tudo bem")+"! Recebi a mensalidade de "+mName(k).split(" de ")[0]+" de "+first(a.nome)+": "+brl(m.valor)+(p.forma?" ("+p.forma+")":"")+" em "+dm(p.data)+". Obrigada!"+sig();
+    return mcard(a,"paid",brl(m.valor),"Pago em "+dm(p.data)+(p.forma?" · "+esc(p.forma):""),"",(a.whats?'<a class="ib ghost" href="'+waLink(a.whats,rec)+'" target="_blank" rel="noopener" aria-label="Enviar recibo">'+ic("wa")+'</a>':'')+'<button class="btn ghost unpay" type="button" data-unpay="'+esc(a.id)+'" data-k="'+k+'">Tirar pagamento</button>')}).join("");
+  return '<div class="head"><div><h1>Mensalidades</h1><p>Marque quem pagou, cobre pelo WhatsApp e mande o recibo.</p></div>'+mnavHtml(k,"mes")+'</div>'+
+    '<div class="mprog"><div class="mp-t"><span>Recebido em '+esc(mName(k).split(" de ")[0])+'</span><b>'+brl(r.rec)+' <small>de '+brl(r.prev)+'</small></b></div><div class="mp-b"><i style="width:'+(r.prev?Math.min(100,r.rec*100/r.prev):0)+'%"></i></div></div>'+
+    '<div class="tsel" role="group" aria-label="Turma"><button type="button" data-mt="" aria-pressed="'+(!tid)+'">Todas as turmas</button>'+E().turmas.map(function(t){return '<button type="button" data-mt="'+esc(t.id)+'" aria-pressed="'+(tid===t.id)+'" style="--c:'+tcol(t)+'"><i></i>'+esc(t.nome)+'</button>'}).join("")+'</div>'+
+    (function(){var z=E().alunos.filter(function(a){return a.ativo!==false&&!valorDe(a)});return z.length?'<div class="card" style="border:1.5px solid #E9C27A;background:#FFF8EA"><h2 style="font-size:20px">'+z.length+' aluno'+(z.length===1?'':'s')+' sem valor de mensalidade</h2><p class="note" style="margin:4px 0 0">'+z.slice(0,6).map(function(a){return esc(first(a.nome))}).join(', ')+(z.length>6?'…':'')+'. Coloque o valor em <b>Turmas → Editar</b> (vale para a turma toda) ou no cadastro do aluno.</p></div>':''})()+
+    '<div class="mtabs" role="tablist">'+tabs.map(function(t){return '<button type="button" role="tab" class="'+t[0]+'" data-mf="'+t[0]+'" aria-selected="'+(S.mf===t[0])+'"><span>'+t[1]+'</span><b>'+t[2]+'</b><small>'+brl(t[3])+'</small></button>'}).join("")+'</div>'+
+    (S.mf==="atrasado"?'<p class="mt-note">Todos os meses que já venceram e não foram pagos, de qualquer mês.</p>':'<p class="mt-note">'+(S.mf==="aberto"?'Ainda no prazo em ':'Recebidos em ')+esc(mName(k))+'.</p>')+
+    '<div class="pcs">'+(body||empty())+'</div>';
+}
+function mcard(a,cls,val,sub,mid,acts){var t=turma(a.turmaId);
+  return '<div class="mc '+cls+'"><div class="mc-top"><span class="av" style="--c:'+tcol(t)+'">'+esc(ini(a.nome))+'</span><div class="mc-n"><b>'+esc(a.nome)+'</b><small>'+esc(t?t.nome:"Sem turma")+(a.resp?' · '+esc(first(a.resp)):'')+'</small></div><div class="mc-v"><b>'+val+'</b></div></div>'+
+    '<div class="mc-st"><i></i>'+sub+'</div>'+mid+'<div class="mc-ac">'+acts+'</div></div>'}
 AFTER.mensal=function(){
   document.querySelectorAll("[data-mt]").forEach(function(b){b.onclick=function(){S.mT=b.dataset.mt;render();var on=document.querySelector("[data-mt][aria-pressed=true]");if(on&&on.scrollIntoView)on.scrollIntoView({inline:"center",block:"nearest"})}});
-  var c=$("m-clr");if(c)c.onclick=function(){S.mT="";S.mf="todos";render()};
+  var c=$("m-clr");if(c)c.onclick=function(){S.mT="";render()};
   if($("m-csv"))$("m-csv").onclick=function(){var k=S.mes,rows=[["Aluno","Turma","Responsável","WhatsApp","Valor","Vencimento","Situação","Pago em","Forma"]];E().alunos.forEach(function(a){var m=mensal(a,k);if(!m)return;var t=turma(a.turmaId);rows.push([a.nome,t?t.nome:"",a.resp||"",phone(a.whats),String(m.valor.toFixed(2)).replace(".",","),dmy(m.venc),m.st==="pago"?"Pago":m.st==="atrasado"?"Atrasado":"A pagar",m.p?dmy(m.p.data):"",m.p?m.p.forma||"":""])});
     var csv="﻿"+rows.map(function(r){return r.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"'}).join(";")}).join("\r\n");var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="mensalidades-formas-"+k+".csv";document.body.appendChild(a);a.click();a.remove()};
 };
@@ -1021,7 +1117,7 @@ function vCaixa(){
   function grp(list,key){var o={};list.forEach(function(x){o[x[key]]=(o[x[key]]||0)+x.v});return o}
   function bars2(o){var a=Object.entries(o).sort(function(x,y){return y[1]-x[1]}),m=a.length?a[0][1]:1;return a.length?a.map(function(x){return '<div class="srow w"><span>'+esc(x[0])+'</span><span class="tr"><i style="width:'+Math.max(3,x[1]*100/m)+'%"></i></span><b style="white-space:nowrap">'+brl(x[1])+'</b></div>'}).join(""):'<p class="empty" style="padding:4px">Sem movimento neste mês.</p>'}
   var hist=[-5,-4,-3,-2,-1,0].map(function(n){var kk=addM(k,n),l=movs(kk);return{k:kk,e:l.filter(function(x){return x.tipo==="e"}).reduce(function(s,x){return s+x.v},0),s:l.filter(function(x){return x.tipo==="s"}).reduce(function(s,x){return s+x.v},0)}}),hm=Math.max(1,Math.max.apply(null,hist.map(function(h){return Math.max(h.e,h.s)})));
-  return '<div class="head"><div><h1>Caixa</h1><p>Tudo o que entrou e saiu em '+esc(mName(k))+'.</p></div><div class="mnav"><button class="mb" type="button" data-cx="-1" aria-label="Mês anterior"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><b>'+esc(mName(k))+'</b><button class="mb" type="button" data-cx="1" aria-label="Próximo mês"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div></div>'+
+  return '<div class="head"><div><h1>Caixa</h1><p>Tudo o que entrou e saiu em '+esc(mName(k))+'.</p></div>'+mnavHtml(k,"cx")+'</div>'+
   '<div class="kpis"><div class="kpi main"><span>Entradas</span><b>'+brl(te)+'</b><small>'+ent.length+' recebimento'+(ent.length===1?"":"s")+'</small></div><div class="kpi"><span>Saídas</span><b>'+brl(ts)+'</b><small>'+sai.length+' despesa'+(sai.length===1?"":"s")+'</small></div><div class="kpi'+(te-ts<0?" warn":"")+'"><span>Saldo do mês</span><b>'+brl(te-ts)+'</b><small>entradas − saídas</small></div><div class="kpi'+(dvt?" warn":"")+'"><span>A receber</span><b>'+brl(r.abr+dvt)+'</b><small>'+brl(r.abr)+' no prazo · '+brl(dvt)+' em atraso</small></div></div>'+
   '<div class="tb"><button class="btn ok" type="button" data-lanc="e">＋ Lançar entrada</button><button class="btn red" type="button" data-lanc="s">− Lançar despesa</button></div>'+
   '<div class="grid2"><div class="card"><h2>De onde veio</h2><p class="note">Entradas do mês por origem.</p>'+bars2(grp(ent,"orig"))+'<h2 style="margin-top:20px">Como pagaram</h2><p class="note">Pix, dinheiro, cartão…</p>'+bars2(grp(ent,"forma"))+'</div>'+
