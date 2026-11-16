@@ -1648,6 +1648,7 @@ html.shop .metam{display:none!important}
 .menu-b,.top .menu-b,.top.solid .menu-b{width:38px!important;height:38px!important;background:transparent!important;border:1px solid rgba(42,18,54,.14)!important;color:#2A1236!important;box-shadow:none!important;backdrop-filter:none!important}
 .menu-b span{width:16px!important;margin:2.5px auto!important}
 body.mopen .menu-b span:first-child{transform:translateY(2.5px) rotate(45deg)!important}body.mopen .menu-b span:last-child{transform:translateY(-2.5px) rotate(-45deg)!important}
+[data-foto],[data-cartaz]{cursor:pointer;-webkit-tap-highlight-color:transparent}
 </style>
 </head>
 <body>
@@ -2220,11 +2221,11 @@ document.addEventListener("click",function(e){
 /* ---------- fotos ---------- */
 function renderFotos(){
   var F=SITE.fotos||[];
-  $("masonry").innerHTML=F.length?F.map(function(f,i){return '<figure class="ph rv d'+(i%3)+'" data-foto="'+i+'"><img src="'+esc(f.src)+'" alt="'+esc(f.leg||"Foto da Formas Escola de Dança")+'" loading="lazy">'+(f.leg?'<figcaption>'+esc(f.leg)+'</figcaption>':'')+'</figure>'}).join("")
+  $("masonry").innerHTML=F.length?F.map(function(f,i){return '<figure class="ph rv d'+(i%3)+'" data-foto="'+i+'" role="button" tabindex="0"><img src="'+esc(f.src)+'" alt="'+esc(f.leg||"Foto da Formas Escola de Dança")+'" loading="lazy">'+(f.leg?'<figcaption>'+esc(f.leg)+'</figcaption>':'')+'</figure>'}).join("")
     :["4/5","1/1","3/4","4/3","4/5","1/1"].map(function(ar,i){return '<div class="ph ph-empty rv d'+(i%3)+'" style="--ar:'+ar+'"><span>'+["✦ ensaio","✦ camarim","✦ no palco","✦ révérence","✦ primeiro collant","✦ espetáculo"][i]+'</span></div>'}).join("");
   observe($("masonry").querySelectorAll(".rv"));
 }
-document.addEventListener("click",function(e){var f=e.target.closest("[data-foto]");if(f)openLB("f",SITE.fotos,+f.dataset.foto)});
+document.addEventListener("click",function(e){var f=e.target.closest("[data-foto]");if(f){openLB("f",SITE.fotos,+f.dataset.foto);return}var c=e.target.closest("[data-cartaz]");if(c){var L=(SITE.cartazes||[]).filter(function(x){return x&&(x.src||x.titulo)}).filter(function(x){return x.src}).map(function(x){return{src:x.src,leg:[x.titulo,x.ano].filter(Boolean).join(" · ")}});var all=(SITE.cartazes||[]).filter(function(x){return x&&(x.src||x.titulo)}),it=all[+c.dataset.cartaz];openLB("f",L,Math.max(0,L.indexOf(L.filter(function(y){return y.src===it.src})[0])))}});
 
 /* ---------- visualizador (fotos e vídeos) ---------- */
 var LB={};
@@ -2685,7 +2686,7 @@ if(e.inputType&&e.inputType.indexOf("delete")===0&&f.length>t.value.length)retur
 (function(){function esc2(t){return String(t==null?"":t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 var P=[["#B8467E","#3A1648"],["#7E5BC8","#2B1650"],["#D9487F","#5A1838"],["#C9963E","#4A2340"]];
 function draw(){var el=document.getElementById("varal");if(!el)return;var S=window.SITE||{},C=(S.cartazes||[]).filter(function(c){return c&&(c.src||c.titulo)}),y=new Date().getFullYear(),h="";
-if(C.length)h=C.map(function(c,i){var p=P[i%4];return '<figure class="vp"><span class="pin" aria-hidden="true"></span><div class="poster">'+(c.src?'<img src="'+esc2(c.src)+'" alt="Cartaz '+esc2(c.titulo||"do espetáculo")+'" loading="lazy">':'<div class="ph" style="--c1:'+p[0]+';--c2:'+p[1]+'"><i>✦</i><b>'+esc2(c.titulo)+'</b></div>')+'</div><figcaption>'+(c.titulo?'<b>'+esc2(c.titulo)+'</b>':'')+(c.ano?'<small>'+esc2(c.ano)+'</small>':'')+'</figcaption></figure>'}).join("");
+if(C.length)h=C.map(function(c,i){var p=P[i%4];return '<figure class="vp"'+(c.src?' data-cartaz="'+i+'" role="button" tabindex="0"':'')+'><span class="pin" aria-hidden="true"></span><div class="poster">'+(c.src?'<img src="'+esc2(c.src)+'" alt="Cartaz '+esc2(c.titulo||"do espetáculo")+'" loading="lazy">':'<div class="ph" style="--c1:'+p[0]+';--c2:'+p[1]+'"><i>✦</i><b>'+esc2(c.titulo)+'</b></div>')+'</div><figcaption>'+(c.titulo?'<b>'+esc2(c.titulo)+'</b>':'')+(c.ano?'<small>'+esc2(c.ano)+'</small>':'')+'</figcaption></figure>'}).join("");
 else [["Alice no País das Maravilhas","2026"],["O Pequeno Príncipe","2025"],["O Quebra-Nozes","2024"],["Pinóquio","2023"]].forEach(function(x,i){var p=P[i];h+='<figure class="vp"><span class="pin" aria-hidden="true"></span><div class="poster"><div class="ph" style="--c1:'+p[0]+';--c2:'+p[1]+'"><i>✦</i><b>'+x[0]+'</b><small>Espetáculo '+x[1]+'</small></div></div><figcaption><b>'+x[0]+'</b><small>'+x[1]+'</small></figcaption></figure>'})
 el.innerHTML=h}
 window.drawVaral=draw;draw()})();
