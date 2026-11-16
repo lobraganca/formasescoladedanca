@@ -314,6 +314,18 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
 .login-card h1{font-size:44px}
 .top,header{backdrop-filter:blur(14px) saturate(1.3)}
 .hand,.mnav b{font-family:var(--hand)}
+/* chamada em passos + frequência do aluno */
+.stp{margin:16px 0 8px;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.stp b{width:22px;height:22px;border-radius:7px;background:var(--rose);color:#fff;display:grid;place-items:center;font-size:12px;letter-spacing:0}
+.stp small{font-size:11px;letter-spacing:.04em;text-transform:none;color:var(--ink-soft);font-weight:600}
+.ch-save{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.ch-save .big{flex:1 1 100%;padding:16px;font-size:16px}
+.seg.sm button{padding:7px 12px;font-size:12.5px}
+.fq-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:8px 0}
+.fq-pc{font-family:var(--display);font-weight:800;font-size:38px;line-height:1;color:var(--ok)}.fq-pc.low{color:var(--err)}
+.fq-l{display:grid;gap:4px;max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:8px}
+.fq-l div{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;padding:4px 2px;border-bottom:1px dashed var(--line)}
+.fq-l div:last-of-type{border-bottom:0}
 </style>
 </head>
 <body>
@@ -597,12 +609,26 @@ AFTER.alunos=function(){
   $("a-new").onclick=function(){alunoSheet(null)};
 };
 document.addEventListener("click",function(e){var b=e.target.closest("[data-al]");if(b)alunoSheet(b.dataset.al)});
+function freqAluno(a,meses){
+  var now=new Date(),from=meses===12?new Date(now.getFullYear(),0,1):new Date(now.getFullYear(),now.getMonth()-(meses-1),1),fi=iso(from),L=[];
+  Object.keys(E().cham).forEach(function(tid){var C=E().cham[tid];Object.keys(C).forEach(function(d){if(d<fi)return;var v=C[d][a.id];if(v)L.push({d:d,v:v,t:tid})})});
+  L.sort(function(x,y){return x.d<y.d?1:-1});var r={p:0,f:0,j:0};L.forEach(function(x){r[x.v]++});r.t=L.length;r.L=L;return r;
+}
+function freqAlunoHtml(a,meses){
+  var r=freqAluno(a,meses),pc=r.t?Math.round(r.p*100/r.t):null,lab={p:"Presente",f:"Falta",j:"Justificada"},cl={p:"ok",f:"err",j:"warn"};
+  if(!r.t)return '<p class="note">Ainda sem chamadas neste período.</p>';
+  return '<div class="fq-top"><b class="fq-pc'+(pc<75?" low":"")+'">'+pc+'%</b><div class="chips"><span class="pill ok">'+r.p+' presenças</span><span class="pill err">'+r.f+' faltas</span><span class="pill warn">'+r.j+' justificadas</span></div></div>'+
+    '<div class="fq-l">'+r.L.slice(0,12).map(function(x){var t=turma(x.t);return '<div><span>'+DIASL[pd(x.d).getDay()].slice(0,3)+', '+dmy(x.d)+(t&&t.id!==a.turmaId?' · '+esc(t.nome):'')+'</span><span class="pill '+cl[x.v]+'">'+lab[x.v]+'</span></div>'}).join("")+(r.L.length>12?'<small>e mais '+(r.L.length-12)+' aulas</small>':'')+'</div>'+
+    (pc<75?'<p class="note" style="color:var(--err)">Frequência abaixo de 75%: vale conversar com a família.</p>':'');
+}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-fq]");if(!b)return;var id=($("al-f")||{}).dataset;var a=S.fqA&&aluno(S.fqA);if(!a)return;b.parentNode.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});$("fq-box").innerHTML=freqAlunoHtml(a,+b.dataset.fq)});
 function freqMes(a,k){var r={p:0,f:0,j:0,t:0};Object.keys(E().cham).forEach(function(tid){var C=E().cham[tid];Object.keys(C).forEach(function(d){if(d.slice(0,7)!==k)return;var v=C[d][a.id];if(v){r[v]++;r.t++}})});return r}
 function alunoSheet(id,pre){
+  S.fqA=id||null;
   var a=id?aluno(id):Object.assign({id:"",nome:"",nasc:"",turmaId:S.fT||"",resp:"",whats:"",valor:"",venc:"10",inicio:today(),obs:"",ativo:true},pre||{});
   var k=mk(new Date()),hs=id?E().hist.filter(function(h){return h.a===id}).slice(0,6):[];
   var pays=id?[0,-1,-2,-3,-4,-5].map(function(n){var mk_=addM(k,n),m=mensal(a,mk_);return m?'<span class="pill '+(m.st==="pago"?"ok":m.st==="atrasado"?"err":"")+'">'+MESES[+mk_.slice(5)-1].slice(0,3)+': '+(m.st==="pago"?"pago":m.st==="atrasado"?"atrasado":"a pagar")+'</span>':""}).join(" "):"";
-  var fr=id?freqMes(a,k):null;
+  var fr=null;
   openSh(shHead(id?esc(a.nome):"Novo <em>aluno</em>")+'<form class="frm" id="al-f">'+
     '<div class="fld"><label for="al-n">Nome da criança</label><input id="al-n" value="'+esc(a.nome)+'" required></div>'+
     '<div class="g2"><div class="fld"><label for="al-b">Nascimento</label><input id="al-b" type="date" value="'+esc(a.nasc)+'"></div><div class="fld"><label for="al-t">Turma</label><select id="al-t"><option value="">Sem turma</option>'+E().turmas.map(function(t){var n=ativosNa(t.id).length,cap=parseInt(t.cap,10);return '<option value="'+esc(t.id)+'"'+(a.turmaId===t.id?" selected":"")+'>'+esc(t.nome)+(cap>0?" ("+n+"/"+cap+")":"")+'</option>'}).join("")+'</select></div></div>'+
@@ -610,7 +636,7 @@ function alunoSheet(id,pre){
     '<div class="g3"><div class="fld"><label for="al-v">Mensalidade</label><input id="al-v" inputmode="decimal" value="'+esc(a.valor)+'" placeholder="'+esc((turma(a.turmaId)||{}).valor||"da turma")+'"></div><div class="fld"><label for="al-d">Vence dia</label><input id="al-d" type="number" min="1" max="31" inputmode="numeric" value="'+esc(a.venc||10)+'"></div><div class="fld"><label for="al-i">Início</label><input id="al-i" type="date" value="'+esc(a.inicio||"")+'"></div></div>'+
     '<div class="fld"><label for="al-o">Observações</label><textarea id="al-o" placeholder="Alergias, quem busca, tamanhos de uniforme…">'+esc(a.obs)+'</textarea></div>'+
     (id?'<label class="tog"><input type="checkbox" id="al-a"'+(a.ativo!==false?" checked":"")+'> Aluno ativo (desligue quando sair da escola)</label>':'')+
-    (id?'<div class="fld"><span>Mensalidades</span><div class="chips">'+pays+'</div></div>'+(fr&&fr.t?'<div class="fld"><span>Frequência em '+MESES[+k.slice(5)-1]+'</span><div class="chips"><span class="pill ok">'+fr.p+' presenças</span><span class="pill err">'+fr.f+' faltas</span><span class="pill warn">'+fr.j+' justificadas</span></div></div>':'')+(hs.length?'<div class="fld"><span>Histórico</span>'+hs.map(function(h){return '<small>'+dmy(h.q)+' · '+esc(h.t)+'</small>'}).join("")+'</div>':''):'')+
+    (id?'<div class="fld"><span>Mensalidades</span><div class="chips">'+pays+'</div></div>'+'<div class="fld fq"><span>Frequência</span><div class="seg sm" id="fq-p"><button type="button" data-fq="1" aria-pressed="true">Este mês</button><button type="button" data-fq="3" aria-pressed="false">3 meses</button><button type="button" data-fq="12" aria-pressed="false">Este ano</button></div><div id="fq-box">'+freqAlunoHtml(a,1)+'</div></div>'+(hs.length?'<div class="fld"><span>Histórico</span>'+hs.map(function(h){return '<small>'+dmy(h.q)+' · '+esc(h.t)+'</small>'}).join("")+'</div>':''):'')+
     '<div class="foot"><button class="btn rose" type="submit">Salvar</button>'+(id?'<button class="btn ghost" type="button" id="al-del">'+ic("i-del")+'Excluir</button>':'')+'</div></form>',function(){
       $("al-f").onsubmit=function(ev){ev.preventDefault();
         var n=val("al-n");if(n.length<2){$("al-n").focus();return}
@@ -689,29 +715,39 @@ function vChamada(){
   var T=E().turmas;if(!T.length)return '<p class="empty"><b>Sem turmas</b>Crie uma turma primeiro.</p>';
   var td=today();
   if(!S.chT||!turma(S.chT)){var h=T.find(function(t){return temAula(t,S.chD)});S.chT=(h||T[0]).id}
-  var t=turma(S.chT),al=ativosNa(t.id).sort(function(a,b){return a.nome.localeCompare(b.nome)}),ch=chamDe(t.id,S.chD)||{},k=S.chD.slice(0,7);
+  var t=turma(S.chT),al=ativosNa(t.id).sort(function(a,b){return a.nome.localeCompare(b.nome)}),k=S.chD.slice(0,7);
+  var dk=t.id+'|'+S.chD;if(S.chDK!==dk){S.chDK=dk;S.chDraft=Object.assign({},chamDe(t.id,S.chD)||{});S.chDirty=false}
+  var ch=S.chDraft,saved=!!chamDe(t.id,S.chD);
   var c={p:0,f:0,j:0};al.forEach(function(a){if(ch[a.id])c[ch[a.id]]++});
   var dias=Object.keys(E().cham[t.id]||{}).filter(function(d){return d.slice(0,7)===k}).sort();
-  return '<div class="head"><div><h1>Chamada</h1><p>Toque em <b>P</b> (presente), <b>F</b> (falta) ou <b>J</b> (falta justificada). Salva sozinha, de qualquer celular.</p></div>'+sw+'</div>'+
-    '<div class="chips">'+T.map(function(x){var hj=temAula(x,td);return '<button type="button" class="chip" data-cht="'+esc(x.id)+'" aria-pressed="'+(x.id===t.id)+'">'+esc(x.nome)+(hj?' <span class="n">hoje</span>':'')+'</button>'}).join("")+'</div>'+
-    '<div class="card"><div class="datebar"><button class="ibtn" type="button" data-chd="-1" aria-label="Dia anterior">‹</button><input class="inp" type="date" id="ch-d" value="'+esc(S.chD)+'"><button class="ibtn" type="button" data-chd="1" aria-label="Próximo dia">›</button>'+(S.chD!==td?'<button class="btn xs ghost" type="button" data-chd="0">Hoje</button>':'')+'<span class="pill '+(temAula(t,S.chD)?"ok":"")+'">'+(temAula(t,S.chD)?"Dia de aula":DIASL[pd(S.chD).getDay()])+'</span><span style="margin-left:auto" class="pill">'+c.p+' P · '+c.f+' F · '+c.j+' J</span></div></div>'+
-    (al.length?'<div class="cham">'+al.map(function(a){var v=ch[a.id]||"";return '<div class="ch-r"><span class="av" style="--c:'+tcol(t)+';width:38px;height:38px;font-size:13px">'+esc(ini(a.nome))+'</span><div class="nm">'+esc(a.nome)+'<small>'+(ageOf(a.nasc)!=null?ageOf(a.nasc)+" anos":"")+'</small></div><div class="pfj">'+["p","f","j"].map(function(x){return '<button type="button" class="'+x+'" data-pfj="'+x+'" data-a="'+esc(a.id)+'" aria-pressed="'+(v===x)+'" aria-label="'+({p:"Presente",f:"Falta",j:"Justificada"})[x]+'">'+x.toUpperCase()+'</button>'}).join("")+'</div></div>'}).join("")+'</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn ok" type="button" id="ch-all">Todos presentes</button>'+(Object.keys(ch).length?'<button class="btn ghost" type="button" id="ch-clr">Limpar este dia</button>':'')+'</div>':'<p class="empty"><b>Nenhum aluno nesta turma</b>Matricule pela aba Alunos ou Turmas.</p>')+
+  return '<div class="head"><div><h1>Chamada</h1><p>Escolha a turma e a data, marque cada aluno e toque em <b>Salvar chamada</b>.</p></div>'+sw+'</div>'+
+    '<p class="stp"><b>1</b> Turma</p><div class="chips">'+T.map(function(x){var hj=temAula(x,td);return '<button type="button" class="chip" data-cht="'+esc(x.id)+'" aria-pressed="'+(x.id===t.id)+'">'+esc(x.nome)+(hj?' <span class="n">hoje</span>':'')+'</button>'}).join("")+'</div>'+
+    '<p class="stp"><b>2</b> Data</p><div class="card"><div class="datebar"><button class="ibtn" type="button" data-chd="-1" aria-label="Dia anterior">‹</button><input class="inp" type="date" id="ch-d" value="'+esc(S.chD)+'"><button class="ibtn" type="button" data-chd="1" aria-label="Próximo dia">›</button>'+(S.chD!==td?'<button class="btn xs ghost" type="button" data-chd="0">Hoje</button>':'')+'<span class="pill '+(temAula(t,S.chD)?"ok":"")+'">'+(temAula(t,S.chD)?"Dia de aula":DIASL[pd(S.chD).getDay()])+'</span><span style="margin-left:auto" class="pill">'+c.p+' P · '+c.f+' F · '+c.j+' J</span></div></div>'+
+    '<p class="stp"><b>3</b> Presença <small>P presente · F falta · J justificada</small></p>'+
+    (al.length?'<div class="cham">'+al.map(function(a){var v=ch[a.id]||"";return '<div class="ch-r"><span class="av" style="--c:'+tcol(t)+';width:38px;height:38px;font-size:13px">'+esc(ini(a.nome))+'</span><div class="nm">'+esc(a.nome)+'<small>'+(ageOf(a.nasc)!=null?ageOf(a.nasc)+" anos":"")+'</small></div><div class="pfj">'+["p","f","j"].map(function(x){return '<button type="button" class="'+x+'" data-pfj="'+x+'" data-a="'+esc(a.id)+'" aria-pressed="'+(v===x)+'" aria-label="'+({p:"Presente",f:"Falta",j:"Justificada"})[x]+'">'+x.toUpperCase()+'</button>'}).join("")+'</div></div>'}).join("")+'</div><div class="ch-save"><button class="btn rose big" type="button" id="ch-save">'+(S.chDirty?"💾 Salvar chamada":saved?"✓ Chamada salva":"💾 Salvar chamada")+'</button><button class="btn ok" type="button" id="ch-all">Todos presentes</button>'+(saved?'<button class="btn ghost" type="button" id="ch-clr">Apagar este dia</button>':'')+'</div>'+(S.chDirty?'<p class="note" style="color:var(--rose);font-weight:700">Há marcações ainda não salvas.</p>':''):'<p class="empty"><b>Nenhum aluno nesta turma</b>Matricule pela aba Alunos ou Turmas.</p>')+
     '<div class="card"><h2>Frequência de '+esc(mName(k))+'</h2><p class="note">'+dias.length+' aula'+(dias.length===1?"":"s")+' com chamada neste mês.</p>'+(dias.length&&al.length?'<div style="overflow-x:auto"><table class="freq"><thead><tr><th>Aluno</th><th>Aulas</th><th>%</th></tr></thead><tbody>'+al.map(function(a){var r={p:0,f:0,j:0},dots=dias.map(function(d){var v=(E().cham[t.id][d]||{})[a.id]||"";if(v)r[v]++;return '<i class="'+v+'" title="'+dm(d)+'"></i>'}).join(""),tot=r.p+r.f+r.j;return '<tr><td><b>'+esc(a.nome)+'</b></td><td><div class="dots">'+dots+'</div></td><td><b>'+(tot?Math.round(r.p*100/tot)+"%":"–")+'</b></td></tr>'}).join("")+'</tbody></table></div>':'<p class="empty" style="padding:4px">Ainda sem chamadas neste mês.</p>')+'</div>';
+}
+function chSave(manual){
+  if(!S.chDK||!S.chDirty){if(manual)toast("Chamada salva ✓");return}
+  var p=S.chDK.split("|"),t=p[0],dt=p[1],C=E().cham[t]=E().cham[t]||{};
+  if(Object.keys(S.chDraft).length)C[dt]=Object.assign({},S.chDraft);else delete C[dt];
+  S.chDirty=false;touch();if(manual){render();toast("Chamada salva ✓")}else toast("Chamada de "+dm(dt)+" salva ✓");
 }
 AFTER.chamada=function(){
   if($("fr-t")){$("fr-t").onchange=function(){S.frT=this.value;render()};$("fr-csv").onclick=freqCsv;return}
-  $("ch-d").onchange=function(){if(this.value){S.chD=this.value;render()}};
-  if($("ch-all"))$("ch-all").onclick=function(){var t=S.chT,C=E().cham[t]=E().cham[t]||{},d=C[S.chD]=C[S.chD]||{};ativosNa(t).forEach(function(a){d[a.id]="p"});touch();render();toast("Todos presentes ✦")};
-  if($("ch-clr"))$("ch-clr").onclick=function(){var C=E().cham[S.chT],old=C[S.chD];delete C[S.chD];touch();render();toast("Chamada do dia apagada",function(){C[S.chD]=old;touch();render()})};
+  $("ch-d").onchange=function(){if(this.value){chSave(false);S.chD=this.value;render()}};
+  if($("ch-all"))$("ch-all").onclick=function(){ativosNa(S.chT).forEach(function(a){S.chDraft[a.id]="p"});S.chDirty=true;render()};
+  if($("ch-save"))$("ch-save").onclick=function(){chSave(true)};
+  if($("ch-clr"))$("ch-clr").onclick=function(){if(!confirm("Apagar a chamada deste dia?"))return;var C=E().cham[S.chT],old=C[S.chD];delete C[S.chD];S.chDK=null;touch();render();toast("Chamada do dia apagada",function(){C[S.chD]=old;S.chDK=null;touch();render()})};
 };
 document.addEventListener("click",function(e){
   var b=e.target.closest("[data-pfj],[data-cht],[data-chd]");if(!b)return;
-  if(b.dataset.cht){S.chT=b.dataset.cht;render();return}
-  if(b.dataset.chd!=null&&!b.dataset.pfj){var n=+b.dataset.chd;if(!n)S.chD=today();else{var d=pd(S.chD);d.setDate(d.getDate()+n);S.chD=iso(d)}render();return}
-  var t=S.chT,C=E().cham[t]=E().cham[t]||{},d=C[S.chD]=C[S.chD]||{},a=b.dataset.a,v=b.dataset.pfj;
-  if(d[a]===v)delete d[a];else d[a]=v;if(!Object.keys(d).length)delete C[S.chD];touch();
+  if(b.dataset.cht){chSave(false);S.chT=b.dataset.cht;render();return}
+  if(b.dataset.chd!=null&&!b.dataset.pfj){chSave(false);var n=+b.dataset.chd;if(!n)S.chD=today();else{var d=pd(S.chD);d.setDate(d.getDate()+n);S.chD=iso(d)}render();return}
+  var d=S.chDraft,a=b.dataset.a,v=b.dataset.pfj;
+  if(d[a]===v)delete d[a];else d[a]=v;S.chDirty=true;
   var row=b.closest(".pfj");row.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",d[a]===x.dataset.pfj)});
-  clearTimeout(AFTER.rt);AFTER.rt=setTimeout(render,900);
+  var sb=$("ch-save");if(sb)sb.textContent="💾 Salvar chamada";
 });
 
 
