@@ -576,7 +576,7 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
     <h1>Área da <em>Irene</em></h1>
     <p class="sub">Alunos, turmas, chamada, mensalidades, fila de espera e Camarim.</p>
     <div class="fld"><label for="lu">Login</label><input id="lu" name="username" autocomplete="username" autocapitalize="none" required></div>
-    <div class="fld"><label for="lp">Senha</label><div class="pw"><input id="lp" name="password" type="password" autocomplete="current-password" required><button type="button" id="lshow">Mostrar</button></div></div>
+    <div class="fld"><label for="lp">Senha</label><div class="pw"><input id="lp" name="password" type="password" inputmode="numeric" pattern="[0-9]*" autocomplete="current-password" required><button type="button" id="lshow">Mostrar</button></div></div>
     <label class="keep"><input type="checkbox" id="lkeep" checked> Manter conectado neste aparelho</label>
     <p class="err" id="lerr" hidden></p>
     <button class="btn rose" id="lgo" type="submit">Entrar</button>
