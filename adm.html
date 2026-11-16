@@ -536,6 +536,11 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
 .aa{display:flex;align-items:center;gap:6px}
 .aa .ib{width:42px;height:42px}
 .chv{color:#B5A6B9;display:grid}
+@media (max-width:760px){
+  .bnav{display:flex!important;overflow-x:auto;scrollbar-width:none;gap:2px;scroll-snap-type:x proximity}
+  .bnav::-webkit-scrollbar{display:none}
+  .bnav button{flex:0 0 20%;min-width:68px;scroll-snap-align:start}
+}
 </style>
 </head>
 <body>
@@ -617,7 +622,7 @@ var MESES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto
 var TCOL=["#D98C99","#C9A36A","#9E7BB5","#7FA8A0","#A8526A","#E2A27B","#6F8FBF","#B5838D"];
 var FORMAS=["Pix","Dinheiro","Cartão","Transferência"];
 var TABS=[["inicio","Início"],["alunos","Alunos"],["turmas","Turmas"],["chamada","Chamada"],["mensal","Mensalidades"],["caixa","Caixa"],["fila","Fila de espera"],["camarim","Camarim"],["contatos","Contatos"],["acessos","Acessos"],["site","Site"]];
-var BNAV=["inicio","chamada","mensal","alunos","caixa"];
+var BNAV=["inicio","chamada","mensal","alunos","caixa","contatos","fila","camarim","turmas","site","acessos"],BLBL={mensal:"Mensal.",fila:"Fila",contatos:"Contatos"};
 
 function defSite(){return{
   whatsapp:"31984552588",instagram:"formasescoladedanca",endereco:"",horario:"",
@@ -628,7 +633,7 @@ function defSite(){return{
     {id:"sapatilha",nome:"Sapatilha meia-ponta",tipo:"sapatilha",desc:"Sapatilha de meia-ponta para as aulas.",preco:"",tamanhos:"",cores:"",ativo:true},
     {id:"saia",nome:"Saia de tule",tipo:"saia",desc:"Saia de tule para aulas e ensaios.",preco:"",tamanhos:"P, M, G",cores:"",ativo:true},
     {id:"coque",nome:"Kit coque",tipo:"coque",desc:"Rede, grampos e elástico para o coque perfeito.",preco:"",tamanhos:"",cores:"",ativo:true}],
-  fotos:[],videos:[],
+  fotos:[],videos:[],cartazes:[],
   faq:[
     {q:"A partir de que idade pode começar?",a:"Cada turma tem a sua faixa de idade. Use o seletor de idade aqui no site ou fale com a Irene, que indica a turma certa para a sua criança."},
     {q:"Como sei se tem vaga na turma?",a:"Cada turma mostra a sua situação. Toque em “Ver disponibilidade” e a sua mensagem vai direto para o WhatsApp da Irene, já com a turma e a idade da criança."},
@@ -758,7 +763,7 @@ function badge(id){var c=counts();return id==="fila"?c.fila:id==="camarim"?c.ped
 function renderNav(){
   $("tabs").innerHTML=TABS.map(function(t){return tabBtn(t[0],t[1],badge(t[0]))}).join("");
   var moreN=["turmas","caixa","fila","camarim","contatos","acessos","site"].reduce(function(s,id){return s+(badge(id)||0)},0);
-  $("bnav").innerHTML=BNAV.map(function(id){if(id==="mais")return '<button type="button" data-t="mais" aria-selected="'+(["inicio","chamada","mensal","alunos"].indexOf(S.tab)<0)+'">'+ic("i-mais")+'<span>Mais</span>'+(moreN?'<i class="bd">'+moreN+'</i>':'')+'</button>';var t=TABS.find(function(x){return x[0]===id});return tabBtn(id,id==="mensal"?"Mensal.":t[1],id==="inicio"?moreN:badge(id))}).join("");
+  $("bnav").innerHTML=BNAV.map(function(id){if(id==="mais")return '<button type="button" data-t="mais" aria-selected="'+(["inicio","chamada","mensal","alunos"].indexOf(S.tab)<0)+'">'+ic("i-mais")+'<span>Mais</span>'+(moreN?'<i class="bd">'+moreN+'</i>':'')+'</button>';var t=TABS.find(function(x){return x[0]===id});return tabBtn(id,BLBL[id]||t[1],badge(id))}).join("");;var sb=$("bnav").querySelector('[aria-selected="true"]');if(sb){var bn=$("bnav");bn.scrollLeft=sb.offsetLeft-bn.clientWidth/2+sb.offsetWidth/2}
 }
 function go(t){if(t==="mais"){moreSheet();return}if(S.tab==="chamada"&&t!=="chamada"&&S.chDirty)chSave(false);S.tab=t;try{history.replaceState(null,"","#"+t)}catch(x){}closeSh();render();scrollTo(0,0)}
 document.addEventListener("click",function(e){var b=e.target.closest("[data-t]");if(b&&(b.closest("#tabs")||b.closest("#bnav")||b.closest(".more-grid")||b.hasAttribute("data-go")))go(b.dataset.t)});
@@ -1341,6 +1346,7 @@ function vSite(){
   return '<div class="head"><div><h1>Site</h1><p>O que você mudar aqui aparece no site em segundos.</p></div><a class="btn ghost" href="./" target="_blank" rel="noopener">Ver site</a></div>'+
   '<div class="card frm" style="display:grid;gap:14px"><h2>Contato</h2><div class="g2 g2-c"><div class="fld"><label for="s-w">WhatsApp que recebe os pedidos</label><input id="s-w" data-s="whatsapp" type="tel" inputmode="tel" value="'+esc(phone(st.whatsapp))+'"></div><div class="fld"><label for="s-i">Instagram (sem @)</label><input id="s-i" data-s="instagram" value="'+esc(st.instagram)+'"></div></div><div class="fld"><label for="s-e">Endereço da escola</label><input id="s-e" data-s="endereco" value="'+esc(st.endereco)+'" placeholder="Rua, número, bairro, cidade"><small>Com endereço, o site mostra o botão do mapa.</small></div><div class="fld"><label for="s-h">Horário de atendimento</label><input id="s-h" data-s="horario" value="'+esc(st.horario)+'" placeholder="Ex.: Seg a sex, 13h às 19h"></div></div>'+
   '<div class="card frm" style="display:grid;gap:14px"><h2>Sobre a Irene</h2><div class="fld"><label for="s-s">Texto da seção “Por trás de cada forma, a Irene”</label><textarea id="s-s" data-s="sobre" style="min-height:150px">'+esc(st.sobre)+'</textarea></div></div>'+
+  '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><div><h2>Varal dos espetáculos</h2><p class="note" style="margin:0">Cartazes dos últimos espetáculos. Aparecem pendurados no varal da seção 7, nesta ordem.</p></div><label class="btn rose sm" style="cursor:pointer">＋ Enviar cartazes<input type="file" accept="image/*" multiple id="c-up" hidden></label></div><div class="ph-grid" style="margin-top:14px">'+(st.cartazes||[]).map(function(f,i){return '<div class="ph-it"><img src="'+esc(f.src)+'" alt=""><div class="b"><input data-ct="'+i+'" value="'+esc(f.titulo||"")+'" placeholder="Nome do espetáculo"><input data-ca="'+i+'" value="'+esc(f.ano||"")+'" placeholder="Ano" inputmode="numeric" style="margin-top:6px"><div class="ac"><button class="ibtn" type="button" data-cmv="'+i+'" data-d="-1" aria-label="Subir">'+ic("i-up")+'</button><button class="ibtn" type="button" data-cmv="'+i+'" data-d="1" aria-label="Descer">'+ic("i-down")+'</button><button class="ibtn" type="button" data-crm="'+i+'" aria-label="Apagar">'+ic("i-del")+'</button></div></div></div>'}).join("")+((st.cartazes||[]).length?'':'<p class="empty" style="grid-column:1/-1"><b>Nenhum cartaz ainda</b>Enquanto isso, o site mostra cartazes “em breve”.</p>')+'</div></div>'+
   '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><div><h2>Fotos</h2><p class="note" style="margin:0">Aparecem na seção “Momentos no palco e nas aulas”. Envie quantas quiser, de uma vez.</p></div><label class="btn rose sm" style="cursor:pointer">＋ Enviar fotos<input type="file" accept="image/*" multiple id="s-up" hidden></label></div><div class="ph-grid" style="margin-top:14px">'+st.fotos.map(function(f,i){return '<div class="ph-it"><img src="'+esc(f.src)+'" alt=""><div class="b"><input data-fl="'+i+'" value="'+esc(f.leg||"")+'" placeholder="Legenda"><div class="ac"><button class="ibtn" type="button" data-fmv="'+i+'" data-d="-1">'+ic("i-up")+'</button><button class="ibtn" type="button" data-fmv="'+i+'" data-d="1">'+ic("i-down")+'</button><button class="ibtn" type="button" data-frm="'+i+'">'+ic("i-del")+'</button></div></div></div>'}).join("")+'</div></div>'+
   '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px"><div><h2>Vídeos (espetáculos, aulas, ensaios e bastidores)</h2><p class="note" style="margin:0">Cole o link do YouTube, do Instagram (reel) ou do Google Drive. Também aceita vídeo .mp4 na pasta <b>videos/</b> do site (ex.: <b>videos/espetaculo2025.mp4</b>).</p></div><button class="btn sm ghost" type="button" id="v-add">＋ Vídeo</button></div><div style="display:grid;gap:10px">'+(st.videos||[]).map(function(v,i){return '<div class="faq-it"><input class="inp" data-vt="'+i+'" value="'+esc(v.titulo||"")+'" placeholder="Título (ex.: O Quebra-Nozes 2025)"><input class="inp" data-vs="'+i+'" value="'+esc(v.src||"")+'" placeholder="Link do vídeo"><input class="inp" data-va="'+i+'" value="'+esc(v.ano||"")+'" placeholder="Legenda curta (ex.: Espetáculo de fim de ano)"><select class="inp" data-vc="'+i+'">'+[["espetaculo","Espetáculo"],["aula","Aula"],["ensaio","Ensaio"],["bastidores","Bastidores"]].map(function(o){return '<option value="'+o[0]+'"'+((v.cat||"espetaculo")===o[0]?" selected":"")+'>'+o[1]+'</option>'}).join("")+'</select><div class="ac"><button class="ibtn" type="button" data-vmv="'+i+'" data-d="-1">'+ic("i-up")+'</button><button class="ibtn" type="button" data-vmv="'+i+'" data-d="1">'+ic("i-down")+'</button><button class="ibtn" type="button" data-vrm="'+i+'">'+ic("i-del")+'</button></div></div>'}).join("")+((st.videos||[]).length?'':'<p class="empty" style="padding:6px">Nenhum vídeo ainda. No site aparecem cartões de “vídeo em breve” até você colocar o primeiro.</p>')+'</div></div>'+
   '<div class="card"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px"><div><h2>Dúvidas</h2><p class="note" style="margin:0">Perguntas e respostas da seção “Perguntas das famílias”.</p></div><button class="btn sm ghost" type="button" id="q-add">＋ Pergunta</button></div><div style="display:grid;gap:10px">'+st.faq.map(function(f,i){return '<div class="faq-it"><input class="inp" data-fq="'+i+'" value="'+esc(f.q)+'" placeholder="Pergunta"><textarea class="inp" data-fa="'+i+'" rows="3" placeholder="Resposta">'+esc(f.a)+'</textarea><div class="ac"><button class="ibtn" type="button" data-qmv="'+i+'" data-d="-1">'+ic("i-up")+'</button><button class="ibtn" type="button" data-qmv="'+i+'" data-d="1">'+ic("i-down")+'</button><button class="ibtn" type="button" data-qrm="'+i+'">'+ic("i-del")+'</button></div></div>'}).join("")+'</div></div>';
@@ -1358,13 +1364,20 @@ AFTER.site=function(){
   document.querySelectorAll("[data-vc]").forEach(function(i){i.onchange=function(){st.videos[+i.dataset.vc].cat=i.value;touch()}});
   $("v-add").onclick=function(){st.videos.push({titulo:"",src:"",ano:""});touch();render();var l=document.querySelectorAll("[data-vt]");l[l.length-1].focus()};
   $("q-add").onclick=function(){st.faq.push({q:"",a:""});touch();render();var l=document.querySelectorAll("[data-fq]");l[l.length-1].focus()};
+  st.cartazes=st.cartazes||[];
+  document.querySelectorAll("[data-ct]").forEach(function(i){i.oninput=function(){st.cartazes[+i.dataset.ct].titulo=i.value;touch()}});
+  document.querySelectorAll("[data-ca]").forEach(function(i){i.oninput=function(){st.cartazes[+i.dataset.ca].ano=i.value;touch()}});
+  $("c-up").onchange=function(){var fs=[].slice.call(this.files);if(!fs.length)return;toast("Enviando "+fs.length+" cartaz"+(fs.length>1?"es":"")+"…");
+    fs.reduce(function(p,f){return p.then(function(){return upPhoto(f,1000).then(function(src){st.cartazes.push({src:src,titulo:"",ano:""});touch()}).catch(function(m){toast(m)})})},Promise.resolve()).then(function(){render();toast("Cartazes no varal ✦")})};
   $("s-up").onchange=function(){var fs=[].slice.call(this.files);if(!fs.length)return;toast("Enviando "+fs.length+" foto"+(fs.length>1?"s":"")+"…");
     fs.reduce(function(p,f){return p.then(function(){return upPhoto(f,1400).then(function(src){st.fotos.push({src:src,leg:""});touch()}).catch(function(m){toast(m)})})},Promise.resolve()).then(function(){render();toast("Fotos publicadas ✦")})};
 };
 document.addEventListener("click",function(e){
-  var b=e.target.closest("[data-fmv],[data-frm],[data-qmv],[data-qrm],[data-vmv],[data-vrm]");if(!b)return;var st=E().site;st.videos=st.videos||[];
+  var b=e.target.closest("[data-fmv],[data-frm],[data-qmv],[data-qrm],[data-vmv],[data-vrm],[data-cmv],[data-crm]");if(!b)return;var st=E().site;st.videos=st.videos||[];st.cartazes=st.cartazes||[];
   function mv(A,i,d){var j=i+d;if(j<0||j>=A.length)return;var t=A[i];A[i]=A[j];A[j]=t}
-  if(b.dataset.fmv)mv(st.fotos,+b.dataset.fmv,+b.dataset.d);
+  if(b.dataset.cmv)mv(st.cartazes,+b.dataset.cmv,+b.dataset.d);
+  else if(b.dataset.crm){var c=st.cartazes.splice(+b.dataset.crm,1)[0];if(c&&!S.test&&/\/api\/foto\?id=/.test(c.src))api("apagaFoto",{id:c.src.split("id=")[1]})}
+  else if(b.dataset.fmv)mv(st.fotos,+b.dataset.fmv,+b.dataset.d);
   else if(b.dataset.frm){var f=st.fotos.splice(+b.dataset.frm,1)[0];if(!S.test&&/\/api\/foto\?id=/.test(f.src))api("apagaFoto",{id:f.src.split("id=")[1]})}
   else if(b.dataset.qmv)mv(st.faq,+b.dataset.qmv,+b.dataset.d);
   else if(b.dataset.vmv)mv(st.videos,+b.dataset.vmv,+b.dataset.d);
