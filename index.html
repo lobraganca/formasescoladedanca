@@ -1507,7 +1507,7 @@ html.shop .bag-t small{display:block!important;white-space:nowrap;overflow:hidde
 html.shop .bag.pop .bag-in{animation:bagpop .45s cubic-bezier(.3,1.6,.6,1)}
 
 /* bailarinas 3D (imagens em sequência) */
-.spr{display:block;background-repeat:no-repeat;background-size:2000% 100%;background-position:0 0;animation:sprf 6.4s steps(20) infinite;animation-play-state:paused}
+.spr{display:block;background-repeat:no-repeat;background-size:1200% 800%;background-position:0 0}
 @keyframes sprf{to{background-position-x:105.2632%}}
 .sband.run .spr,.tcard .spr{animation-play-state:running}
 .bl3{width:120px!important;height:151px!important;filter:drop-shadow(0 10px 8px rgba(80,40,30,.22))!important}
@@ -1530,6 +1530,13 @@ html.shop .bag.pop .bag-in{animation:bagpop .45s cubic-bezier(.3,1.6,.6,1)}
   #reino .h3-ui{padding-top:calc(92px + env(safe-area-inset-top,0px))!important}
 }
 #reino .bo[data-k="enfeite"]{--sw:#E0568F}
+
+/* bailarinas 3D v2: proporção dos quadros 120×147; Irene (professora) maior que as alunas */
+.bl3{width:124px!important;height:152px!important}
+.sb-irene.bl3{width:156px!important;height:191px!important}
+.tc-spr{width:108px!important;height:132px!important}
+@media (max-width:760px){.bl3{width:98px!important;height:120px!important}.sb-irene.bl3{width:120px!important;height:147px!important}}
+@media (max-width:560px){.tc-spr{width:100px!important;height:122px!important}}
 </style>
 </head>
 <body>
@@ -1701,7 +1708,7 @@ html.shop .bag.pop .bag-in{animation:bagpop .45s cubic-bezier(.3,1.6,.6,1)}
   <div class="sb-curt"></div><div class="sb-spot s1"></div><div class="sb-spot s2"></div>
   <div class="sb-floor"></div>
   <div class="sb-track" id="sb-track"></div>
-  <div class="bl bl3 sb-irene" aria-hidden="true"><i class="spr" data-bg="/img/bail-g.webp" style="animation-delay:.32s"></i><span class="sbi-tag">Irene</span></div>
+  <div class="bl bl3 sb-irene" aria-hidden="true"><i class="spr" data-bg="/img/bail-g.webp" data-o="84"></i><span class="sbi-tag">Irene</span></div>
   <div class="sb-val"></div>
   <div class="sb-say" id="sb-say">E um, e dois, e três…</div>
   <div class="sb-foot"></div>
@@ -1959,14 +1966,18 @@ function poseSVG(i){
     '<g fill="#fff" opacity=".8"><path d="M18 20l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z"/><path d="M100 84l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z"/><circle cx="96" cy="18" r="2"/><circle cx="26" cy="86" r="1.6"/></g></svg>'}
 var ICAL='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
     ICLK='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>';
-var sprIO=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var el=e.target;el.style.backgroundImage="url("+el.dataset.bg+")";sprIO.unobserve(el)}})},{rootMargin:"500px"}):null;
-function sprLoad(root){(root||document).querySelectorAll(".spr[data-bg]").forEach(function(el){if(el.style.backgroundImage)return;if(sprIO)sprIO.observe(el);else el.style.backgroundImage="url("+el.dataset.bg+")"})}
+/* bailarinas 3D: quadros numa grade (12 × 8), tocados a 12 por segundo só quando aparecem na tela */
+var SPR_N=86,SPR_C=12,SPR_R=8,SPRV=[],sprRM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+var sprIO=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){var el=e.target,k=SPRV.indexOf(el);if(e.isIntersecting){if(!el.style.backgroundImage)el.style.backgroundImage="url("+el.dataset.bg+")";if(k<0)SPRV.push(el)}else if(k>=0)SPRV.splice(k,1)})},{rootMargin:"200px"}):null;
+function sprFrame(el,f){var i=((f+(+el.dataset.o||0))%SPR_N+SPR_N)%SPR_N;el.style.backgroundPosition=(i%SPR_C*100/(SPR_C-1)).toFixed(3)+"% "+(Math.floor(i/SPR_C)*100/(SPR_R-1)).toFixed(3)+"%"}
+function sprLoad(root){(root||document).querySelectorAll(".spr[data-bg]").forEach(function(el){sprFrame(el,0);if(sprIO)sprIO.observe(el);else{el.style.backgroundImage="url("+el.dataset.bg+")";SPRV.push(el)}})}
+(function(){var lf=-1;function tick(now){var f=sprRM?0:Math.floor(now/83.3);if(f!==lf){lf=f;for(var i=0;i<SPRV.length;i++)sprFrame(SPRV[i],f)}requestAnimationFrame(tick)}requestAnimationFrame(tick)})();
 function renderTurmas(){
   var g=$("tgrid"),T=turmasSite();
   g.innerHTML=T.map(function(t,i){
     var s=statusOf(t),d=diasTxt(t.dias),h=t.hIni?hTxt(t.hIni)+(t.hFim?" às "+hTxt(t.hFim):""):"",n=ROM[i]||i+1,f=(t.feats&&t.feats.length?t.feats:(FEAT[t.id]||FEATG[i%5]));
     return '<article class="tcard rv d'+(i%3)+'" data-id="'+esc(t.id)+'" data-n="Nível '+n+'" style="--c:'+(t.cor||TCOL[i%TCOL.length])+'">'+
-      '<div class="tc-top"><span class="tc-num">'+String(i+1).padStart(2,"0")+'</span><i class="tc-ill tc-spr spr" data-bg="/img/bail-'+["a","c","b","e","d","f"][i%6]+'.webp" style="animation-delay:-'+(i*1.28).toFixed(2)+'s"></i>'+'<span class="arch-n">Nível '+n+'</span><span class="tc-age"><b>'+esc(ageTxt(t).replace(/\s*anos?/i,""))+'</b>anos</span></div>'+
+      '<div class="tc-top"><span class="tc-num">'+String(i+1).padStart(2,"0")+'</span><i class="tc-ill tc-spr spr" data-bg="/img/bail-'+["a","c","b","e","d","f"][i%6]+'.webp" data-o="'+(i*17)+'"></i>'+'<span class="arch-n">Nível '+n+'</span><span class="tc-age"><b>'+esc(ageTxt(t).replace(/\s*anos?/i,""))+'</b>anos</span></div>'+
       '<div class="tc-body"><h3>'+esc(t.nome)+'</h3><p class="desc">'+esc(t.desc||"")+'</p>'+
       '<ul class="tc-feat">'+f.slice(0,3).map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>'+
       '<div class="tc-info"><div>'+ICAL+'<span><small>Dias</small>'+esc(d||"Com a Irene")+'</span></div><div>'+ICLK+'<span><small>Horário</small>'+esc(h||"Sob consulta")+'</span></div></div>'+
@@ -2246,7 +2257,7 @@ document.addEventListener("click",function(e){if(!e.target.closest("#cta-fill"))
   var tr=$("sb-track");if(!tr)return;
   var SK=["#F1C7AE","#E4B08F","#C98D68","#9C6545","#6A4029"],HR=["#2C1A12","#5A3825","#B9844F","#1A110C","#7A4A2A"],TU=["#F09ABB","#C9A7E8","#9FCDEE","#F7F2F2","#E8C27A","#F4B183","#E07AA5"];
   var KS=["a","c","d","b","e","f","c","a","d"];
-  function dancer(i){return '<button class="bl bl3" type="button" aria-label="Bailarina '+(i+1)+'"><i class="spr" data-bg="/img/bail-'+KS[i]+'.webp" style="animation-delay:-'+(i*.32).toFixed(2)+'s"></i></button>'}
+  function dancer(i){return '<button class="bl bl3" type="button" aria-label="Bailarina '+(i+1)+'"><i class="spr" data-bg="/img/bail-'+KS[i]+'.webp" data-o="'+(i*3)+'"></i></button>'}
   var h="";for(var i=0;i<9;i++)h+=dancer(i);tr.innerHTML=h;sprLoad($("sband"));
   var LINES=["E um, e dois, e três…","Pliééé… joelhos pra fora!","Saltinho leve! Sauté!","Braço lá na frente: arabesque!","Agora a pirouette!","Ponta esticada, bailarinas!","Sorriso no rosto ✦","Révérence! Que lindas! 👏"],li=0,say=$("sb-say");
   var vis=false;new IntersectionObserver(function(es){vis=es[0].isIntersecting;$("sband").classList.toggle("run",vis)}).observe($("sband"));
