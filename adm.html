@@ -875,7 +875,7 @@ function vAlunos(){
     '<div class="alist" id="a-list">'+(L.length?L.map(function(a){var t=turma(a.turmaId),m=mensal(a,k),ag=ageOf(a.nasc),fr=freqMes(a,k),pf=fr.t?Math.round(fr.p*100/fr.t):null;
       var st=a.ativo===false?'<span class="tg">Inativo'+(a.saida?' desde '+dmy(a.saida):'')+'</span>':m?'<span class="tg '+(m.st==="pago"?"ok":m.st==="atrasado"?"err":"warn")+'">'+(m.st==="pago"?"Mensalidade paga":m.st==="atrasado"?"Mensalidade em atraso":"Mensalidade a pagar")+'</span>':'';
       return '<div class="acard'+(a.ativo===false?" off":"")+'" data-al="'+esc(a.id)+'" role="button" tabindex="0" style="--c:'+tcol(t)+'"><span class="av">'+esc(ini(a.nome))+'</span>'+
-        '<div class="ai"><b>'+esc(a.nome)+'</b><small>'+(ag!=null?ag+' anos · ':'')+esc(t?t.nome:"Sem turma")+'</small>'+(a.resp?'<small class="rs">Resp.: '+esc(a.resp)+'</small>':'')+'<div class="tgs">'+st+(pf!=null?'<span class="tg '+(pf<75?"err":"")+'">Presença '+pf+'%</span>':'')+'</div></div>'+
+        '<div class="ai"><b>'+esc(a.nome)+'</b><small>'+(ag!=null?ag+' anos · ':'')+esc(t?t.nome:"Sem turma")+'</small>'+(a.resp||a.whats?'<small class="rs">'+(a.resp?'Resp.: '+esc(a.resp):'')+(a.resp&&a.whats?' · ':'')+(a.whats?esc(phone(a.whats)):'')+'</small>':'')+'<div class="tgs">'+st+(pf!=null?'<span class="tg '+(pf<75?"err":"")+'">Presença '+pf+'%</span>':'')+'</div></div>'+
         '<div class="aa">'+(a.whats?'<a class="ib wa" href="'+waLink(a.whats,"Olá, "+(first(a.resp)||"tudo bem")+"! Aqui é a Irene, da Formas.")+'" target="_blank" rel="noopener" aria-label="WhatsApp de '+esc(first(a.resp)||first(a.nome))+'">'+ic("wa")+'</a>':'')+'<span class="chv">'+CHV+'</span></div></div>'}).join(""):
       '<div class="empty-c"><span>'+(S.q?"🔎":"🩰")+'</span><b>'+(E().alunos.length?"Ninguém encontrado":"Nenhum aluno ainda")+'</b><p>'+(!E().alunos.length?"Toque em ＋ Novo aluno para começar.":S.q?"Ninguém com “"+esc(S.q)+"”"+(tn?" na turma "+esc(tn):"")+".":tn?"A turma "+esc(tn)+" não tem alunos "+(S.inat?"inativos":"ativos")+".":(S.inat?"Nenhum aluno inativo.":"Nenhum aluno ativo."))+'</p>'+(S.q||S.fT?'<button class="btn ghost sm" type="button" id="a-clr">Limpar busca e filtro</button>':'')+'</div>')+'</div>';
 }
@@ -1447,6 +1447,11 @@ setInterval(function(){if(S.test||!S.escola||document.hidden||!$("ov").hidden)re
   if(t&&API){S.tok=t;start();return}
   document.documentElement.classList.remove("boot");
 })();
+</script>
+<script>/* telefone sempre no formato (31) 98455-2588 enquanto digita */
+document.addEventListener("input",function(e){var t=e.target;if(!t||t.tagName!=="INPUT"||t.type!=="tel")return;var d=t.value.replace(/\D/g,"");if(d.length>11&&d.indexOf("55")===0)d=d.slice(2);d=d.slice(0,11);
+var f=!d?"":d.length<=2?"("+d:d.length<=6?"("+d.slice(0,2)+") "+d.slice(2):d.length<=10?"("+d.slice(0,2)+") "+d.slice(2,6)+"-"+d.slice(6):"("+d.slice(0,2)+") "+d.slice(2,7)+"-"+d.slice(7);
+if(e.inputType&&e.inputType.indexOf("delete")===0&&f.length>t.value.length)return;if(t.value!==f)t.value=f});
 </script>
 </body>
 </html>

@@ -516,10 +516,10 @@ const Reino = {
   isOpen: () => true,
   dress(kind, col) {
     const c = col && kind !== "enfeite" ? new THREE.Color(col) : null; pop = 1;
-    if (kind === "enfeite") { sparkleBurst(2.0, 70, null); if (!busy && whirl < 0) whirl = 0; }
-    if (kind === "pele") { sparkleBurst(1.7, 70, c); if (!busy && whirl < 0) whirl = 0; }
-    else if (kind === "tutu") { sparkleBurst(1.0, 110, c); if (!busy) whirl = 0; }
-    else if (kind === "sapatilha") { sparkleBurst(.15, 80, c); if (!busy && whirl < 0) whirl = 0; }
+    if (kind === "enfeite") { if (!busy && whirl < 0) whirl = 0; }
+    if (kind === "pele") { if (!busy && whirl < 0) whirl = 0; }
+    else if (kind === "tutu") { if (!busy) whirl = 0; }
+    else if (kind === "sapatilha") { if (!busy && whirl < 0) whirl = 0; }
     else if (kind === "pronta") { sparkleBurst(1.3, 200); if (!(busy && curStep === "reverence")) { busy = false; play("reverence"); } }
   },
   set(o) {

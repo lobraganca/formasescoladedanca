@@ -1537,6 +1537,25 @@ html.shop .bag.pop .bag-in{animation:bagpop .45s cubic-bezier(.3,1.6,.6,1)}
 .tc-spr{width:108px!important;height:132px!important}
 @media (max-width:760px){.bl3{width:98px!important;height:120px!important}.sb-irene.bl3{width:120px!important;height:147px!important}}
 @media (max-width:560px){.tc-spr{width:100px!important;height:122px!important}}
+.tbelt-nav{justify-content:flex-start!important}
+#turmas.sec{padding-top:40px!important}
+@media (max-width:860px){#turmas.sec{padding-top:26px!important}}
+.sb-say{top:36px!important}
+@media (max-width:760px){.sb-say{top:38px!important}}
+html.shop #camarim{padding-top:calc(88px + env(safe-area-inset-top,0px))!important}
+@media (max-width:860px){html.shop #camarim{padding-top:calc(76px + env(safe-area-inset-top,0px))!important}}
+html.shop .shop-back{margin-bottom:16px}
+.shop-help{display:none}
+html.shop .shop-help{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:22px 0 8px;padding:18px;border-radius:22px;background:linear-gradient(135deg,#2A1838,#4A2350);color:#fff;box-shadow:0 22px 40px -28px rgba(40,10,60,.8)}
+.shop-help .sh-ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.12);font-size:24px;flex:none}
+.shop-help div{flex:1 1 180px;display:grid;gap:3px}.shop-help b{font-size:16px}.shop-help small{font-size:13.5px;color:rgba(255,255,255,.75)}
+.shop-help .btn{background:#1F9D55;color:#fff;border:0;white-space:nowrap}
+html.shop .s-ch{flex:1 1 0!important;min-width:0}
+html.shop .s-tm{flex:1 1 0!important;min-width:0}
+html.shop .s-opt{flex-wrap:nowrap;align-items:flex-end}
+html.shop .s-ch button{min-width:38px;height:38px;padding:0 10px}
+html.shop .s-q button{width:38px;height:38px}
+html.shop .srow{gap:10px}
 </style>
 </head>
 <body>
@@ -1808,6 +1827,7 @@ html.shop .bag.pop .bag-in{animation:bagpop .45s cubic-bezier(.3,1.6,.6,1)}
     </div>
     <div class="pfilt" id="pfilt" role="group" aria-label="Filtrar peças" hidden></div>
     <div class="pgrid" id="pgrid"></div>
+    <div class="shop-help"><span class="sh-ic" aria-hidden="true">🩰</span><div><b>Ficou em dúvida no tamanho?</b><small>A Irene ajuda a escolher antes de você pedir.</small></div><a class="btn" id="shop-wa" href="#" target="_blank" rel="noopener">Perguntar à Irene</a></div>
     <div class="shop-more"><a class="btn goldb" href="/camarim">🩰 Abrir a loja completa de pedidos <span aria-hidden="true">→</span></a></div>
     <div class="bag" id="bag" hidden><button type="button" class="bag-in" id="bag-open"><span class="bag-ic" aria-hidden="true">👜<i id="bag-n">0</i></span><span class="bag-t"><b id="bag-t">Sacolinha</b><small id="bag-s">toque para revisar e enviar</small></span><span class="bag-go">Enviar pedido →</span></button></div>
   </div>
@@ -1925,6 +1945,7 @@ var TCOL=["#EFA3BA","#E8C27A","#B9A3E8","#8FD3C1","#F08FA8","#F2B48A"];
 
 function $(id){return document.getElementById(id)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+addEventListener("load",function(){var a=document.getElementById("shop-wa");if(a)a.href="https://wa.me/"+waNum()+"?text="+encodeURIComponent("Olá, Irene! Estou fazendo um pedido no Camarim e fiquei com dúvida no tamanho.")});
 function waNum(){var n=String(SITE.whatsapp||"").replace(/\D/g,"");if(n&&n.length<=11)n="55"+n;return n}
 function waShow(){var n=String(SITE.whatsapp||"").replace(/\D/g,"");if(n.length>11)n=n.slice(-11);return n.length===11?"("+n.slice(0,2)+") "+n.slice(2,7)+"-"+n.slice(7):n}
 function waUrl(t){return "https://wa.me/"+waNum()+"?text="+encodeURIComponent(t)}
@@ -2157,8 +2178,8 @@ function waitSheet(tid){
   };
 }
 /* ---------- sacolinha do Camarim: várias peças num pedido só ---------- */
-var LS_BAG="formas-sacolinha-v1",BAG=[];try{BAG=JSON.parse(localStorage.getItem(LS_BAG)||"[]")||[]}catch(e){BAG=[]}
-function saveBag(){try{localStorage.setItem(LS_BAG,JSON.stringify(BAG))}catch(e){}renderBag();document.querySelectorAll(".srow").forEach(srowUpd);var g=$("pgrid");if(g)g.querySelectorAll("[data-prod]").forEach(function(b){var n=bagCount(b.dataset.prod);b.textContent=n?"✓ Na sacolinha ("+n+")":"Escolher"})}
+var LS_BAG="formas-sacolinha-v1",BAG=[];try{localStorage.removeItem(LS_BAG)}catch(e){}
+function saveBag(){renderBag();document.querySelectorAll(".srow").forEach(srowUpd);var g=$("pgrid");if(g)g.querySelectorAll("[data-prod]").forEach(function(b){var n=bagCount(b.dataset.prod);b.textContent=n?"✓ Na sacolinha ("+n+")":"Escolher"})}
 function bagCount(pid){return BAG.filter(function(x){return x.produtoId===pid}).reduce(function(s,x){return s+x.qtd},0)}
 function bagTotal(){return BAG.reduce(function(s,x){return s+x.qtd},0)}
 function bagLine(x){return x.qtd+"x "+x.produto+(x.tamanho?" — tamanho "+x.tamanho:"")+(x.cor?" — "+x.cor:"")}
@@ -2377,7 +2398,7 @@ function renderDress(){
   $("d-photo").onclick=function(){if(!window.Reino)return;var a=document.createElement("a");a.href=window.Reino.photo(DOLL.nome);a.download="minha-bailarina-formas.jpg";document.body.appendChild(a);a.click();a.remove();toast("Foto da sua bailarina ✦")};
 }
 function saveDoll(){try{localStorage.setItem(LS_DOLL,JSON.stringify(DOLL))}catch(e){}if(window.Reino)window.Reino.set(DOLL);if(window.Caixa)window.Caixa.set(DOLL);$("plaque").textContent=DOLL.nome?"✦ "+DOLL.nome+" ✦":"";$("plaque").classList.toggle("on",!!DOLL.nome)}
-$("dress").addEventListener("click",function(e){var b=e.target.closest("[data-dk-k]");if(!b)return;DOLL[b.dataset.dkK]=b.dataset.v;saveDoll();renderDress();if(window.Reino)window.Reino.burst()});
+$("dress").addEventListener("click",function(e){var b=e.target.closest("[data-dk-k]");if(!b)return;DOLL[b.dataset.dkK]=b.dataset.v;saveDoll();renderDress()});
 function dockInset(){}
 function openCard(t){$("dk-coreo").hidden=t!=="coreo";$("dk-vestir").hidden=t!=="vestir";if(t==="vestir")renderDress();$("h3card").classList.add("on");document.querySelectorAll("[data-dk]").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.dk===t)})}
 document.querySelectorAll("[data-dk]").forEach(function(b){b.onclick=function(){var t=b.dataset.dk;if($("h3card").classList.contains("on")&&b.getAttribute("aria-pressed")==="true"){$("h3card").classList.remove("on");b.setAttribute("aria-pressed","false");return}openCard(t)}});
@@ -2448,7 +2469,6 @@ hit("view");
     b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump");
     var first=!done[k];done[k]=v;DOLL[k]=v;if(k==="sapatilha"&&false)DOLL[k]=v;saveDoll();
     if(window.Reino&&window.Reino.dress)window.Reino.dress(k,v);
-    var r=b.getBoundingClientRect();if(window.fairyAt)fairyAt(r.left+r.width/2,r.top+8,26);
     chime(k==="pele"?[76,81,84]:k==="tutu"?[79,84,88,91]:k==="enfeite"?[88,91,96]:[84,88,91],.08);
     var n=prog();$("dk-info").innerHTML=LINES[k][first?0:1];
     if(n===Object.keys(B).length&&first){setTimeout(function(){if(window.Reino)window.Reino.dress("pronta");playMusic(6);for(var i=0;i<4;i++)setTimeout(function(){fairyAt(innerWidth*(.55+Math.random()*.3),innerHeight*(.25+Math.random()*.3),40)},i*160);
@@ -2506,5 +2526,10 @@ addEventListener("reino-ready",function(){setTimeout(function(){if(window.Reino&
 setTimeout(function(){if(!opened){if(!window.Reino){$("reino").classList.add("no3d");$("dock").hidden=true;$("build").hidden=true}open3d()}},10000);
 </script>
 <script type="module">if(!document.documentElement.classList.contains("shop")){import("/reino.js").catch(function(){dispatchEvent(new Event("reino-fail"))});import("/caixa.js").catch(function(){var c=document.getElementById("caixa");if(c)c.classList.add("no3d")})}</script>
+<script>/* telefone sempre no formato (31) 98455-2588 enquanto digita */
+document.addEventListener("input",function(e){var t=e.target;if(!t||t.tagName!=="INPUT"||t.type!=="tel")return;var d=t.value.replace(/\D/g,"");if(d.length>11&&d.indexOf("55")===0)d=d.slice(2);d=d.slice(0,11);
+var f=!d?"":d.length<=2?"("+d:d.length<=6?"("+d.slice(0,2)+") "+d.slice(2):d.length<=10?"("+d.slice(0,2)+") "+d.slice(2,6)+"-"+d.slice(6):"("+d.slice(0,2)+") "+d.slice(2,7)+"-"+d.slice(7);
+if(e.inputType&&e.inputType.indexOf("delete")===0&&f.length>t.value.length)return;if(t.value!==f)t.value=f});
+</script>
 </body>
 </html>
