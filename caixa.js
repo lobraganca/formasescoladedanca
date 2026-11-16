@@ -520,7 +520,7 @@ if (!MOB) {
   const rt = new THREE.WebGLRenderTarget(256, 256, { type: THREE.HalfFloatType, samples: 4 });
   composer = new EffectComposer(R, rt);
   composer.addPass(new RenderPass(scene, cam));
-  if (/[?&]gtao/.test(location.search)) try { gtao = new GTAOPass(scene, cam, 256, 256); gtao.updateGtaoMaterial({ radius: .6, distanceExponent: 1.4, thickness: 1.2, scale: 1.1 }); gtao.blendIntensity = .85; composer.addPass(gtao); } catch (e) { gtao = null; }
+  if (!/nogtao/.test(location.search)) try { gtao = new GTAOPass(scene, cam, 256, 256); gtao.updateGtaoMaterial({ radius: .6, distanceExponent: 1.4, thickness: 1.2, scale: 1.1 }); gtao.blendIntensity = .85; composer.addPass(gtao); } catch (e) { gtao = null; }
   if (/bloom/.test(location.search)) composer.addPass(new UnrealBloomPass(new THREE.Vector2(256, 256), .3, .4, 2.4));
   composer.addPass(new OutputPass());
   composer.addPass(new ShaderPass(GradeShader));
@@ -675,10 +675,10 @@ const GOV = { ema: 16, n: 0, lvl: 0, t0: performance.now() };
 function govern(dt) {
   if (dt > 200) return; GOV.ema = GOV.ema * .95 + dt * .05; GOV.n++;
   if (GOV.n < 90 || performance.now() - GOV.t0 < 2500) return;
-  if (GOV.ema > 24 && GOV.lvl < 2) {
+  if (GOV.ema > 30 && GOV.lvl < 2) {
     GOV.lvl++; GOV.n = 0; GOV.t0 = performance.now(); GOV.ema = 16;
-    if (GOV.lvl === 1) { R.setPixelRatio(1); resize(); }
-    else { R.shadowMap.enabled = false; scene.traverse(o => { if (o.material) [].concat(o.material).forEach(m => m.needsUpdate = true); }); }
+    if (GOV.lvl === 1 && composer) { composer = null; }
+    else { GOV.lvl = 2; R.setPixelRatio(Math.min(devicePixelRatio || 1, 1.4)); resize(); }
   }
 }
 let govLast = performance.now();
