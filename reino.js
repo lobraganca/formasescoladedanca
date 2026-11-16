@@ -461,7 +461,7 @@ function resize() {
   const r = cv.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); PORT = innerWidth < 860;
   R.setSize(W, H, false); cam.aspect = W / H; cam.fov = PORT ? 42 : 36;
   if (composer) { composer.setPixelRatio(R.getPixelRatio()); composer.setSize(W, H); }
-  offX = PORT ? (W < 600 ? W * .17 : 0) : -W * .03; offY = PORT ? -H * .13 : -H * .02;
+  offX = PORT ? (W < 600 ? W * .17 : 0) : -W * .03; offY = PORT ? -H * .19 : -H * .02;
   setCamTargets(); applyOffset();
   [orbs, burst, seqPts, seeds].forEach(p => p.material.uniforms.px.value = R.getPixelRatio());
 }

@@ -489,7 +489,7 @@ function save(){
     if(again){again=false;save()}
   }).catch(function(){saving=false;setSt("err","Sem internet · tentando de novo");setTimeout(save,6000)});
 }
-addEventListener("beforeunload",function(e){if(!S.test&&(saving||$("st").classList.contains("saving")||$("st").classList.contains("err"))){e.preventDefault();e.returnValue=""}});
+addEventListener("beforeunload",function(e){if(S.chDirty){e.preventDefault();e.returnValue="";return}if(!S.test&&(saving||$("st").classList.contains("saving")||$("st").classList.contains("err"))){e.preventDefault();e.returnValue=""}});
 var LIST={lead:"leads",espera:"espera",pedido:"pedidos"};
 function inboxLocal(){try{return JSON.parse(localStorage.getItem(LS_INBOX)||"{}")}catch(x){return{}}}
 function saveInboxLocal(){try{localStorage.setItem(LS_INBOX,JSON.stringify({lead:S.leads,espera:S.espera,pedido:S.pedidos}))}catch(x){}}
@@ -507,6 +507,7 @@ function mensal(a,k){
   var p=(E().pag[a.id]||{})[k],ini=String(a.inicio||a.criado||"").slice(0,7)||"0000-00";
   if(!p&&(k<ini||a.ativo===false))return null;
   var d=pd(k+"-01"),dim=new Date(d.getFullYear(),d.getMonth()+1,0).getDate(),vd=Math.min(+a.venc||10,dim),venc=k+"-"+pad(vd);
+  var ini0=String(a.inicio||a.criado||"").slice(0,10);if(ini0.slice(0,7)===k&&ini0>venc){var v2=pd(ini0);v2.setDate(v2.getDate()+5);venc=iso(v2)}
   var st=p?"pago":(today()>venc?"atrasado":"aberto");
   return{p:p,valor:p?num(p.valor)||valorDe(a):valorDe(a),venc:venc,st:st};
 }
@@ -544,7 +545,7 @@ function renderNav(){
   var moreN=["turmas","caixa","fila","camarim","contatos","acessos","site"].reduce(function(s,id){return s+(badge(id)||0)},0);
   $("bnav").innerHTML=BNAV.map(function(id){if(id==="mais")return '<button type="button" data-t="mais" aria-selected="'+(["inicio","chamada","mensal","alunos"].indexOf(S.tab)<0)+'">'+ic("i-mais")+'<span>Mais</span>'+(moreN?'<i class="bd">'+moreN+'</i>':'')+'</button>';var t=TABS.find(function(x){return x[0]===id});return tabBtn(id,id==="mensal"?"Mensal.":t[1],badge(id))}).join("");
 }
-function go(t){if(t==="mais"){moreSheet();return}S.tab=t;try{history.replaceState(null,"","#"+t)}catch(x){}closeSh();render();scrollTo(0,0)}
+function go(t){if(t==="mais"){moreSheet();return}if(S.tab==="chamada"&&t!=="chamada"&&S.chDirty)chSave(false);S.tab=t;try{history.replaceState(null,"","#"+t)}catch(x){}closeSh();render();scrollTo(0,0)}
 document.addEventListener("click",function(e){var b=e.target.closest("[data-t]");if(b&&(b.closest("#tabs")||b.closest("#bnav")||b.closest(".more-grid")||b.hasAttribute("data-go")))go(b.dataset.t)});
 var GRUPOS=[["Dia a dia",[["chamada","Marcar presença das turmas"],["alunos","Cadastro, turma e contato"],["mensal","Quem pagou e quem deve"],["caixa","Entradas e despesas"]]],
   ["Famílias e pedidos",[["contatos","Quem pediu vaga pelo site"],["fila","Esperando abrir vaga"],["camarim","Pedidos de uniforme"]]],
@@ -1092,7 +1093,7 @@ function start(){
 }
 var _go=go;go=function(t){_go(t);if(t==="acessos"&&!S.stats)loadStats()};
 // atualiza a cada 2 minutos (novos pedidos, fila, contatos)
-setInterval(function(){if(S.test||!S.escola||document.hidden||!$("ov").hidden)return;api("load").then(function(r){if(!r.ok)return;S.leads=r.leads||[];S.espera=r.espera||[];S.pedidos=r.pedidos||[];if(r.rev!==S.rev&&!saving&&!$("st").classList.contains("saving")){S.escola=norm(r.escola);S.rev=r.rev}render()})},120000);
+setInterval(function(){if(S.test||!S.escola||document.hidden||!$("ov").hidden)return;api("load").then(function(r){if(!r.ok)return;S.leads=r.leads||[];S.espera=r.espera||[];S.pedidos=r.pedidos||[];var mud=false;if(r.rev!==S.rev&&!saving&&!$("st").classList.contains("saving")&&!S.chDirty){S.escola=norm(r.escola);S.rev=r.rev;mud=true}var ae=document.activeElement;if(ae&&/INPUT|TEXTAREA|SELECT/.test(ae.tagName)&&$("main").contains(ae))return;if(mud||S.tab!=="chamada")render()})},120000);
 (function boot(){var t="";try{t=localStorage.getItem(LS_TOK)||""}catch(x){}
   if(t==="teste"){S.test=true;S.tok="teste";start();return}
   if(t&&API){S.tok=t;start();return}
