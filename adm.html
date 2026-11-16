@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="format-detection" content="telephone=no">
-<meta name="theme-color" content="#F7F1EC">
+<meta name="theme-color" content="#3A1B4C">
 <link rel="manifest" href="adm.webmanifest">
 <link rel="apple-touch-icon" href="adm-apple-icon.png">
 <link rel="icon" type="image/png" href="favicon-64.png">
@@ -327,6 +327,27 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
 .fq-l div{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;padding:4px 2px;border-bottom:1px dashed var(--line)}
 .fq-l div:last-of-type{border-bottom:0}
 @media (max-width:640px){.g2-c{grid-template-columns:1fr!important}}
+
+/* barra fixa colorida (ameixa da Formas) */
+.top{background:linear-gradient(100deg,#2E1240 0%,#4A1D5C 55%,#7A2A63 100%);border-bottom:0;box-shadow:0 8px 24px -14px rgba(46,18,64,.7)}
+.top .bar .lt small{color:rgba(255,255,255,.72)}
+.top .btn{background:#fff;color:#3A1B4C}
+.top .btn.ghost{background:rgba(255,255,255,.1);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
+.top .st{background:rgba(255,255,255,.14);color:#BFEFD0}
+.top .st.saving{background:rgba(255,255,255,.14);color:#FFD9A3}
+.top .st.err{background:#FBE3DC;color:#B4432A}
+.top .st.test{background:rgba(255,255,255,.14);color:#F1E2F7}
+.top .tabs button{color:rgba(255,255,255,.78)}
+.top .tabs button:hover{color:#fff;background:rgba(255,255,255,.08)}
+.top .tabs button[aria-selected="true"]{background:#fff;color:#3A1B4C}
+.top .tabs button[aria-selected="true"] .bd{background:#C2386F;color:#fff}
+
+/* troca de mês bem visível */
+.mnav{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px;gap:6px;box-shadow:0 6px 18px -10px rgba(46,18,64,.35)}
+.mnav .mb,.datebar .mb{width:44px;height:44px;border:0;border-radius:50%;background:linear-gradient(140deg,#4A1D5C,#7A2A63);color:#fff;display:grid;place-items:center;cursor:pointer;flex:none;transition:transform .15s}
+.mnav .mb:active,.datebar .mb:active{transform:scale(.92)}
+.mnav b{min-width:0;flex:1;font-size:24px;padding:0 6px;white-space:nowrap}
+@media (max-width:760px){.mnav{width:100%;justify-content:space-between}}
 </style>
 </head>
 <body>
@@ -373,7 +394,7 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
 <div id="app" hidden>
   <header class="top">
     <div class="wrap bar">
-      <div class="lt"><img src="logo-ink.png" alt="Formas"><small>Painel da escola</small></div>
+      <div class="lt"><img src="logo-white.png" alt="Formas"><small>Painel da escola</small></div>
       <span class="st" id="st">Salvo</span>
       <a class="btn ghost sm vs" href="./" target="_blank" rel="noopener">Ver site</a>
       <button class="btn sm" id="out" type="button">Sair</button>
@@ -408,7 +429,7 @@ var MESES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto
 var TCOL=["#D98C99","#C9A36A","#9E7BB5","#7FA8A0","#A8526A","#E2A27B","#6F8FBF","#B5838D"];
 var FORMAS=["Pix","Dinheiro","Cartão","Transferência"];
 var TABS=[["inicio","Início"],["alunos","Alunos"],["turmas","Turmas"],["chamada","Chamada"],["mensal","Mensalidades"],["caixa","Caixa"],["fila","Fila de espera"],["camarim","Camarim"],["contatos","Contatos"],["acessos","Acessos"],["site","Site"]];
-var BNAV=["inicio","chamada","mensal","alunos","mais"];
+var BNAV=["inicio","chamada","mensal","alunos","caixa"];
 
 function defSite(){return{
   whatsapp:"31984552588",instagram:"formasescoladedanca",endereco:"",horario:"",
@@ -544,7 +565,7 @@ function badge(id){var c=counts();return id==="fila"?c.fila:id==="camarim"?c.ped
 function renderNav(){
   $("tabs").innerHTML=TABS.map(function(t){return tabBtn(t[0],t[1],badge(t[0]))}).join("");
   var moreN=["turmas","caixa","fila","camarim","contatos","acessos","site"].reduce(function(s,id){return s+(badge(id)||0)},0);
-  $("bnav").innerHTML=BNAV.map(function(id){if(id==="mais")return '<button type="button" data-t="mais" aria-selected="'+(["inicio","chamada","mensal","alunos"].indexOf(S.tab)<0)+'">'+ic("i-mais")+'<span>Mais</span>'+(moreN?'<i class="bd">'+moreN+'</i>':'')+'</button>';var t=TABS.find(function(x){return x[0]===id});return tabBtn(id,id==="mensal"?"Mensal.":t[1],badge(id))}).join("");
+  $("bnav").innerHTML=BNAV.map(function(id){if(id==="mais")return '<button type="button" data-t="mais" aria-selected="'+(["inicio","chamada","mensal","alunos"].indexOf(S.tab)<0)+'">'+ic("i-mais")+'<span>Mais</span>'+(moreN?'<i class="bd">'+moreN+'</i>':'')+'</button>';var t=TABS.find(function(x){return x[0]===id});return tabBtn(id,id==="mensal"?"Mensal.":t[1],id==="inicio"?moreN:badge(id))}).join("");
 }
 function go(t){if(t==="mais"){moreSheet();return}if(S.tab==="chamada"&&t!=="chamada"&&S.chDirty)chSave(false);S.tab=t;try{history.replaceState(null,"","#"+t)}catch(x){}closeSh();render();scrollTo(0,0)}
 document.addEventListener("click",function(e){var b=e.target.closest("[data-t]");if(b&&(b.closest("#tabs")||b.closest("#bnav")||b.closest(".more-grid")||b.hasAttribute("data-go")))go(b.dataset.t)});
@@ -724,7 +745,7 @@ function vChamada(){
   var dias=Object.keys(E().cham[t.id]||{}).filter(function(d){return d.slice(0,7)===k}).sort();
   return '<div class="head"><div><h1>Chamada</h1><p>Escolha a turma e a data, marque cada aluno e toque em <b>Salvar chamada</b>.</p></div>'+sw+'</div>'+
     '<p class="stp"><b>1</b> Turma</p><div class="chips">'+T.map(function(x){var hj=temAula(x,td);return '<button type="button" class="chip" data-cht="'+esc(x.id)+'" aria-pressed="'+(x.id===t.id)+'">'+esc(x.nome)+(hj?' <span class="n">hoje</span>':'')+'</button>'}).join("")+'</div>'+
-    '<p class="stp"><b>2</b> Data</p><div class="card"><div class="datebar"><button class="ibtn" type="button" data-chd="-1" aria-label="Dia anterior">‹</button><input class="inp" type="date" id="ch-d" value="'+esc(S.chD)+'"><button class="ibtn" type="button" data-chd="1" aria-label="Próximo dia">›</button>'+(S.chD!==td?'<button class="btn xs ghost" type="button" data-chd="0">Hoje</button>':'')+'<span class="pill '+(temAula(t,S.chD)?"ok":"")+'">'+(temAula(t,S.chD)?"Dia de aula":DIASL[pd(S.chD).getDay()])+'</span><span style="margin-left:auto" class="pill">'+c.p+' P · '+c.f+' F · '+c.j+' J</span></div></div>'+
+    '<p class="stp"><b>2</b> Data</p><div class="card"><div class="datebar"><button class="ibtn mb" type="button" data-chd="-1" aria-label="Dia anterior"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><input class="inp" type="date" id="ch-d" value="'+esc(S.chD)+'"><button class="ibtn mb" type="button" data-chd="1" aria-label="Próximo dia"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>'+(S.chD!==td?'<button class="btn xs ghost" type="button" data-chd="0">Hoje</button>':'')+'<span class="pill '+(temAula(t,S.chD)?"ok":"")+'">'+(temAula(t,S.chD)?"Dia de aula":DIASL[pd(S.chD).getDay()])+'</span><span style="margin-left:auto" class="pill">'+c.p+' P · '+c.f+' F · '+c.j+' J</span></div></div>'+
     '<p class="stp"><b>3</b> Presença <small>P presente · F falta · J justificada</small></p>'+
     (al.length?'<div class="cham">'+al.map(function(a){var v=ch[a.id]||"";return '<div class="ch-r"><span class="av" style="--c:'+tcol(t)+';width:38px;height:38px;font-size:13px">'+esc(ini(a.nome))+'</span><div class="nm">'+esc(a.nome)+'<small>'+(ageOf(a.nasc)!=null?ageOf(a.nasc)+" anos":"")+'</small></div><div class="pfj">'+["p","f","j"].map(function(x){return '<button type="button" class="'+x+'" data-pfj="'+x+'" data-a="'+esc(a.id)+'" aria-pressed="'+(v===x)+'" aria-label="'+({p:"Presente",f:"Falta",j:"Justificada"})[x]+'">'+x.toUpperCase()+'</button>'}).join("")+'</div></div>'}).join("")+'</div><div class="ch-save"><button class="btn rose big" type="button" id="ch-save">'+(S.chDirty?"💾 Salvar chamada":saved?"✓ Chamada salva":"💾 Salvar chamada")+'</button><button class="btn ok" type="button" id="ch-all">Todos presentes</button>'+(saved?'<button class="btn ghost" type="button" id="ch-clr">Apagar este dia</button>':'')+'</div>'+(S.chDirty?'<p class="note" style="color:var(--rose);font-weight:700">Há marcações ainda não salvas.</p>':''):'<p class="empty"><b>Nenhum aluno nesta turma</b>Matricule pela aba Alunos ou Turmas.</p>')+
     '<div class="card"><h2>Frequência de '+esc(mName(k))+'</h2><p class="note">'+dias.length+' aula'+(dias.length===1?"":"s")+' com chamada neste mês.</p>'+(dias.length&&al.length?'<div style="overflow-x:auto"><table class="freq"><thead><tr><th>Aluno</th><th>Aulas</th><th>%</th></tr></thead><tbody>'+al.map(function(a){var r={p:0,f:0,j:0},dots=dias.map(function(d){var v=(E().cham[t.id][d]||{})[a.id]||"";if(v)r[v]++;return '<i class="'+v+'" title="'+dm(d)+'"></i>'}).join(""),tot=r.p+r.f+r.j;return '<tr><td><b>'+esc(a.nome)+'</b></td><td><div class="dots">'+dots+'</div></td><td><b>'+(tot?Math.round(r.p*100/tot)+"%":"–")+'</b></td></tr>'}).join("")+'</tbody></table></div>':'<p class="empty" style="padding:4px">Ainda sem chamadas neste mês.</p>')+'</div>';
@@ -789,7 +810,7 @@ function payRow(a,m,k,mini){
 function vMensal(){
   var k=S.mes,r=resumoMes(k);
   var L=E().alunos.map(function(a){return{a:a,m:mensal(a,k)}}).filter(function(x){return x.m&&(!S.mT||x.a.turmaId===S.mT)&&(S.mf==="todos"||(S.mf==="aberto"&&x.m.st!=="pago")||x.m.st===S.mf)}).sort(function(x,y){var o={atrasado:0,aberto:1,pago:2};return o[x.m.st]-o[y.m.st]||x.a.nome.localeCompare(y.a.nome)});
-  return '<div class="head"><div><h1>Mensalidades</h1><p>Marque quem pagou, cobre pelo WhatsApp e mande o recibo.</p></div><div class="mnav"><button class="ibtn" type="button" data-mes="-1" aria-label="Mês anterior">‹</button><b>'+esc(mName(k))+'</b><button class="ibtn" type="button" data-mes="1" aria-label="Próximo mês">›</button></div></div>'+
+  return '<div class="head"><div><h1>Mensalidades</h1><p>Marque quem pagou, cobre pelo WhatsApp e mande o recibo.</p></div><div class="mnav"><button class="mb" type="button" data-mes="-1" aria-label="Mês anterior"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><b>'+esc(mName(k))+'</b><button class="mb" type="button" data-mes="1" aria-label="Próximo mês"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div></div>'+
     '<div class="kpis"><div class="kpi main"><span>Recebido</span><b>'+brl(r.rec)+'</b><small>'+r.nrec+' pagamento'+(r.nrec===1?"":"s")+'</small></div><div class="kpi"><span>Previsto no mês</span><b>'+brl(r.prev)+'</b><small>'+(r.nrec+r.nab+r.natr)+' alunos</small></div><div class="kpi"><span>A receber</span><b>'+brl(r.abr)+'</b><small>'+r.nab+' ainda no prazo</small></div><div class="kpi'+(r.natr?" warn":"")+'"><span>Em atraso</span><b>'+brl(r.atr)+'</b><small>'+r.natr+' aluno'+(r.natr===1?"":"s")+'</small></div></div>'+
     '<div class="tb"><div class="chips">'+[["todos","Todos"],["aberto","Em aberto"],["atrasado","Atrasados"],["pago","Pagos"]].map(function(f){return '<button type="button" class="chip" data-mf="'+f[0]+'" aria-pressed="'+(S.mf===f[0])+'">'+f[1]+'</button>'}).join("")+'</div><select class="inp" id="m-t"><option value="">Todas as turmas</option>'+E().turmas.map(function(t){return '<option value="'+esc(t.id)+'"'+(S.mT===t.id?" selected":"")+'>'+esc(t.nome)+'</option>'}).join("")+'</select></div>'+
     (function(){var z=E().alunos.filter(function(a){return a.ativo!==false&&!valorDe(a)});return z.length?'<div class="card" style="border:1.5px solid #E9C27A;background:#FFF8EA"><h2 style="font-size:20px">'+z.length+' aluno'+(z.length===1?'':'s')+' sem valor de mensalidade</h2><p class="note" style="margin:4px 0 0">'+z.slice(0,6).map(function(a){return esc(first(a.nome))}).join(', ')+(z.length>6?'…':'')+'. Coloque o valor em <b>Turmas → Editar</b> (vale para a turma toda) ou no cadastro do aluno.</p></div>':''})()+
@@ -836,7 +857,7 @@ function vCaixa(){
   function grp(list,key){var o={};list.forEach(function(x){o[x[key]]=(o[x[key]]||0)+x.v});return o}
   function bars2(o){var a=Object.entries(o).sort(function(x,y){return y[1]-x[1]}),m=a.length?a[0][1]:1;return a.length?a.map(function(x){return '<div class="srow w"><span>'+esc(x[0])+'</span><span class="tr"><i style="width:'+Math.max(3,x[1]*100/m)+'%"></i></span><b style="white-space:nowrap">'+brl(x[1])+'</b></div>'}).join(""):'<p class="empty" style="padding:4px">Sem movimento neste mês.</p>'}
   var hist=[-5,-4,-3,-2,-1,0].map(function(n){var kk=addM(k,n),l=movs(kk);return{k:kk,e:l.filter(function(x){return x.tipo==="e"}).reduce(function(s,x){return s+x.v},0),s:l.filter(function(x){return x.tipo==="s"}).reduce(function(s,x){return s+x.v},0)}}),hm=Math.max(1,Math.max.apply(null,hist.map(function(h){return Math.max(h.e,h.s)})));
-  return '<div class="head"><div><h1>Caixa</h1><p>Tudo o que entrou e saiu em '+esc(mName(k))+'.</p></div><div class="mnav"><button class="ibtn" type="button" data-cx="-1" aria-label="Mês anterior">‹</button><b>'+esc(mName(k))+'</b><button class="ibtn" type="button" data-cx="1" aria-label="Próximo mês">›</button></div></div>'+
+  return '<div class="head"><div><h1>Caixa</h1><p>Tudo o que entrou e saiu em '+esc(mName(k))+'.</p></div><div class="mnav"><button class="mb" type="button" data-cx="-1" aria-label="Mês anterior"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><b>'+esc(mName(k))+'</b><button class="mb" type="button" data-cx="1" aria-label="Próximo mês"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div></div>'+
   '<div class="kpis"><div class="kpi main"><span>Entradas</span><b>'+brl(te)+'</b><small>'+ent.length+' recebimento'+(ent.length===1?"":"s")+'</small></div><div class="kpi"><span>Saídas</span><b>'+brl(ts)+'</b><small>'+sai.length+' despesa'+(sai.length===1?"":"s")+'</small></div><div class="kpi'+(te-ts<0?" warn":"")+'"><span>Saldo do mês</span><b>'+brl(te-ts)+'</b><small>entradas − saídas</small></div><div class="kpi'+(dvt?" warn":"")+'"><span>A receber</span><b>'+brl(r.abr+dvt)+'</b><small>'+brl(r.abr)+' no prazo · '+brl(dvt)+' em atraso</small></div></div>'+
   '<div class="tb"><button class="btn ok" type="button" data-lanc="e">＋ Lançar entrada</button><button class="btn red" type="button" data-lanc="s">− Lançar despesa</button><button class="btn ghost sm" type="button" id="cx-csv" style="margin-left:auto">⬇ Planilha do mês</button></div>'+
   '<div class="grid2"><div class="card"><h2>De onde veio</h2><p class="note">Entradas do mês por origem.</p>'+bars2(grp(ent,"orig"))+'<h2 style="margin-top:20px">Como pagaram</h2><p class="note">Pix, dinheiro, cartão…</p>'+bars2(grp(ent,"forma"))+'</div>'+
