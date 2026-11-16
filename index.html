@@ -1519,6 +1519,17 @@ html.shop .bag.pop .bag-in{animation:bagpop .45s cubic-bezier(.3,1.6,.6,1)}
 .tc-top{height:142px!important}
 @media (max-width:560px){.tc-top{height:132px!important}.tc-spr{width:96px!important;height:121px!important}}
 @media (prefers-reduced-motion:reduce){.spr{animation:none!important}}
+
+/* 4 escolhas (com o adereço do cabelo) cabendo na coluna do celular; logo sem encostar no título */
+@media (max-width:860px){
+  #reino>.build{bottom:calc(14px + env(safe-area-inset-bottom,0px))!important;gap:7px!important;padding:8px 9px 10px!important}
+  #reino>.build .bo{width:40px!important;height:40px!important}
+  #reino>.build .bo svg{width:30px!important;height:30px!important}
+  #reino>.build .bopts{grid-template-columns:repeat(2,40px)!important;gap:4px 7px!important}
+  #reino>.build .bgp .bk{font-size:8.5px!important}
+  #reino .h3-ui{padding-top:calc(92px + env(safe-area-inset-top,0px))!important}
+}
+#reino .bo[data-k="enfeite"]{--sw:#E0568F}
 </style>
 </head>
 <body>
@@ -2407,25 +2418,29 @@ hit("view");
 (function(){
   var B={pele:{t:"Pele",o:[["#F3CBB0","Clara"],["#C4875F","Morena"],["#7A4A2E","Negra"]]},
          tutu:{t:"Vestido",o:[["#E77FA8","Rosa"],["#A784E0","Lilás"],["#6FAFE6","Azul"]]},
-         sapatilha:{t:"Sapatilha",o:[["#EFA6B4","Rosa"],["#FAF4F1","Pérola"],["#D6A24A","Dourada"]]}};
+         sapatilha:{t:"Sapatilha",o:[["#EFA6B4","Rosa"],["#FAF4F1","Pérola"],["#D6A24A","Dourada"]]},
+         enfeite:{t:"Cabelo",o:[["tiara","Tiara"],["flores","Flores"],["laco","Laço"]]}};
   function ico(k,c){
+    if(k==="enfeite"){if(c==="tiara")return '<svg viewBox="0 0 40 40"><path d="M7 27Q20 17 33 27" stroke="#C9A15A" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M10 24l2-7 3 5 5-10 5 10 3-5 2 7" fill="#F2D27E" stroke="#C9A15A" stroke-width="1.4" stroke-linejoin="round"/><circle cx="20" cy="11" r="2.6" fill="#8FD3FF"/><circle cx="12" cy="17" r="1.6" fill="#F7A8C4"/><circle cx="28" cy="17" r="1.6" fill="#F7A8C4"/></svg>';
+      if(c==="flores")return '<svg viewBox="0 0 40 40"><path d="M6 25Q20 15 34 25" stroke="#7BB37A" stroke-width="2" fill="none"/>'+[[10,22,"#F7A8C4"],[20,17,"#FFFFFF"],[30,22,"#E77FA8"]].map(function(f){var h="";for(var i=0;i<5;i++){var a=i*1.2566;h+='<circle cx="'+(f[0]+Math.cos(a)*3.4).toFixed(1)+'" cy="'+(f[1]+Math.sin(a)*3.4).toFixed(1)+'" r="2.6" fill="'+f[2]+'" stroke="rgba(150,60,90,.35)" stroke-width=".6"/>'}return h+'<circle cx="'+f[0]+'" cy="'+f[1]+'" r="1.8" fill="#F2C14E"/>'}).join("")+'</svg>';
+      return '<svg viewBox="0 0 40 40"><path d="M20 20L7 12Q4 20 7 28Z" fill="#E0568F"/><path d="M20 20L33 12Q36 20 33 28Z" fill="#E0568F"/><path d="M18 21l-5 12 4-1 3-9M22 21l5 12-4-1-3-9" fill="#C23F78"/><circle cx="20" cy="20" r="3.6" fill="#C23F78"/><path d="M9 15Q11 20 9 25M31 15Q29 20 31 25" stroke="#fff" stroke-opacity=".5" stroke-width="1.2" fill="none"/></svg>'}
     if(k==="pele")return '<svg viewBox="0 0 40 40"><circle cx="20" cy="23" r="11" fill="'+c+'"/><path d="M9 21Q10 10 20 10Q30 10 31 21Q27 15 20 15Q13 15 9 21Z" fill="#2C1A12"/><circle cx="20" cy="8" r="4.6" fill="#2C1A12"/><path d="M15.4 24q1.5 1.3 3 0M21.6 24q1.5 1.3 3 0" stroke="#3A2030" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="15" cy="28" r="1.7" fill="#F28CA8" opacity=".55"/><circle cx="25" cy="28" r="1.7" fill="#F28CA8" opacity=".55"/><path d="M18.3 29.3q1.7 1.2 3.4 0" stroke="#B5466F" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg>';
     if(k==="tutu")return '<svg viewBox="0 0 40 40"><path d="M15 6Q20 4 25 6L24 19H16Z" fill="'+c+'"/><path d="M16.5 9h7" stroke="#fff" stroke-opacity=".6"/><path d="M3 23Q20 13 37 23Q34 28 30 25.5Q27 31 20 27Q13 31 10 25.5Q6 28 3 23Z" fill="'+c+'"/><path d="M6 22Q20 16 34 22" stroke="#fff" stroke-opacity=".55" stroke-width="1.4" fill="none"/></svg>';
     return '<svg viewBox="0 0 40 40"><path d="M11 32C9 24 14 12 21 8.5C26 6 30 9 28.5 14.5C27 21 22 27.5 18 31.5C15.5 34 11.8 34.8 11 32Z" fill="'+c+'" stroke="rgba(60,20,40,.25)"/><path d="M13 32.5l3-4" stroke="rgba(60,20,40,.35)" stroke-width="1.4"/><path d="M15 16C19 21 24 25 31 27M18 12C22 16 27 19 33 20" stroke="'+c+'" stroke-width="1.8" fill="none" stroke-linecap="round" filter="brightness(.85)"/></svg>'}
   var done={},el=$("build");
   el.innerHTML=Object.keys(B).map(function(k){return '<div class="bgp" data-g="'+k+'"><span class="bk">'+B[k].t+'</span><div class="bopts">'+B[k].o.map(function(o){return '<button type="button" class="bo" style="--sw:'+({"#FAF4F1":"#C7A0B2","#F3CBB0":"#DE9F80"}[o[0]]||o[0])+'" data-k="'+k+'" data-v="'+o[0]+'" aria-pressed="false" aria-label="'+B[k].t+' '+o[1]+'">'+ico(k,o[0])+'<span>'+o[1]+'</span><i>✓</i></button>'}).join("")+'</div></div>'}).join("");
-  var LINES={pele:["Que bailarina linda! ✦","Já dá pra ver o sorriso dela ✦"],tutu:["Olha o giro com o vestido novo! 💫","O tutu ficou um encanto ✦"],sapatilha:["Sapatilhas prontas para a ponta ✦","Agora ela pode subir no relevé ✦"]};
+  var LINES={pele:["Que bailarina linda! ✦","Já dá pra ver o sorriso dela ✦"],tutu:["Olha o giro com o vestido novo! 💫","O tutu ficou um encanto ✦"],sapatilha:["Sapatilhas prontas para a ponta ✦","Agora ela pode subir no relevé ✦"],enfeite:["Que penteado lindo! ✦","Ficou um charme no coque ✦"]};
   function prog(){var n=Object.keys(done).length;document.querySelectorAll("#prog i").forEach(function(x,i){x.classList.toggle("on",i<n)});var go=$("dk-go");
-    if(n<3){go.disabled=true;go.textContent=n===2?"Falta 1 escolha":"Faltam "+(3-n)+" escolhas"}else{go.disabled=false;go.textContent="Ver ela dançar na caixinha ✦"}return n}
+    var NB=Object.keys(B).length;if(n<NB){go.disabled=true;go.textContent=n===NB-1?"Falta 1 escolha":"Faltam "+(NB-n)+" escolhas"}else{go.disabled=false;go.textContent="Ver ela dançar na caixinha ✦"}return n}
   el.addEventListener("click",function(e){var b=e.target.closest(".bo");if(!b)return;var k=b.dataset.k,v=b.dataset.v;
     el.querySelectorAll('.bo[data-k="'+k+'"]').forEach(function(x){x.setAttribute("aria-pressed",x===b)});
     b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump");
     var first=!done[k];done[k]=v;DOLL[k]=v;if(k==="sapatilha"&&false)DOLL[k]=v;saveDoll();
     if(window.Reino&&window.Reino.dress)window.Reino.dress(k,v);
     var r=b.getBoundingClientRect();if(window.fairyAt)fairyAt(r.left+r.width/2,r.top+8,26);
-    chime(k==="pele"?[76,81,84]:k==="tutu"?[79,84,88,91]:[84,88,91],.08);
+    chime(k==="pele"?[76,81,84]:k==="tutu"?[79,84,88,91]:k==="enfeite"?[88,91,96]:[84,88,91],.08);
     var n=prog();$("dk-info").innerHTML=LINES[k][first?0:1];
-    if(n===3&&first){setTimeout(function(){if(window.Reino)window.Reino.dress("pronta");playMusic(6);for(var i=0;i<4;i++)setTimeout(function(){fairyAt(innerWidth*(.55+Math.random()*.3),innerHeight*(.25+Math.random()*.3),40)},i*160);
+    if(n===Object.keys(B).length&&first){setTimeout(function(){if(window.Reino)window.Reino.dress("pronta");playMusic(6);for(var i=0;i<4;i++)setTimeout(function(){fairyAt(innerWidth*(.55+Math.random()*.3),innerHeight*(.25+Math.random()*.3),40)},i*160);
       $("dk-hand").textContent="bailarina pronta!";$("dk-sub").textContent="agora veja ela dançar na caixinha de música";$("dk-info").innerHTML="Ela está pronta! Arraste para ver ela girar ✦";$("dk-go").classList.add("pulse")},450)}
     hit("passo","montar-"+k)});
   function mode(steps){$("build").hidden=steps;$("steps4").hidden=!steps;$("dk-more").hidden=!steps;$("dk-go").hidden=steps;$("prog").hidden=steps;

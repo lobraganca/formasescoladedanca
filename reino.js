@@ -228,6 +228,17 @@ const flowers = new THREE.Group(); J.head.add(flowers);
   for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; const f = sphere(.013, fm[i % 3], 16, 12); f.scale.set(1, .7, 1); f.position.set(Math.cos(a) * .072, 0, Math.sin(a) * .072); flowers.add(f); }
   flowers.position.copy(headC).add(new THREE.Vector3(0, .045, -.008)); flowers.rotation.x = -.38; flowers.visible = false;
 }
+// laço de cetim no coque
+const lacoM = phys({ color: 0xE0568F, roughness: .35, sheen: 1, sheenColor: new THREE.Color(0xffffff), clearcoat: .5 });
+const laco = new THREE.Group(); J.head.add(laco);
+{
+  for (const s of [-1, 1]) {
+    const lp = sphere(.03, lacoM, 20, 14); lp.scale.set(1.25, .78, .42); lp.position.set(s * .036, 0, 0); lp.rotation.z = s * .32; laco.add(lp);
+    const tl = new THREE.Mesh(new THREE.BoxGeometry(.016, .05, .006), lacoM); tl.position.set(s * .014, -.03, -.002); tl.rotation.z = s * .38; laco.add(tl);
+  }
+  laco.add(sphere(.014, lacoM, 14, 10));
+  laco.position.copy(headC).add(new THREE.Vector3(.0, .094, -.03)); laco.rotation.x = -.35; laco.scale.setScalar(1.15); laco.visible = false;
+}
 // braços
 function arm(side) {
   const s = side === "R" ? 1 : -1;
@@ -453,7 +464,7 @@ let W = 1, H = 1, PORT = false, entered = true, pop = 0, whirl = -1;
 const camS = { az: -.12, azT: -.12, dist: 15, distT: 11, ty: 6, tyT: 4.6, lk: .6, lkT: .6, px: 0, py: 0 };
 let focus = true;
 function setCamTargets() {
-  if (focus) { camS.distT = PORT ? 7.5 : (W / H > 1.7 ? 9.2 : 9.9); camS.tyT = PORT ? 3.1 : 3.5; camS.lkT = PORT ? 1.85 : 1.95; }
+  if (focus) { camS.distT = PORT ? 8.1 : (W / H > 1.7 ? 9.2 : 9.9); camS.tyT = PORT ? 3.1 : 3.5; camS.lkT = PORT ? 1.85 : 1.95; }
   else { camS.distT = PORT ? 11.4 : (W / H > 1.7 ? 11.8 : 12.8); camS.tyT = PORT ? 4.6 : 4.8; camS.lkT = PORT ? 1.45 : 1.45; }
 }
 let inset = 0, offX = 0, offY = 0;
@@ -504,7 +515,8 @@ const Reino = {
   focus(on) { focus = !!on; setCamTargets(); },
   isOpen: () => true,
   dress(kind, col) {
-    const c = col ? new THREE.Color(col) : null; pop = 1;
+    const c = col && kind !== "enfeite" ? new THREE.Color(col) : null; pop = 1;
+    if (kind === "enfeite") { sparkleBurst(2.0, 70, null); if (!busy && whirl < 0) whirl = 0; }
     if (kind === "pele") { sparkleBurst(1.7, 70, c); if (!busy && whirl < 0) whirl = 0; }
     else if (kind === "tutu") { sparkleBurst(1.0, 110, c); if (!busy) whirl = 0; }
     else if (kind === "sapatilha") { sparkleBurst(.15, 80, c); if (!busy && whirl < 0) whirl = 0; }
@@ -513,9 +525,9 @@ const Reino = {
   set(o) {
     if (o.pele) { M.skin.color.set(o.pele); M.tights.color.set(o.pele).lerp(new THREE.Color(0xF6C0C4), .35); }
     if (o.cabelo) M.hair.color.set(o.cabelo);
-    if (o.tutu) { M.tutuA.color.copy(new THREE.Color(o.tutu)); M.tutuB.color.copy(lighten(o.tutu, .3)); M.tutuA.emissive.copy(M.tutuA.color); M.tutuB.emissive.copy(M.tutuB.color); M.bodice.color.copy(new THREE.Color(o.tutu)).multiplyScalar(.82); }
+    if (o.tutu) { const tc = new THREE.Color(o.tutu).offsetHSL(0, .14, -.04); M.tutuA.color.copy(tc); M.tutuB.color.copy(tc).lerp(new THREE.Color(0xffffff), .18); M.tutuA.emissive.copy(tc); M.tutuB.emissive.copy(M.tutuB.color); M.tutuA.emissiveIntensity = M.tutuB.emissiveIntensity = .14; M.bodice.color.copy(tc).offsetHSL(0, .06, -.08); lacoM.color.copy(tc).offsetHSL(0, .05, -.06); }
     if (o.sapatilha) { M.shoe.color.set(o.sapatilha === "pele" ? (o.pele || "#E9B796") : o.sapatilha); M.ribbon.color.copy(M.shoe.color).multiplyScalar(.9); }
-    if (o.enfeite) { tiara.visible = o.enfeite === "tiara"; flowers.visible = o.enfeite === "flores"; }
+    if (o.enfeite) { tiara.visible = o.enfeite === "tiara"; flowers.visible = o.enfeite === "flores"; laco.visible = o.enfeite === "laco"; }
   },
   photo(nome) {
     render(performance.now());
@@ -590,7 +602,17 @@ function render(now) {
   if (composer) composer.render(); else R.render(scene, cam);
   window.dispatchEvent(new Event("reino-frame"));
 }
-function loop(now) { if (visible) render(now); requestAnimationFrame(loop); }
+let uiB = 0, uiN = 0, headY0 = null; const hv = new THREE.Vector3();
+function fitHead() {
+  if (!PORT) return;
+  if (uiN-- <= 0) { uiN = 30; const u = document.querySelector("#reino .h3-acts") || document.querySelector("#reino .h3-copy"), c = document.querySelector("#reino .h3-copy"); const r = cv.getBoundingClientRect();
+    uiB = Math.max(u ? u.getBoundingClientRect().bottom : 0, c ? c.getBoundingClientRect().bottom : 0) - r.top + 14; }
+  if (headY0 == null) { dancerRoot.updateMatrixWorld(true); tiara.getWorldPosition(hv); headY0 = hv.y + .1 * DS; }
+  hv.set(dancerRoot.position.x, headY0, dancerRoot.position.z).project(cam);
+  const y = (1 - hv.y) / 2 * H, d = y - uiB;
+  if (Math.abs(d) > 1.5) { offY = Math.max(-H * .4, Math.min(H * .3, offY + d * .25)); applyOffset(); }
+}
+function loop(now) { if (visible) { fitHead(); render(now); } requestAnimationFrame(loop); }
 new IntersectionObserver(es => { visible = es[0].isIntersecting; last = performance.now(); }).observe(host);
 render(performance.now());
 host.classList.add("ready3d");
@@ -599,6 +621,7 @@ if (!SPRITE) requestAnimationFrame(loop);
 if (SPRITE) {
   scene.children.forEach(o => { if (o !== dancerRoot && (o.isMesh || o.isSprite || o.isPoints || o.isGroup)) o.visible = false; });
   scene.fog = null; R.setClearColor(0x000000, 0); R.shadowMap.enabled = false;
+  window.SPRtutu = (on) => { dancerRoot.traverse(o => { if (o.isMesh && (o.material === M.tutuA || o.material === M.tutuB)) o.visible = on; }); };
   window.SPR = (a, b, t, face, fl, w, h) => {
     R.setPixelRatio(1); R.setSize(w, h, false); cam.clearViewOffset(); cam.aspect = w / h; cam.fov = 30; cam.updateProjectionMatrix();
     cam.position.set(0, 2.1, 14); cam.lookAt(0, 1.85, 0);

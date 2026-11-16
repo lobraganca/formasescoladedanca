@@ -286,6 +286,17 @@ const flowers = new THREE.Group(); J.head.add(flowers);
   for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; const f = sphere(.013, fm[i % 3], 16, 12); f.scale.set(1, .7, 1); f.position.set(Math.cos(a) * .072, 0, Math.sin(a) * .072); flowers.add(f); }
   flowers.position.copy(headC).add(new THREE.Vector3(0, .045, -.008)); flowers.rotation.x = -.38; flowers.visible = false;
 }
+// laço de cetim no coque
+const lacoM = phys({ color: 0xE0568F, roughness: .35, sheen: 1, sheenColor: new THREE.Color(0xffffff), clearcoat: .5 });
+const laco = new THREE.Group(); J.head.add(laco);
+{
+  for (const s of [-1, 1]) {
+    const lp = sphere(.03, lacoM, 20, 14); lp.scale.set(1.25, .78, .42); lp.position.set(s * .036, 0, 0); lp.rotation.z = s * .32; laco.add(lp);
+    const tl = new THREE.Mesh(new THREE.BoxGeometry(.016, .05, .006), lacoM); tl.position.set(s * .014, -.03, -.002); tl.rotation.z = s * .38; laco.add(tl);
+  }
+  laco.add(sphere(.014, lacoM, 14, 10));
+  laco.position.copy(headC).add(new THREE.Vector3(.0, .094, -.03)); laco.rotation.x = -.35; laco.scale.setScalar(1.15); laco.visible = false;
+}
 // braços
 function arm(side) {
   const s = side === "R" ? 1 : -1;
@@ -579,9 +590,9 @@ const Caixa = {
   set(o) {
     if (o.pele) { M.skin.color.set(o.pele); M.tights.color.set(o.pele).lerp(new THREE.Color(0xF6C0C4), .35); }
     if (o.cabelo) M.hair.color.set(o.cabelo);
-    if (o.tutu) { M.tutuA.color.copy(new THREE.Color(o.tutu)); M.tutuB.color.copy(lighten(o.tutu, .3)); M.bodice.color.copy(new THREE.Color(o.tutu)).multiplyScalar(.82); }
+    if (o.tutu) { const tc = new THREE.Color(o.tutu).offsetHSL(0, .14, -.04); M.tutuA.color.copy(tc); M.tutuB.color.copy(tc).lerp(new THREE.Color(0xffffff), .18); M.bodice.color.copy(tc).offsetHSL(0, .06, -.08); lacoM.color.copy(tc).offsetHSL(0, .05, -.06); }
     if (o.sapatilha) { M.shoe.color.set(o.sapatilha === "pele" ? (o.pele || "#E9B796") : o.sapatilha); M.ribbon.color.copy(M.shoe.color).multiplyScalar(.9); }
-    if (o.enfeite) { tiara.visible = o.enfeite === "tiara"; flowers.visible = o.enfeite === "flores"; }
+    if (o.enfeite) { tiara.visible = o.enfeite === "tiara"; flowers.visible = o.enfeite === "flores"; laco.visible = o.enfeite === "laco"; }
   },
   photo(nome) {
     render(performance.now());
