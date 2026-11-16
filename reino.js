@@ -11,6 +11,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { Reflector } from "three/addons/objects/Reflector.js";
 
 const host = document.getElementById("reino");
 const cv = document.getElementById("c3d");
@@ -23,7 +24,7 @@ catch (e) { host.classList.add("no3d"); window.dispatchEvent(new Event("reino-fa
 R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.6 : 1.75));
 R.outputColorSpace = THREE.SRGBColorSpace;
 R.toneMapping = THREE.ACESFilmicToneMapping;
-R.toneMappingExposure = .86;
+R.toneMappingExposure = .8;
 R.shadowMap.enabled = true;
 R.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -67,53 +68,94 @@ const M = {
   sole: phys({ color: 0xC98E6B, roughness: .7 }),
 };
 /* ============================================================
-   O CHÃO DE LUZ: sem palco, só a bailarina sobre uma poça de luz
-   suave, com a sombra dela, flutuando no céu de conto de fadas.
+   O FUNDO: um estúdio de balé claro e cheio de luz — parede curva
+   cor de pérola com janelas em arco, feixes de luz entrando, cortinas
+   de voal balançando e um piso de madeira encerado que reflete a
+   bailarina. A névoa leve dá profundidade.
    ============================================================ */
+const PEARL = new THREE.Color().setRGB(.72, .58, .68, THREE.LinearSRGBColorSpace);
+scene.fog = new THREE.Fog(PEARL, 13, 44);
 const stage = new THREE.Group(); scene.add(stage);
-{
-  const shadowCatcher = new THREE.Mesh(new THREE.CircleGeometry(3.4, 64), new THREE.ShadowMaterial({ opacity: .16, transparent: true, depthWrite: false, color: 0x5A2A5A }));
-  shadowCatcher.rotation.x = -Math.PI / 2; shadowCatcher.position.y = .002; shadowCatcher.receiveShadow = true; stage.add(shadowCatcher);
-}
 let curtain = null;
-
-/* ============================================================
-   O FUNDO: céu de entardecer (lilás, rosa e pêssego), um halo de
-   luz atrás da bailarina e brilhos desfocados em várias distâncias.
-   ============================================================ */
-const sky = new THREE.Mesh(new THREE.SphereGeometry(180, 48, 24), new THREE.ShaderMaterial({
-  side: THREE.BackSide, depthWrite: false, fog: false, toneMapped: false,
-  vertexShader: "varying vec3 vP;void main(){vP=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}",
-  fragmentShader: `varying vec3 vP;void main(){float y=vP.y;
-    vec3 top=vec3(.30,.20,.56),mid=vec3(.52,.32,.64),low=vec3(.74,.45,.66),hor=vec3(.90,.66,.72),bot=vec3(.80,.55,.70);
-    vec3 c=mix(bot,hor,smoothstep(-.45,-.12,y));c=mix(c,low,smoothstep(-.1,.05,y));c=mix(c,mid,smoothstep(.05,.22,y));c=mix(c,top,smoothstep(.22,.6,y));
-    float g=max(dot(vP,normalize(vec3(0.,.05,-1.))),0.);c+=vec3(1.,.88,.8)*(pow(g,40.)*.12);
-    gl_FragColor=vec4(pow(c,vec3(2.2)),1.);
-    #include <colorspace_fragment>
-  }`,
-}));
+const sky = new THREE.Mesh(new THREE.SphereGeometry(180, 32, 16), new THREE.MeshBasicMaterial({ color: 0xD9C3D2, side: THREE.BackSide, fog: false, toneMapped: false }));
 scene.add(sky);
-const glowTex = canvasTex(256, 256, (g) => { const gr = g.createRadialGradient(128, 128, 0, 128, 128, 128); gr.addColorStop(0, "rgba(255,246,236,.95)"); gr.addColorStop(.35, "rgba(255,214,228,.45)"); gr.addColorStop(1, "rgba(255,200,220,0)"); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); }, false);
-const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, transparent: true, depthWrite: false, toneMapped: false, opacity: .5 }));
-halo.scale.set(9, 9, 1); halo.position.set(0, 3.6, -10); halo.visible = false;
-const bokehTex = canvasTex(128, 128, (g) => { const gr = g.createRadialGradient(64, 64, 34, 64, 64, 64); gr.addColorStop(0, "rgba(255,255,255,.55)"); gr.addColorStop(.85, "rgba(255,255,255,.4)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); }, false);
+// piso encerado: reflexo por baixo + madeira clara translúcida por cima
+let floorMirror = null;
+try {
+  floorMirror = new Reflector(new THREE.CircleGeometry(40, 64), { textureWidth: MOB ? 512 : 1024, textureHeight: MOB ? 512 : 1024, color: 0xB9A6B2, clipBias: .003 });
+  floorMirror.rotation.x = -Math.PI / 2; floorMirror.position.y = -.004; scene.add(floorMirror);
+} catch (e) { floorMirror = null; }
+const woodT = canvasTex(1024, 1024, (g, w, h) => {
+  g.fillStyle = "#D8B79C"; g.fillRect(0, 0, w, h);
+  const N = 16, ph = h / N;
+  for (let i = 0; i < N; i++) { const off = (i * 263) % 700; for (let x = -off; x < w; x += 700) { const l = 68 + ((i * 7 + x) % 7); g.fillStyle = `hsl(${24 + (i % 3)},${38 + (i % 4) * 3}%,${l}%)`; g.fillRect(x, i * ph + 1, 700, ph - 2); g.fillStyle = "rgba(120,80,60,.18)"; g.fillRect(x, i * ph, 2, ph); }
+    g.fillStyle = "rgba(120,80,60,.22)"; g.fillRect(0, i * ph, w, 1.4);
+    for (let k = 0; k < 10; k++) { g.strokeStyle = `rgba(140,95,70,${.04 + Math.random() * .05})`; g.lineWidth = 1; g.beginPath(); const yy = i * ph + 3 + Math.random() * (ph - 6); g.moveTo(0, yy); g.bezierCurveTo(w * .3, yy + 2, w * .6, yy - 2, w, yy + 1); g.stroke(); } }
+});
+woodT.wrapS = woodT.wrapT = THREE.RepeatWrapping; woodT.repeat.set(5, 5); woodT.anisotropy = 4;
+const floorFade = canvasTex(256, 256, (g) => { const gr = g.createRadialGradient(128, 128, 20, 128, 128, 128); gr.addColorStop(0, "#fff"); gr.addColorStop(.55, "#ddd"); gr.addColorStop(1, "#000"); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); }, false);
+const floor = new THREE.Mesh(new THREE.CircleGeometry(30, 72), new THREE.MeshStandardMaterial({ map: woodT, alphaMap: floorFade, transparent: true, opacity: floorMirror ? .8 : 1, roughness: .3, metalness: 0, envMapIntensity: .6 }));
+floor.rotation.x = -Math.PI / 2; floor.position.y = 0; floor.receiveShadow = true; scene.add(floor);
+{ const shadowCatcher = new THREE.Mesh(new THREE.CircleGeometry(3.4, 64), new THREE.ShadowMaterial({ opacity: .2, transparent: true, depthWrite: false, color: 0x5A2A5A }));
+  shadowCatcher.rotation.x = -Math.PI / 2; shadowCatcher.position.y = .003; shadowCatcher.receiveShadow = true; stage.add(shadowCatcher); }
+// parede curva cor de pérola com rodapé e barra
+const WR = 17;
+{
+  const wall = new THREE.Mesh(new THREE.CylinderGeometry(WR, WR, 16, 96, 1, true, Math.PI - 1.45, 2.9), new THREE.MeshStandardMaterial({ color: 0xE6CFDC, roughness: .95, side: THREE.BackSide }));
+  wall.position.y = 8; scene.add(wall);
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(WR - .05, WR - .05, .6, 96, 1, true, Math.PI - 1.45, 2.9), new THREE.MeshStandardMaterial({ color: 0xEAD8E2, roughness: .7, side: THREE.BackSide }));
+  base.position.y = .3; scene.add(base);
+  const barre = new THREE.Mesh(new THREE.TorusGeometry(WR - .45, .06, 10, 160, 2.9), new THREE.MeshStandardMaterial({ color: 0xD7B48A, roughness: .35, metalness: .3 }));
+  barre.rotation.x = Math.PI / 2; barre.rotation.z = -(Math.PI / 2 + 1.45) + Math.PI; barre.position.y = 1.9; scene.add(barre);
+}
+// janelas em arco, cheias de luz
+const winTex = canvasTex(320, 760, (g, w, h) => {
+  const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, "#B7A6E6"); gr.addColorStop(.45, "#F1C9DC"); gr.addColorStop(1, "#FFE4C8"); g.fillStyle = gr; g.fillRect(0, 0, w, h);
+  const sg = g.createRadialGradient(w * .5, h * .78, 10, w * .5, h * .78, h * .5); sg.addColorStop(0, "rgba(255,248,232,.95)"); sg.addColorStop(1, "rgba(255,248,232,0)"); g.fillStyle = sg; g.fillRect(0, 0, w, h);
+  g.strokeStyle = "#FFFDFB"; g.lineWidth = 9; g.beginPath(); g.moveTo(w / 2, 0); g.lineTo(w / 2, h); g.stroke();
+  for (const y of [.36, .58, .8]) { g.beginPath(); g.moveTo(0, h * y); g.lineTo(w, h * y); g.stroke(); }
+  g.lineWidth = 6; g.beginPath(); g.arc(w / 2, w / 2, w * .3, Math.PI, 0); g.stroke();
+});
+function archShape(wd, ht) { const s = new THREE.Shape(), r = wd / 2; s.moveTo(-r, 0); s.lineTo(-r, ht - r); s.absarc(0, ht - r, r, Math.PI, 0, true); s.lineTo(r, 0); s.lineTo(-r, 0); return s; }
+function archGeo(wd, ht) { const g = new THREE.ShapeGeometry(archShape(wd, ht), 24); const p = g.attributes.position, uv = g.attributes.uv; for (let i = 0; i < p.count; i++) uv.setXY(i, (p.getX(i) + wd / 2) / wd, p.getY(i) / ht); return g; }
+const shaftTex = canvasTex(128, 256, (g, w, h) => { const gr = g.createLinearGradient(0, 0, 0, h); gr.addColorStop(0, "rgba(255,244,226,.9)"); gr.addColorStop(1, "rgba(255,244,226,0)"); g.fillStyle = gr; g.fillRect(0, 0, w, h); const sx = g.createLinearGradient(0, 0, w, 0); sx.addColorStop(0, "rgba(0,0,0,1)"); sx.addColorStop(.25, "rgba(0,0,0,0)"); sx.addColorStop(.75, "rgba(0,0,0,0)"); sx.addColorStop(1, "rgba(0,0,0,1)"); g.globalCompositeOperation = "destination-out"; g.fillStyle = sx; g.fillRect(0, 0, w, h); }, false);
+const shafts = [];
+for (const ang of [-1.05, -.52, 0, .52, 1.05]) {
+  const th = Math.PI + ang, x = Math.sin(th) * (WR - .12), z = Math.cos(th) * (WR - .12), wd = 3.4, ht = 8.6, y0 = 2.6;
+  const fr = new THREE.Mesh(archGeo(wd + .5, ht + .35), new THREE.MeshStandardMaterial({ color: 0xFFFDFB, roughness: .6 }));
+  fr.position.set(x, y0 - .2, z); fr.lookAt(0, y0 - .2, 0); scene.add(fr);
+  const win = new THREE.Mesh(archGeo(wd, ht), new THREE.MeshBasicMaterial({ map: winTex, color: 0xF2E6EE, toneMapped: false, fog: true }));
+  win.position.set(x * .997, y0, z * .997); win.lookAt(0, y0, 0); scene.add(win);
+  // feixe de luz da janela até o piso
+  const top = new THREE.Vector3(x * .98, y0 + ht * .55, z * .98), bot = new THREE.Vector3(x * .42 + 1.8, 0.02, z * .42 + 2.2);
+  const side = new THREE.Vector3(-z, 0, x).normalize();
+  const geo = new THREE.BufferGeometry(); const w1 = 1.7, w2 = 2.8;
+  const v = [top.clone().addScaledVector(side, -w1), top.clone().addScaledVector(side, w1), bot.clone().addScaledVector(side, -w2), bot.clone().addScaledVector(side, w2)];
+  geo.setAttribute("position", new THREE.Float32BufferAttribute(v.flatMap(p => [p.x, p.y, p.z]), 3)); geo.setAttribute("uv", new THREE.Float32BufferAttribute([0, 0, 1, 0, 0, 1, 1, 1], 2)); geo.setIndex([0, 2, 1, 1, 2, 3]);
+  const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ map: shaftTex, transparent: true, opacity: .16, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false, fog: false }));
+  scene.add(m); shafts.push(m);
+}
+// cortinas de voal nas laterais, balançando devagar
+const sheers = [];
+for (const sx of [-1, 1]) {
+  const g = new THREE.PlaneGeometry(5.2, 15, 40, 12);
+  const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: 0xFFFFFF, transparent: true, opacity: .32, side: THREE.DoubleSide, roughness: 1, depthWrite: false }));
+  m.position.set(sx * 10.5, 7.5, -9); m.rotation.y = -sx * .55; scene.add(m);
+  sheers.push({ m, base: Float32Array.from(g.attributes.position.array), sx });
+}
+// brilhos desfocados (poeira de luz nos feixes)
+const bokehTex = canvasTex(128, 128, (g) => { const gr = g.createRadialGradient(64, 64, 30, 64, 64, 64); gr.addColorStop(0, "rgba(255,255,255,.6)"); gr.addColorStop(.85, "rgba(255,255,255,.4)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); }, false);
 const bokehS = [];
-{ const cols = [0xFFC9DC, 0xFFE4B8, 0xE6D6FF, 0xFFFFFF, 0xF7B6CF];
-  for (let i = 0; i < (MOB ? 16 : 26); i++) {
-    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: bokehTex, color: cols[i % 5], transparent: true, depthWrite: false, toneMapped: false, opacity: .25 + rnd() * .35 }));
-    const z = -6 - rnd() * 26, sc = .6 + rnd() * 2.4 + (-z) * .04; sp.scale.set(sc, sc, 1);
-    const p = new THREE.Vector3((rnd() - .5) * (16 + -z * 1.2), -1.5 + rnd() * (8 + -z * .35), z); sp.position.copy(p); scene.add(sp); bokehS.push({ sp, p, ph: rnd() * 6.28, sp2: .1 + rnd() * .2 });
+{ const cols = [0xFFE4B8, 0xFFFFFF, 0xFFD6E6, 0xF3E6FF];
+  for (let i = 0; i < (MOB ? 14 : 22); i++) {
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: bokehTex, color: cols[i % 4], transparent: true, depthWrite: false, toneMapped: false, opacity: .18 + rnd() * .3, fog: false }));
+    const z = -5 - rnd() * 9, sc = .25 + rnd() * .9; sp.scale.set(sc, sc, 1);
+    const p = new THREE.Vector3((rnd() - .5) * 18, .5 + rnd() * 7, z); sp.position.copy(p); scene.add(sp); bokehS.push({ sp, p, ph: rnd() * 6.28, sp2: .08 + rnd() * .14 });
   } }
+const halo = null;
 const lamps = [];
 const foots = [];
-// nuvens rosadas baixas, perto do horizonte
-const puffTex = canvasTex(128, 128, (g) => { const gr = g.createRadialGradient(64, 64, 4, 64, 64, 64); gr.addColorStop(0, "rgba(255,255,255,.9)"); gr.addColorStop(.5, "rgba(255,255,255,.45)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 128, 128); }, false);
 const clouds = [];
-for (let i = 0; i < 6; i++) {
-  const cg = new THREE.Group(); cg.position.set((rnd() - .5) * 60, -3 + rnd() * 4, -26 - rnd() * 20); cg.scale.setScalar(3 + rnd() * 2);
-  for (let j = 0; j < 4; j++) { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: puffTex, color: j % 2 ? 0xFFE6EF : 0xFFF4EC, transparent: true, opacity: .55, depthWrite: false, toneMapped: false })); const ss = 1.6 + rnd() * 1.6; s.scale.set(ss * 1.9, ss * .75, 1); s.position.set(j * .9 - 1.4, rnd() * .4, rnd() * .3); cg.add(s); }
-  scene.add(cg); clouds.push({ g: cg, sp: .06 + rnd() * .08, x: cg.position.x });
-}
 
 /* ============================================================
    A BAILARINA
@@ -345,8 +387,8 @@ function stepAnim(dt) {
 }
 
 
-/* ---------- luz de céu aberto ---------- */
-scene.add(new THREE.HemisphereLight(0xF6F0FF, 0x6A4A7A, .38));
+/* ---------- luz de estúdio ---------- */
+scene.add(new THREE.HemisphereLight(0xFFF4F8, 0x9C7A98, .42));
 const sun = new THREE.DirectionalLight(0xFFEEDB, 2.3); sun.position.set(-5, 10, 7); sun.target.position.set(0, 0, 0); scene.add(sun, sun.target);
 sun.castShadow = true; sun.shadow.mapSize.set(MOB ? 1024 : 2048, MOB ? 1024 : 2048); Object.assign(sun.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5, near: 2, far: 30 }); sun.shadow.bias = -.0004; sun.shadow.normalBias = .02;
 const fill = new THREE.DirectionalLight(0xC9B4FF, .35); fill.position.set(6, 3, 5); scene.add(fill);
@@ -410,7 +452,7 @@ let W = 1, H = 1, PORT = false, entered = true, pop = 0, whirl = -1;
 const camS = { az: -.12, azT: -.12, dist: 15, distT: 11, ty: 6, tyT: 4.6, lk: .6, lkT: .6, px: 0, py: 0 };
 let focus = true;
 function setCamTargets() {
-  if (focus) { camS.distT = PORT ? 7.6 : (W / H > 1.7 ? 9.2 : 9.9); camS.tyT = PORT ? 3.1 : 3.5; camS.lkT = PORT ? 1.85 : 1.95; }
+  if (focus) { camS.distT = PORT ? 8.6 : (W / H > 1.7 ? 9.2 : 9.9); camS.tyT = PORT ? 3.1 : 3.5; camS.lkT = PORT ? 1.85 : 1.95; }
   else { camS.distT = PORT ? 11.4 : (W / H > 1.7 ? 11.8 : 12.8); camS.tyT = PORT ? 4.6 : 4.8; camS.lkT = PORT ? 1.45 : 1.45; }
 }
 let inset = 0, offX = 0, offY = 0;
@@ -419,7 +461,7 @@ function resize() {
   const r = cv.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); PORT = innerWidth < 860;
   R.setSize(W, H, false); cam.aspect = W / H; cam.fov = PORT ? 42 : 36;
   if (composer) { composer.setPixelRatio(R.getPixelRatio()); composer.setSize(W, H); }
-  offX = PORT ? (W < 600 ? W * .14 : 0) : -W * .03; offY = PORT ? 0 : -H * .02;
+  offX = PORT ? (W < 600 ? W * .17 : 0) : -W * .03; offY = PORT ? -H * .13 : -H * .02;
   setCamTargets(); applyOffset();
   [orbs, burst, seqPts, seeds].forEach(p => p.material.uniforms.px.value = R.getPixelRatio());
 }
@@ -499,7 +541,7 @@ const TAU = Math.PI * 2;
 function render(now) {
   const dt = Math.min(.05, (now - last) / 1000); last = now; tm += dt;
   // a maquete flutua
-  const bob = Math.sin(tm * .7) * .08; stage.position.y = bob; dancerRoot.position.y = bob; 
+  const bob = 0; stage.position.y = bob; dancerRoot.position.y = bob; 
   // bailarina
   stepAnim(dt);
   JN.forEach(k => J[k].quaternion.copy(cur[k]));
@@ -521,6 +563,8 @@ function render(now) {
   foots.forEach((f, i) => f.material.emissiveIntensity = 2 + Math.sin(tm * 3 + i) * .5);
   lamps.forEach((l, i) => l.cone.material.opacity = .085 + Math.sin(tm * 1.3 + i * 2) * .02);
   clouds.forEach(c => { c.g.position.x = c.x + Math.sin(tm * c.sp) * 1.2; });
+  sheers.forEach((c, k) => { const P = c.m.geometry.attributes.position, B = c.base; for (let i = 0; i < P.count; i++) { const x = B[i * 3], y = B[i * 3 + 1]; P.setZ(i, Math.sin(x * 2.4 + tm * .6 + k) * .35 + Math.sin(x * 5 + y * .3 + tm * .9) * .12 * (1 - (y + 7.5) / 15)); } P.needsUpdate = true; });
+  shafts.forEach((m, i) => m.material.opacity = .13 + Math.sin(tm * .35 + i * 1.7) * .035);
   bokehS.forEach(b => { b.sp.position.set(b.p.x + Math.sin(tm * b.sp2 + b.ph) * .6, b.p.y + Math.sin(tm * b.sp2 * 1.3 + b.ph) * .4, b.p.z); });
   // câmera
   const k = Math.min(1, dt * .9);

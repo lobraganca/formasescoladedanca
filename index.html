@@ -1356,6 +1356,46 @@ html:not(.shop) #camarim{display:none!important}
 @keyframes ldp2{0%{opacity:0}30%{opacity:1}70%{opacity:0}100%{opacity:0}}
 @keyframes ldp3{0%{opacity:0}70%{opacity:1}100%{opacity:1}}
 @media (prefers-reduced-motion:reduce){.ld3s{animation:none}}
+
+/* =================== INÍCIO REFEITO: estúdio de luz + vidro (glass) =================== */
+/* leitura do título sobre o 3D */
+#reino.hero3d::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(252,244,248,.82) 0%,rgba(252,244,248,.5) 30%,rgba(252,244,248,0) 52%)}
+.hero3d .tag-l b{background:linear-gradient(135deg,#2A1236,#4A1D52)}
+.hero3d h1{text-shadow:0 2px 24px rgba(255,255,255,.7)}
+.h3-go{background:linear-gradient(135deg,#D9487F,#B12E64)!important;border:1px solid rgba(255,255,255,.35)!important;box-shadow:0 16px 34px -14px rgba(194,56,111,.85),inset 0 1px 0 rgba(255,255,255,.35)!important}
+/* topo: botão dos pedidos em vidro */
+.ped-b{background:linear-gradient(150deg,rgba(255,255,255,.6),rgba(255,255,255,.22))!important;border:1px solid rgba(255,255,255,.75)!important;backdrop-filter:blur(14px) saturate(1.6);-webkit-backdrop-filter:blur(14px) saturate(1.6);box-shadow:inset 0 1px 0 #fff,0 10px 24px -14px rgba(70,30,80,.45)!important}
+/* painel de montar: vidro de verdade */
+#reino .h3-dock,#reino>.build{background:linear-gradient(150deg,rgba(255,255,255,.46),rgba(255,255,255,.14))!important;backdrop-filter:blur(22px) saturate(1.8);-webkit-backdrop-filter:blur(22px) saturate(1.8);border:1px solid rgba(255,255,255,.7)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.3),0 30px 60px -30px rgba(70,30,80,.5)!important}
+#reino .h3-dock .dock-h .hand{background:linear-gradient(120deg,#8E5AC8,#C2386F);-webkit-background-clip:text;background-clip:text;color:transparent}
+#reino .bgp .bk{display:flex;align-items:center;gap:6px;color:#3A2444!important}
+#reino .bgp .bk::before{content:"";width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#E9C27A,#C2386F)}
+/* botões da boneca: bolhas de vidro */
+#reino .bo{background:radial-gradient(120% 95% at 30% 12%,rgba(255,255,255,.92),rgba(255,255,255,.34) 52%,rgba(255,255,255,.14))!important;border:1px solid rgba(255,255,255,.8)!important;backdrop-filter:blur(10px) saturate(1.6);-webkit-backdrop-filter:blur(10px) saturate(1.6);box-shadow:inset 0 1px 2px #fff,inset 0 -8px 14px rgba(150,90,140,.14),0 10px 20px -12px rgba(70,30,80,.55)!important;transition:transform .3s cubic-bezier(.3,1.5,.5,1),box-shadow .3s!important;overflow:visible}
+#reino .bo::after{content:"";position:absolute;left:18%;top:7%;width:46%;height:26%;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,0));pointer-events:none;opacity:.8}
+#reino .bo svg{position:relative;z-index:1;filter:drop-shadow(0 3px 4px rgba(70,30,80,.25))}
+#reino .bo span{color:#3A2444}
+@media (hover:hover){#reino .bo:hover{transform:translateY(-3px) scale(1.04)}}
+#reino .bo[aria-pressed="true"]{background:radial-gradient(120% 95% at 30% 12%,#fff,rgba(255,235,244,.85) 60%,rgba(255,214,232,.6))!important;box-shadow:0 0 0 2px #fff,0 0 0 4px #C2386F,0 14px 26px -10px rgba(194,56,111,.65),inset 0 1px 2px #fff!important;transform:scale(1.05)}
+#reino .bo i{background:linear-gradient(135deg,#D9487F,#B12E64)!important;box-shadow:0 4px 10px -3px rgba(194,56,111,.8);border:1.5px solid #fff;z-index:2}
+#reino .roster .snd,#reino .dk-more button{background:rgba(255,255,255,.45)!important;border:1px solid rgba(255,255,255,.8)!important;backdrop-filter:blur(10px)}
+#reino #dk-go:disabled{background:rgba(255,255,255,.55)!important;border:1px solid rgba(255,255,255,.85)!important;color:#3A2444!important;backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 #fff!important}
+@media (min-width:861px){
+  #reino .h3-dock{border-radius:30px!important}
+  #reino .h3-dock .bo{border-radius:20px!important}
+}
+/* celular: o 3D ocupa o topo inteiro (sem emenda) e o vidro flutua por cima */
+@media (max-width:860px){
+  #reino.hero3d{display:block!important;position:relative;height:max(100svh,760px)!important;min-height:0!important}
+  #reino.hero3d::before{background:linear-gradient(180deg,rgba(252,244,248,.92) 0%,rgba(252,244,248,.7) 26%,rgba(252,244,248,0) 44%)}
+  #reino #c3d{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;-webkit-mask-image:none!important;mask-image:none!important}
+  #reino .h3-ui{position:relative;z-index:3}
+  #reino>.build{position:absolute!important;right:12px!important;left:auto!important;top:auto!important;bottom:calc(96px + env(safe-area-inset-bottom,0px))!important;margin:0!important;height:auto!important;width:auto!important;padding:12px 12px 10px!important;border-radius:24px!important;gap:8px!important;z-index:6}
+  #reino>.build .bo{width:44px!important;height:44px!important;border-radius:50%!important}
+  #reino>.build .bo[aria-pressed="true"]{transform:scale(1.06)}
+  #reino .h3-dock{position:absolute!important;left:0;right:0;bottom:0;margin:0!important;background:none!important;border:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  #reino .h3-dock .dock-in{padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))!important}
+}
 </style>
 </head>
 <body>
