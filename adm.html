@@ -1374,7 +1374,7 @@ AFTER.site=function(){
         var nome="videos/"+String(f.name||"video.mp4").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\w.-]+/g,"-").toLowerCase();
         return B.upload(nome,f,{access:"public",handleUploadUrl:API+"/video",clientPayload:JSON.stringify({tok:S.tok}),multipart:f.size>8e6,contentType:f.type||"video/mp4",
           onUploadProgress:function(e){var pc=Math.round(e.percentage||0);bar.style.width=pc+"%";lb.textContent="Enviando "+(fs.length>1?(i+1)+" de "+fs.length+": ":"")+f.name+" … "+pc+"%"}})
-        .then(function(r){var st=E().site;st.videos=st.videos||[];st.videos.unshift({titulo:String(f.name||"").replace(/\.[^.]+$/,"").replace(/[_-]+/g," "),src:r.url,ano:"",cat:"espetaculo"});touch()})})},Promise.resolve())
+        .then(function(r){var st=E().site;st.videos=st.videos||[];var tn=String(f.name||"").replace(/\.[^.]+$/,"");if(/^(img|vid|mov|trim)[_ -]*\d/i.test(tn)||/^[0-9a-f]{6,}-/i.test(tn))tn="";st.videos.unshift({titulo:tn.replace(/[_-]+/g," "),src:r.url,ano:"",cat:"espetaculo"});touch()})})},Promise.resolve())
     }).then(function(){pg.hidden=true;render();toast("Vídeo no site ✦ Agora escreva o título e escolha o tipo.")})
       .catch(function(e){pg.hidden=true;render();toast("Não deu para enviar: "+((e&&e.message)||"tente de novo"))})};
   $("v-add").onclick=function(){st.videos.push({titulo:"",src:"",ano:""});touch();render();var l=document.querySelectorAll("[data-vt]");l[l.length-1].focus()};
