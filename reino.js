@@ -89,15 +89,15 @@ try {
 const woodT = canvasTex(1024, 1024, (g, w, h) => {
   g.fillStyle = "#D8B79C"; g.fillRect(0, 0, w, h);
   const N = 16, ph = h / N;
-  for (let i = 0; i < N; i++) { const off = (i * 263) % 700; for (let x = -off; x < w; x += 700) { const l = 68 + ((i * 7 + x) % 7); g.fillStyle = `hsl(${24 + (i % 3)},${38 + (i % 4) * 3}%,${l}%)`; g.fillRect(x, i * ph + 1, 700, ph - 2); g.fillStyle = "rgba(120,80,60,.18)"; g.fillRect(x, i * ph, 2, ph); }
+  for (let i = 0; i < N; i++) { const off = (i * 263) % 700; for (let x = -off; x < w; x += 700) { const l = 57 + ((i * 7 + x) % 7); g.fillStyle = `hsl(${24 + (i % 3)},${38 + (i % 4) * 3}%,${l}%)`; g.fillRect(x, i * ph + 1, 700, ph - 2); g.fillStyle = "rgba(120,80,60,.18)"; g.fillRect(x, i * ph, 2, ph); }
     g.fillStyle = "rgba(120,80,60,.22)"; g.fillRect(0, i * ph, w, 1.4);
     for (let k = 0; k < 10; k++) { g.strokeStyle = `rgba(140,95,70,${.04 + Math.random() * .05})`; g.lineWidth = 1; g.beginPath(); const yy = i * ph + 3 + Math.random() * (ph - 6); g.moveTo(0, yy); g.bezierCurveTo(w * .3, yy + 2, w * .6, yy - 2, w, yy + 1); g.stroke(); } }
 });
 woodT.wrapS = woodT.wrapT = THREE.RepeatWrapping; woodT.repeat.set(5, 5); woodT.anisotropy = 4;
 const floorFade = canvasTex(256, 256, (g) => { const gr = g.createRadialGradient(128, 128, 20, 128, 128, 128); gr.addColorStop(0, "#fff"); gr.addColorStop(.55, "#ddd"); gr.addColorStop(1, "#000"); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); }, false);
-const floor = new THREE.Mesh(new THREE.CircleGeometry(30, 72), new THREE.MeshStandardMaterial({ map: woodT, alphaMap: floorFade, transparent: true, opacity: floorMirror ? .8 : 1, roughness: .3, metalness: 0, envMapIntensity: .6 }));
+const floor = new THREE.Mesh(new THREE.CircleGeometry(30, 72), new THREE.MeshStandardMaterial({ map: woodT, alphaMap: floorFade, transparent: true, opacity: floorMirror ? .9 : 1, roughness: .3, metalness: 0, envMapIntensity: .6 }));
 floor.rotation.x = -Math.PI / 2; floor.position.y = 0; floor.receiveShadow = true; scene.add(floor);
-{ const shadowCatcher = new THREE.Mesh(new THREE.CircleGeometry(3.4, 64), new THREE.ShadowMaterial({ opacity: .2, transparent: true, depthWrite: false, color: 0x5A2A5A }));
+{ const shadowCatcher = new THREE.Mesh(new THREE.CircleGeometry(3.4, 64), new THREE.ShadowMaterial({ opacity: .34, transparent: true, depthWrite: false, color: 0x5A2A5A }));
   shadowCatcher.rotation.x = -Math.PI / 2; shadowCatcher.position.y = .003; shadowCatcher.receiveShadow = true; stage.add(shadowCatcher); }
 // parede curva cor de pérola com rodapé e barra
 const WR = 17;
@@ -407,6 +407,14 @@ const fill = new THREE.DirectionalLight(0xC9B4FF, .35); fill.position.set(6, 3, 
 const spot = new THREE.SpotLight(0xFFEBDD, 1.4, 0, .28, .7, 0); spot.position.set(1, 8, 5); spot.target.position.set(0, .9 * K, 0); scene.add(spot, spot.target);
 const rimL = new THREE.SpotLight(0xFFE2F0, 16, 0, .45, .6, 0); rimL.position.set(-2.4, 3.4 * K, -2.2); rimL.target.position.set(0, 1.1 * K, 0); scene.add(rimL, rimL.target);
 const rimR = new THREE.SpotLight(0xFFE6B8, 12, 0, .45, .6, 0); rimR.position.set(2.6, 3 * K, -2.4); rimR.target.position.set(0, 1.1 * K, 0); scene.add(rimR, rimR.target);
+/* fundo mais escuro e macio só atrás da bailarina, para ela se destacar do cenário claro */
+const backTex = canvasTex(256, 256, (g, w, h) => {
+  const gr = g.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
+  gr.addColorStop(0, "rgba(64,32,78,.7)"); gr.addColorStop(.45, "rgba(86,48,100,.45)"); gr.addColorStop(.78, "rgba(120,80,130,.12)"); gr.addColorStop(1, "rgba(120,80,130,0)");
+  g.fillStyle = gr; g.fillRect(0, 0, w, h);
+});
+const backdrop = new THREE.Sprite(new THREE.SpriteMaterial({ map: backTex, transparent: true, depthWrite: false, fog: false, toneMapped: false }));
+backdrop.scale.set(8.5 * K, 10 * K, 1); backdrop.position.set(0, 1.1 * K, -3.2); backdrop.renderOrder = -1; scene.add(backdrop);
 
 /* ---------- partículas ---------- */
 const dotTex = canvasTex(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(.25, "rgba(255,244,230,.8)"); gr.addColorStop(1, "rgba(255,230,210,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); }, false);
