@@ -1505,6 +1505,20 @@ html.shop .bag{position:fixed!important;left:0;right:0;bottom:0!important;margin
 html.shop .bag-in{border-radius:22px;padding:10px 10px 10px 12px}
 html.shop .bag-t small{display:block!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.75}
 html.shop .bag.pop .bag-in{animation:bagpop .45s cubic-bezier(.3,1.6,.6,1)}
+
+/* bailarinas 3D (imagens em sequência) */
+.spr{display:block;background-repeat:no-repeat;background-size:2000% 100%;background-position:0 0;animation:sprf 6.4s steps(20) infinite;animation-play-state:paused}
+@keyframes sprf{to{background-position-x:105.2632%}}
+.sband.run .spr,.tcard .spr{animation-play-state:running}
+.bl3{width:120px!important;height:151px!important;filter:drop-shadow(0 10px 8px rgba(80,40,30,.22))!important}
+.bl3 .spr{width:100%;height:100%}
+.sband .bl3.jump{animation:sbhop 1s cubic-bezier(.3,.7,.3,1)}
+.sb-irene.bl3{width:128px!important;height:161px!important}
+@media (max-width:760px){.bl3{width:96px!important;height:121px!important}.sb-irene.bl3{width:100px!important;height:126px!important}}
+.tc-spr{width:104px!important;height:131px!important;top:auto!important;bottom:-4px!important;filter:drop-shadow(0 8px 10px rgba(60,20,80,.28))!important}
+.tc-top{height:142px!important}
+@media (max-width:560px){.tc-top{height:132px!important}.tc-spr{width:96px!important;height:121px!important}}
+@media (prefers-reduced-motion:reduce){.spr{animation:none!important}}
 </style>
 </head>
 <body>
@@ -1676,20 +1690,7 @@ html.shop .bag.pop .bag-in{animation:bagpop .45s cubic-bezier(.3,1.6,.6,1)}
   <div class="sb-curt"></div><div class="sb-spot s1"></div><div class="sb-spot s2"></div>
   <div class="sb-floor"></div>
   <div class="sb-track" id="sb-track"></div>
-  <div class="bl sb-irene" aria-hidden="true" style="--dl:0s"><svg viewBox="0 0 90 150"><g class="bd">
-    <g class="ll"><path d="M42 92 L40 134" stroke="#231A26" stroke-width="6.2" stroke-linecap="round"/><path d="M40 134 L39.5 142" stroke="#E7C3A8" stroke-width="5.6" stroke-linecap="round"/></g>
-    <g class="lr"><path d="M48 92 L50 134" stroke="#2B2030" stroke-width="6.2" stroke-linecap="round"/><path d="M50 134 L50.5 142" stroke="#E7C3A8" stroke-width="5.6" stroke-linecap="round"/></g>
-    <g class="al"><path d="M38.5 64 L31 90" stroke="#E8BFA2" stroke-width="4.2" stroke-linecap="round"/></g>
-    <path d="M37 61.5 Q45 57.5 53 61.5 L52.5 80 Q52 88 50.5 93 Q45 96.5 39.5 93 Q38 88 37.5 80 Z" fill="#231A26"/>
-    <path d="M40 62.5 Q45 66 50 62.5" stroke="#4A3A50" stroke-width="1.2" fill="none"/>
-    <g class="ar"><path d="M51.5 64 L59 90" stroke="#E8BFA2" stroke-width="4.2" stroke-linecap="round"/></g>
-    <rect x="42.6" y="53" width="4.8" height="9.5" rx="2.4" fill="#E8BFA2"/>
-    <circle cx="45" cy="47.5" r="9.3" fill="#E8BFA2"/>
-    <path d="M35.4 48.5 Q35 37 45 37 Q55 37 54.6 48.5 Q52 41.5 45 41.2 Q38.5 41.5 35.4 48.5Z" fill="#4A2F22"/>
-    <ellipse cx="45" cy="36.2" rx="6.3" ry="5" fill="#4A2F22"/>
-    <path d="M40.6 48.6 q1.6 1.2 3.2 0 M46.2 48.6 q1.6 1.2 3.2 0" stroke="#3A2030" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-    <path d="M43.2 53.2 q1.8 1.3 3.6 0" stroke="#B5466F" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-  </g></svg><span class="sbi-tag">Irene</span></div>
+  <div class="bl bl3 sb-irene" aria-hidden="true"><i class="spr" data-bg="/img/bail-g.webp" style="animation-delay:.32s"></i><span class="sbi-tag">Irene</span></div>
   <div class="sb-val"></div>
   <div class="sb-say" id="sb-say">E um, e dois, e três…</div>
   <div class="sb-foot"></div>
@@ -1947,18 +1948,20 @@ function poseSVG(i){
     '<g fill="#fff" opacity=".8"><path d="M18 20l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z"/><path d="M100 84l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z"/><circle cx="96" cy="18" r="2"/><circle cx="26" cy="86" r="1.6"/></g></svg>'}
 var ICAL='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
     ICLK='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>';
+var sprIO=("IntersectionObserver" in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var el=e.target;el.style.backgroundImage="url("+el.dataset.bg+")";sprIO.unobserve(el)}})},{rootMargin:"500px"}):null;
+function sprLoad(root){(root||document).querySelectorAll(".spr[data-bg]").forEach(function(el){if(el.style.backgroundImage)return;if(sprIO)sprIO.observe(el);else el.style.backgroundImage="url("+el.dataset.bg+")"})}
 function renderTurmas(){
   var g=$("tgrid"),T=turmasSite();
   g.innerHTML=T.map(function(t,i){
     var s=statusOf(t),d=diasTxt(t.dias),h=t.hIni?hTxt(t.hIni)+(t.hFim?" às "+hTxt(t.hFim):""):"",n=ROM[i]||i+1,f=(t.feats&&t.feats.length?t.feats:(FEAT[t.id]||FEATG[i%5]));
     return '<article class="tcard rv d'+(i%3)+'" data-id="'+esc(t.id)+'" data-n="Nível '+n+'" style="--c:'+(t.cor||TCOL[i%TCOL.length])+'">'+
-      '<div class="tc-top"><span class="tc-num">'+String(i+1).padStart(2,"0")+'</span>'+poseSVG(i)+'<span class="arch-n">Nível '+n+'</span><span class="tc-age"><b>'+esc(ageTxt(t).replace(/\s*anos?/i,""))+'</b>anos</span></div>'+
+      '<div class="tc-top"><span class="tc-num">'+String(i+1).padStart(2,"0")+'</span><i class="tc-ill tc-spr spr" data-bg="/img/bail-'+["a","c","b","e","d","f"][i%6]+'.webp" style="animation-delay:-'+(i*1.28).toFixed(2)+'s"></i>'+'<span class="arch-n">Nível '+n+'</span><span class="tc-age"><b>'+esc(ageTxt(t).replace(/\s*anos?/i,""))+'</b>anos</span></div>'+
       '<div class="tc-body"><h3>'+esc(t.nome)+'</h3><p class="desc">'+esc(t.desc||"")+'</p>'+
       '<ul class="tc-feat">'+f.slice(0,3).map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>'+
       '<div class="tc-info"><div>'+ICAL+'<span><small>Dias</small>'+esc(d||"Com a Irene")+'</span></div><div>'+ICLK+'<span><small>Horário</small>'+esc(h||"Sob consulta")+'</span></div></div>'+
       '<div class="tc-foot"><span class="chip '+s.k+'">'+esc(s.l)+'</span>'+(s.k==="full"?'<button class="btn rose" type="button" data-wait="'+esc(t.id)+'">Fila de espera</button>':'<button class="btn goldb" type="button" data-ask="'+esc(t.id)+'">Ver disponibilidade →</button>')+'</div></div></article>';
   }).join("");
-  observe(g.querySelectorAll(".rv"));tilt();setAge(+$("w-ida").value||5);
+  observe(g.querySelectorAll(".rv"));tilt();sprLoad(g);setAge(+$("w-ida").value||5);
 }
 function setAge(a){
   a=Math.max(2,Math.min(99,a||0));
@@ -2231,20 +2234,9 @@ document.addEventListener("click",function(e){if(!e.target.closest("#cta-fill"))
 (function(){
   var tr=$("sb-track");if(!tr)return;
   var SK=["#F1C7AE","#E4B08F","#C98D68","#9C6545","#6A4029"],HR=["#2C1A12","#5A3825","#B9844F","#1A110C","#7A4A2A"],TU=["#F09ABB","#C9A7E8","#9FCDEE","#F7F2F2","#E8C27A","#F4B183","#E07AA5"];
-  function dancer(i){var s=SK[(i*3)%5],hr=HR[(i*2)%5],t=TU[i%7];
-    return '<button class="bl" type="button" aria-label="Bailarina '+(i+1)+'" style="--dl:.35s"><svg viewBox="0 0 90 150" aria-hidden="true"><g class="bd">'+
-      '<g class="ll"><path d="M42 92 L40 134" stroke="#F3C9C9" stroke-width="6" stroke-linecap="round"/><path d="M40 134 L39.5 142" stroke="#F2A7B4" stroke-width="5.5" stroke-linecap="round"/></g>'+
-      '<g class="lr"><path d="M48 92 L50 134" stroke="#F6D2D2" stroke-width="6" stroke-linecap="round"/><path d="M50 134 L50.5 142" stroke="#F2A7B4" stroke-width="5.5" stroke-linecap="round"/></g>'+
-      '<g class="al"><path d="M38.5 64 L31 90" stroke="'+s+'" stroke-width="4.4" stroke-linecap="round"/></g>'+
-      '<path d="M37 62 Q45 58 53 62 L50 90 L40 90 Z" fill="'+t+'"/><path d="M38 66 L52 66" stroke="#fff" stroke-opacity=".5" stroke-width="1.4"/>'+
-      '<ellipse cx="45" cy="91" rx="27" ry="6.5" fill="'+t+'"/><path d="M18 91 Q22 97 27 93 Q31 99 36 94 Q40 100 45 95 Q50 100 54 94 Q59 99 63 93 Q68 97 72 91 Z" fill="'+t+'" opacity=".85"/><ellipse cx="45" cy="89.5" rx="22" ry="4" fill="#fff" opacity=".35"/>'+
-      '<g class="ar"><path d="M51.5 64 L59 90" stroke="'+s+'" stroke-width="4.4" stroke-linecap="round"/></g>'+
-      '<rect x="42.5" y="54" width="5" height="9" rx="2.5" fill="'+s+'"/>'+
-      '<circle cx="45" cy="49" r="9.5" fill="'+s+'"/><path d="M35.6 48 Q36 38 45 38.5 Q54 38 54.4 48 Q50 42 45 42 Q40 42 35.6 48Z" fill="'+hr+'"/><circle cx="45" cy="36" r="5.2" fill="'+hr+'"/>'+
-      '<path d="M40.5 50 q1.6 1.4 3.2 0 M46.3 50 q1.6 1.4 3.2 0" stroke="#3A2030" stroke-width="1.1" fill="none" stroke-linecap="round"/><circle cx="40" cy="53.5" r="1.8" fill="#F28CA8" opacity=".55"/><circle cx="50" cy="53.5" r="1.8" fill="#F28CA8" opacity=".55"/><path d="M43.4 54.6 q1.6 1.2 3.2 0" stroke="#B5466F" stroke-width="1.1" fill="none" stroke-linecap="round"/>'+
-      '<path d="M38 41 L41 37 L45 40 L49 37 L52 41" stroke="#E8C27A" stroke-width="1.6" fill="none" stroke-linejoin="round"/>'+
-      '</g></svg></button>'}
-  var h="";for(var i=0;i<9;i++)h+=dancer(i);tr.innerHTML=h;
+  var KS=["a","c","d","b","e","f","c","a","d"];
+  function dancer(i){return '<button class="bl bl3" type="button" aria-label="Bailarina '+(i+1)+'"><i class="spr" data-bg="/img/bail-'+KS[i]+'.webp" style="animation-delay:-'+(i*.32).toFixed(2)+'s"></i></button>'}
+  var h="";for(var i=0;i<9;i++)h+=dancer(i);tr.innerHTML=h;sprLoad($("sband"));
   var LINES=["E um, e dois, e três…","Pliééé… joelhos pra fora!","Saltinho leve! Sauté!","Braço lá na frente: arabesque!","Agora a pirouette!","Ponta esticada, bailarinas!","Sorriso no rosto ✦","Révérence! Que lindas! 👏"],li=0,say=$("sb-say");
   var vis=false;new IntersectionObserver(function(es){vis=es[0].isIntersecting;$("sband").classList.toggle("run",vis)}).observe($("sband"));
   setInterval(function(){if(!vis)return;say.classList.add("off");setTimeout(function(){say.textContent=LINES[li=(li+1)%LINES.length];say.classList.remove("off")},260)},3200);
