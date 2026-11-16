@@ -17,6 +17,9 @@
 - **Espetáculos:** vídeos (YouTube, Instagram, Google Drive ou .mp4 na pasta `videos/`), cadastrados no /adm, aba Site.
 - **Fotos:** álbum com visualização em tela cheia, enviado pelo /adm, aba Site.
 
+## Música da caixinha
+Arquivo `musica/caixinha.mp3`: "The Seasons, June (Barcarolle)" de Tchaikovsky em versão de caixinha de música, por Gregor Quendel (Pixabay). Recortada em 2 minutos e tocando em repetição. Só toca quando a pessoa toca em Abrir a caixinha, Dar corda, num passo ou em Tocar música; pausa sozinha ao sair da seção.
+
 ## Loja do Camarim
 Endereço próprio: **www.formasescoladedanca.com.br/camarim**. Mostra todas as peças, com filtro por tipo e a sacolinha (várias peças num pedido só). No site aparecem 4 peças e o botão para a loja; o botão **Pedidos dos alunos** fica sempre no topo.
 

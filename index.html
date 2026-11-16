@@ -1343,6 +1343,9 @@ html:not(.shop) #camarim{display:none!important}
 @keyframes ldhop{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @media (prefers-reduced-motion:reduce){.ld3,.ld3 .p{animation:none}.ld3 .p2{opacity:1}}
 @media (max-width:760px){.cx-card{height:clamp(500px,72vh,610px)!important}#caixa-sec .sec-h{margin-bottom:16px!important}}
+/* caixinha: botão de música */
+.cx-snd .ic{display:inline-grid;place-items:center;width:22px;font-size:15px}
+.cx-snd[aria-pressed="true"]{background:var(--ink)!important;color:#fff!important}
 </style>
 </head>
 <body>
@@ -1583,6 +1586,8 @@ html:not(.shop) #camarim{display:none!important}
       <div class="cx-top"><span class="cx-msg" id="cx-msg">Toque na caixinha para abrir ✦</span></div>
       <div class="cx-ui">
         <button class="btn btn-amber" type="button" id="cx-open">✦ Abrir a caixinha</button>
+        <button class="cx-b cx-snd" type="button" id="cx-snd" aria-pressed="false"><span class="ic" aria-hidden="true">♪</span><span class="tx">Tocar música</span></button>
+        <audio id="cx-audio" src="/musica/caixinha.mp3" preload="none" loop></audio>
         <button class="cx-b" type="button" id="cx-wind"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Dar corda</button>
         <div class="cx-steps"><button type="button" data-cx="plie">Plié</button><button type="button" data-cx="releve">Relevé</button><button type="button" data-cx="arabesque">Arabesque</button><button type="button" data-cx="pirouette">Pirouette</button></div>
       </div>
@@ -2252,18 +2257,25 @@ hit("view");
   function C(){return window.Caixa}
   function msg(t){M.classList.add("off");setTimeout(function(){M.innerHTML=t;M.classList.remove("off")},200)}
   function sync(){var o=C()&&C().isOpen();O.textContent=o?"Fechar a caixinha":"✦ Abrir a caixinha";$("caixa").classList.toggle("open",!!o)}
-  function open(){if(!C())return;C().open();playMusic(9);msg("A tampa abriu… olha ela subindo! ✦");setTimeout(sync,50)}
-  O.onclick=function(){if(!C())return;if(C().isOpen()){C().close();stopMusic();msg("A caixinha fechou. Toque para abrir de novo ✦")}else open();setTimeout(sync,50)};
-  $("cx-wind").onclick=function(){if(!C())return;var o=C().isOpen();if(!o)C().open();C().wind(8);playMusic(8);msg("Tric, tric, tric… você deu corda! Ela gira enquanto a música toca ✦");setTimeout(sync,50)};
-  document.querySelectorAll("[data-cx]").forEach(function(b){b.onclick=function(){if(!C())return;var n=b.dataset.cx;document.querySelectorAll("[data-cx]").forEach(function(x){x.classList.toggle("on",x===b)});C().play(n);playMusic(DUR[n]+(C().isOpen()?0:3));msg(STEP_TXT[n]);setTimeout(sync,50)}});
+  var A=$("cx-audio"),S=$("cx-snd"),userOn=false;
+  function sSync(){var p=!A.paused;S.setAttribute("aria-pressed",p);S.querySelector(".ic").textContent=p?"❚❚":"♪";S.querySelector(".tx").textContent=p?"Pausar música":"Tocar música"}
+  function cxPlay(){userOn=true;stopMusic();A.volume=.85;var p=A.play();if(p&&p.catch)p.catch(function(){});setTimeout(sSync,80)}
+  function cxStop(){A.pause();sSync()}
+  A.addEventListener("play",sSync);A.addEventListener("pause",sSync);
+  S.onclick=function(){if(A.paused)cxPlay();else{userOn=false;cxStop()}};
+  new IntersectionObserver(function(es){if(!es[0].isIntersecting&&!A.paused)cxStop()},{threshold:.15}).observe($("caixa"));
+  function open(user){if(!C())return;C().open();if(user)cxPlay();msg("A tampa abriu… olha ela subindo! ✦");setTimeout(sync,50)}
+  O.onclick=function(){if(!C())return;if(C().isOpen()){C().close();cxStop();msg("A caixinha fechou. Toque para abrir de novo ✦")}else open(true);setTimeout(sync,50)};
+  $("cx-wind").onclick=function(){if(!C())return;var o=C().isOpen();if(!o)C().open();C().wind(8);cxPlay();msg("Tric, tric, tric… você deu corda! Ela gira enquanto a música toca ✦");setTimeout(sync,50)};
+  document.querySelectorAll("[data-cx]").forEach(function(b){b.onclick=function(){if(!C())return;var n=b.dataset.cx;document.querySelectorAll("[data-cx]").forEach(function(x){x.classList.toggle("on",x===b)});C().play(n);cxPlay();msg(STEP_TXT[n]);setTimeout(sync,50)}});
   addEventListener("caixa-step",function(e){if(e.detail.state==="end")document.querySelectorAll("[data-cx]").forEach(function(x){x.classList.remove("on")})});
-  addEventListener("caixa-tap",function(){if(C())C().play("pirouette");playMusic(5.4);msg(STEP_TXT.tap)});
+  addEventListener("caixa-tap",function(){if(C())C().play("pirouette");cxPlay();msg(STEP_TXT.tap)});
   addEventListener("caixa-chime",function(e){var k=e.detail.k;
-    if(k==="abrir"){playMusic(9);msg("A tampa abriu… olha ela subindo! ✦")}
-    else if(k==="corda"){playMusic(8);msg("Tric, tric, tric… você deu corda! Ela gira enquanto a música toca ✦")}
+    if(k==="abrir"){cxPlay();msg("A tampa abriu… olha ela subindo! ✦")}
+    else if(k==="corda"){cxPlay();msg("Tric, tric, tric… você deu corda! Ela gira enquanto a música toca ✦")}
     else if(k==="espelho"){chime([84,88,91,96],.09);msg("O F de Formas, bordado no veludo ✦")}
     else if(k==="perolas"){chime([88,91,93],.08);msg("O colar de pérolas da bailarina ✦")}
-    else if(k==="fechar"){stopMusic();msg("A caixinha fechou. Toque nela para abrir de novo ✦")}
+    else if(k==="fechar"){cxStop();msg("A caixinha fechou. Toque nela para abrir de novo ✦")}
     setTimeout(sync,60)});
   addEventListener("caixa-ready",function(){C().set(DOLL);
     new IntersectionObserver(function(es,ob){if(es[0].isIntersecting){ob.disconnect();setTimeout(function(){if(C()&&!C().isOpen())open()},700)}},{threshold:.55}).observe($("caixa"))});
