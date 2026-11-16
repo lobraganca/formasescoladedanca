@@ -1346,11 +1346,21 @@ html:not(.shop) #camarim{display:none!important}
 /* caixinha: botão de música */
 .cx-snd .ic{display:inline-grid;place-items:center;width:22px;font-size:15px}
 .cx-snd[aria-pressed="true"]{background:var(--ink)!important;color:#fff!important}
+/* abertura: menor, mais lenta e rodopiando (plié → 2 voltas de pirouette → arabesque) */
+.ld3{animation:none!important;perspective:500px}
+.ld3s{transform-style:preserve-3d;animation:ldspin 4.2s cubic-bezier(.45,0,.4,1) infinite}
+@keyframes ldspin{0%,30%{transform:rotateY(0)}70%,100%{transform:rotateY(720deg)}}
+.ld3 .p{animation-duration:4.2s!important;animation-timing-function:steps(1,end)!important;animation-delay:0s!important}
+.ld3 .p1{animation-name:ldp1!important}.ld3 .p2{animation-name:ldp2!important}.ld3 .p3{animation-name:ldp3!important}
+@keyframes ldp1{0%{opacity:1}30%{opacity:0}100%{opacity:0}}
+@keyframes ldp2{0%{opacity:0}30%{opacity:1}70%{opacity:0}100%{opacity:0}}
+@keyframes ldp3{0%{opacity:0}70%{opacity:1}100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.ld3s{animation:none}}
 </style>
 </head>
 <body>
 <div class="loader" id="loader" aria-hidden="true"><div class="lg">
-  <div class="ld3"><svg viewBox="0 0 120 210" width="150" height="262">
+  <div class="ld3"><div class="ld3s"><svg viewBox="0 0 120 210" width="104" height="182">
     <ellipse cx="60" cy="196" rx="30" ry="5" fill="rgba(60,20,60,.12)"/>
     <g class="p p1"><!-- plié: joelhos para fora, braços em baixo -->
       <path d="M56 121L45 152L52 188" stroke="#231A26" stroke-width="7.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M64 121L75 152L68 188" stroke="#231A26" stroke-width="7.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1388,7 +1398,7 @@ html:not(.shop) #camarim{display:none!important}
         <circle cx="51" cy="53.5" r="3.6" fill="#F28CA8" opacity=".45"/><circle cx="69" cy="53.5" r="3.6" fill="#F28CA8" opacity=".45"/>
         <path d="M56.5 55.5q3.5 2.6 7 0" stroke="#B5466F" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>
     </g>
-  </svg></div>
+  </svg></div></div>
 </div></div>
 <canvas id="trail" aria-hidden="true"></canvas>
 
