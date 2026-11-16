@@ -249,10 +249,10 @@ function arm(side) {
   el.add(sphere(.026, M.skin, 20, 14));
   el.add(lathe(limbProf(.2, .027, .018, t => .004 * Math.sin(Math.PI * t * .8)), M.skin, 32));
   const wr = new THREE.Group(); wr.position.y = -.2; el.add(wr);
-  const palm = sphere(.022, M.skin, 24, 16); palm.scale.set(1.2, 1.55, .62); palm.position.y = -.03; wr.add(palm);
-  const FL = [.03, .036, .034, .027];
-  for (let k = 0; k < 4; k++) { const len = FL[k], f = SH(new THREE.Mesh(new THREE.CapsuleGeometry(.0062, len, 4, 12), M.skin)); f.position.set((k - 1.5) * .0112 * s, -.056 - len / 2, .003); f.rotation.set(.22 + k * .05, 0, (k - 1.5) * .07 * s); wr.add(f); }
-  const thumb = SH(new THREE.Mesh(new THREE.CapsuleGeometry(.0068, .024, 4, 12), M.skin)); thumb.position.set(-s * .021, -.04, .01); thumb.rotation.set(.45, 0, -s * .65); wr.add(thumb);
+  const palm = sphere(.025, M.skin, 24, 16); palm.scale.set(1.12, 1.5, .5); palm.position.y = -.034; wr.add(palm);
+  const FL = [.036, .044, .041, .032];
+  for (let k = 0; k < 4; k++) { const len = FL[k], f = SH(new THREE.Mesh(new THREE.CapsuleGeometry(.0066, len, 4, 12), M.skin)); f.position.set((k - 1.5) * .0118 * s, -.062 - len / 2, .006 + len * .18); f.rotation.set(-.34 - k * .04, 0, (k - 1.5) * .06 * s); wr.add(f); }
+  const thumb = SH(new THREE.Mesh(new THREE.CapsuleGeometry(.0072, .03, 4, 12), M.skin)); thumb.position.set(-s * .02, -.05, .016); thumb.rotation.set(-.2, 0, -s * .5); wr.add(thumb);
   J["sh" + side] = sh; J["el" + side] = el; J["wr" + side] = wr;
 }
 arm("R"); arm("L");
@@ -324,7 +324,7 @@ const ORD = { spine: "XYZ", head: "YXZ", shR: "ZXY", shL: "ZXY", elR: "XYZ", elL
 const JN = Object.keys(ORD);
 function pose(d) { const q = {}; for (const k of JN) { const v = d[k] || [0, 0, 0]; const a = typeof v === "number" ? [v, 0, 0] : v; q[k] = new THREE.Quaternion().setFromEuler(new THREE.Euler(a[0], a[1], a[2], ORD[k])); } return q; }
 const ARMS = {
-  low: { shR: [-.32, 0, .22], elR: [-.1, 0, -.6], wrR: [-.1, 0, -.3], shL: [-.32, 0, -.22], elL: [-.1, 0, .6], wrL: [-.1, 0, .3] },
+  low: { shR: [-.62, 0, .3], elR: [-.18, 0, -.86], wrR: [-.15, 0, -.35], shL: [-.62, 0, -.3], elL: [-.18, 0, .86], wrL: [-.15, 0, .35] },
   first: { shR: [-1.15, 0, .32], elR: [-.1, 0, -1.0], wrR: [0, 0, -.3], shL: [-1.15, 0, -.32], elL: [-.1, 0, 1.0], wrL: [0, 0, .3] },
   second: { shR: [-.22, 0, 1.28], elR: [-.38, 0, .08], wrR: [-.3, 0, .25], shL: [-.22, 0, -1.28], elL: [-.38, 0, -.08], wrL: [-.3, 0, -.25] },
   fifth: { shR: [-.32, 0, 2.7], elR: [0, 0, .8], wrR: [0, 0, .35], shL: [-.32, 0, -2.7], elL: [0, 0, -.8], wrL: [0, 0, -.35] },
