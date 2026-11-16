@@ -17,9 +17,10 @@ const host = document.getElementById("reino");
 const cv = document.getElementById("c3d");
 const MOB = !/[?&]q=high/.test(location.search) && (matchMedia("(max-width:760px)").matches || (navigator.hardwareConcurrency || 8) <= 4 || /[?&]q=low/.test(location.search));
 const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const SPRITE = /[?&]sprite=1/.test(location.search); // só para gerar as imagens das bailarinas
 
 let R;
-try { R = new THREE.WebGLRenderer({ canvas: cv, antialias: true, preserveDrawingBuffer: true, powerPreference: "high-performance" }); }
+try { R = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: SPRITE, preserveDrawingBuffer: true, powerPreference: "high-performance" }); }
 catch (e) { host.classList.add("no3d"); window.dispatchEvent(new Event("reino-fail")); throw e; }
 R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.6 : 1.75));
 R.outputColorSpace = THREE.SRGBColorSpace;
@@ -461,7 +462,7 @@ function resize() {
   const r = cv.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); PORT = innerWidth < 860;
   R.setSize(W, H, false); cam.aspect = W / H; cam.fov = PORT ? 42 : 36;
   if (composer) { composer.setPixelRatio(R.getPixelRatio()); composer.setSize(W, H); }
-  offX = PORT ? 0 : -W * .03; offY = PORT ? H * .015 : -H * .02;
+  offX = PORT ? (W < 600 ? W * .17 : 0) : -W * .03; offY = PORT ? -H * .19 : -H * .02;
   setCamTargets(); applyOffset();
   [orbs, burst, seqPts, seeds].forEach(p => p.material.uniforms.px.value = R.getPixelRatio());
 }
@@ -594,4 +595,16 @@ new IntersectionObserver(es => { visible = es[0].isIntersecting; last = performa
 render(performance.now());
 host.classList.add("ready3d");
 window.dispatchEvent(new Event("reino-ready"));
-requestAnimationFrame(loop);
+if (!SPRITE) requestAnimationFrame(loop);
+if (SPRITE) {
+  scene.children.forEach(o => { if (o !== dancerRoot && (o.isMesh || o.isSprite || o.isPoints || o.isGroup)) o.visible = false; });
+  scene.fog = null; R.setClearColor(0x000000, 0); R.shadowMap.enabled = false;
+  window.SPR = (a, b, t, face, fl, w, h) => {
+    R.setPixelRatio(1); R.setSize(w, h, false); cam.clearViewOffset(); cam.aspect = w / h; cam.fov = 30; cam.updateProjectionMatrix();
+    cam.position.set(0, 2.1, 14); cam.lookAt(0, 1.85, 0);
+    JN.forEach(k => { cur[k].copy(POSES[a][k]).slerp(POSES[b][k], t); J[k].quaternion.copy(cur[k]); });
+    dancerRoot.position.y = 0; dancerRoot.scale.setScalar(DS); dancer.rotation.y = face; flare = fl; updTutu(t * 3);
+    for (let i = 0; i < 6; i++) { dancerRoot.updateMatrixWorld(true); let m = Infinity; for (const mk of markers) { mk.getWorldPosition(tmpV); m = Math.min(m, mk.getWorldPosition(tmpV).y); } pelvis.position.y += -(m - .004) / DS; }
+    dancerRoot.updateMatrixWorld(true); R.render(scene, cam); return cv.toDataURL("image/png");
+  };
+}

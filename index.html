@@ -1441,40 +1441,13 @@ html:not(.shop) #camarim{display:none!important}
 
 @media (max-width:860px){#top .brand{margin-right:auto!important}#top .menu-b{margin-left:auto!important}}
 
-/* ===== início: botões do título centralizados e bailarina mais perto ===== */
-.hero3d .h3-acts{align-self:center!important}
-.hero3d .h3-acts .h3-go,.h3-ped{min-width:0;justify-content:center!important}
-.btabs{display:none}
+/* início no celular: botões encostados à direita, sem sair da tela */
 @media (max-width:860px){
-  /* título + botões alinhados pelo centro */
-  .hero3d .h3-copy{grid-template-columns:1fr auto!important;align-items:center!important;column-gap:10px!important}
-  .hero3d .h3-acts{width:128px;max-width:none!important}
-  .hero3d .h3-acts .h3-go,.h3-ped{width:100%;padding:10px 10px!important;border-radius:16px!important}
-  .h3-ped span:last-child{max-width:none!important;text-align:center!important}
-  /* cartão de vidro embaixo, uma escolha de cada vez */
-  #reino>.build{left:12px!important;right:12px!important;bottom:calc(14px + env(safe-area-inset-bottom,0px))!important;width:auto!important;padding:10px 12px 14px!important;border-radius:26px!important;display:block!important}
-  #reino>.build .btabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;margin-bottom:12px;border-radius:16px;background:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.7)}
-  #reino>.build .btabs button{border:0;background:none;border-radius:12px;padding:8px 4px;font:800 12.5px var(--body);color:#5A4562;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:background .25s,color .25s}
-  #reino>.build .btabs i{font-style:normal;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:10.5px;background:rgba(58,40,80,.12);color:#5A4562}
-  #reino>.build .btabs button.done i{background:#2EA36B;color:#fff;font-size:0}
-  #reino>.build .btabs button.done i::before{content:"✓";font-size:11px}
-  #reino>.build .btabs button[aria-selected="true"]{background:#fff;color:var(--ink);box-shadow:0 6px 14px -8px rgba(70,30,80,.45)}
-  #reino>.build .btabs button[aria-selected="true"] i{background:linear-gradient(135deg,#D9487F,#B12E64);color:#fff}
-  #reino>.build .bgp{display:none!important}
-  #reino>.build[data-tab="pele"] .bgp[data-g="pele"],#reino>.build[data-tab="tutu"] .bgp[data-g="tutu"],#reino>.build[data-tab="sapatilha"] .bgp[data-g="sapatilha"]{display:block!important;animation:bgin .35s ease}
-  @keyframes bgin{from{opacity:0;transform:translateY(6px)}}
-  #reino>.build .bgp .bk{display:none!important}
-  #reino>.build .bopts{display:grid!important;grid-template-columns:repeat(3,1fr);gap:10px!important}
-  #reino>.build .bo{width:auto!important;height:auto!important;border-radius:20px!important;padding:10px 4px 9px!important;display:flex!important;flex-direction:column;align-items:center;gap:4px}
-  #reino>.build .bo svg{width:46px!important;height:46px!important}
-  #reino>.build .bo span{position:static!important;width:auto!important;height:auto!important;overflow:visible!important;clip:auto!important;font-size:12.5px!important;font-weight:800}
-  #reino>.build .bo i{width:20px!important;height:20px!important;font-size:11px!important;line-height:20px!important;right:-4px!important;top:-4px!important}
-}
-
-@media (max-width:860px){
-  .hero3d .h3-acts{width:116px!important}
-  .hero3d h1{font-size:clamp(40px,12.6vw,54px)!important}
-  .hero3d .h3-acts .h3-go,.h3-ped{padding:9px 8px!important;font-size:12.5px!important}
+  .hero3d .h3-copy{grid-template-columns:minmax(0,1fr) auto!important;max-width:none!important;padding-right:max(16px,env(safe-area-inset-right))!important;box-sizing:border-box}
+  .hero3d h1{font-size:clamp(38px,11.2vw,54px)!important}
+  .hero3d .h3-acts{justify-self:end;width:114px;max-width:none!important}
+  .hero3d .h3-acts .h3-go,.h3-ped{width:100%;justify-content:center!important;padding:9px 8px!important;border-radius:16px!important}
+  .h3-ped span:last-child{text-align:center!important}
 }
 </style>
 </head>
@@ -2362,13 +2335,6 @@ hit("view");
     return '<svg viewBox="0 0 40 40"><path d="M11 32C9 24 14 12 21 8.5C26 6 30 9 28.5 14.5C27 21 22 27.5 18 31.5C15.5 34 11.8 34.8 11 32Z" fill="'+c+'" stroke="rgba(60,20,40,.25)"/><path d="M13 32.5l3-4" stroke="rgba(60,20,40,.35)" stroke-width="1.4"/><path d="M15 16C19 21 24 25 31 27M18 12C22 16 27 19 33 20" stroke="'+c+'" stroke-width="1.8" fill="none" stroke-linecap="round" filter="brightness(.85)"/></svg>'}
   var done={},el=$("build");
   el.innerHTML=Object.keys(B).map(function(k){return '<div class="bgp" data-g="'+k+'"><span class="bk">'+B[k].t+'</span><div class="bopts">'+B[k].o.map(function(o){return '<button type="button" class="bo" style="--sw:'+({"#FAF4F1":"#C7A0B2","#F3CBB0":"#DE9F80"}[o[0]]||o[0])+'" data-k="'+k+'" data-v="'+o[0]+'" aria-pressed="false" aria-label="'+B[k].t+' '+o[1]+'">'+ico(k,o[0])+'<span>'+o[1]+'</span><i>✓</i></button>'}).join("")+'</div></div>'}).join("");
-  /* abas (no celular): Pele → Vestido → Sapatilha, uma de cada vez */
-  el.insertAdjacentHTML("afterbegin",'<div class="btabs" role="tablist">'+Object.keys(B).map(function(k,i){return '<button type="button" role="tab" data-bt="'+k+'" aria-selected="'+(i===0)+'"><i>'+(i+1)+'</i>'+B[k].t+'</button>'}).join("")+'</div>');
-  el.dataset.tab="pele";
-  function setTab(k){el.dataset.tab=k;el.querySelectorAll("[data-bt]").forEach(function(x){x.setAttribute("aria-selected",x.dataset.bt===k)})}
-  el.addEventListener("click",function(e){var t=e.target.closest("[data-bt]");if(t)setTab(t.dataset.bt)});
-  el.addEventListener("click",function(e){var b=e.target.closest(".bo");if(!b)return;var k=b.dataset.k;var tb=el.querySelector('[data-bt="'+k+'"]');if(tb)tb.classList.add("done");
-    setTimeout(function(){var ks=Object.keys(B),nx=ks.find(function(x){return !el.querySelector('.bo[data-k="'+x+'"][aria-pressed="true"]')});if(nx&&el.dataset.tab===k)setTab(nx)},650)});
   var LINES={pele:["Que bailarina linda! ✦","Já dá pra ver o sorriso dela ✦"],tutu:["Olha o giro com o vestido novo! 💫","O tutu ficou um encanto ✦"],sapatilha:["Sapatilhas prontas para a ponta ✦","Agora ela pode subir no relevé ✦"]};
   function prog(){var n=Object.keys(done).length;document.querySelectorAll("#prog i").forEach(function(x,i){x.classList.toggle("on",i<n)});var go=$("dk-go");
     if(n<3){go.disabled=true;go.textContent=n===2?"Falta 1 escolha":"Faltam "+(3-n)+" escolhas"}else{go.disabled=false;go.textContent="Ver ela dançar na caixinha ✦"}return n}
