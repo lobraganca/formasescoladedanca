@@ -705,12 +705,25 @@ function siteOut(){
   })});
 }
 function saveLocal(){try{localStorage.setItem(LS_E,JSON.stringify(E()));localStorage.setItem(LS_SITE,JSON.stringify(siteOut()));setSt("test","Modo de teste · salvo neste aparelho")}catch(x){setSt("err","Sem espaço no aparelho");toast("O aparelho ficou sem espaço para o modo de teste. Use fotos menores.")}}
+/* junta a versão do servidor com a deste aparelho (quando dois aparelhos salvam ao mesmo tempo): o que foi mexido aqui vale, nada some à toa */
+function mergeEscola(sv,lc){
+  var del={};(sv.apagados||[]).concat(lc.apagados||[]).forEach(function(id){del[id]=1});
+  function byId(A,B){var m={},out=[];(A||[]).forEach(function(x){if(x&&x.id&&!del[x.id]){m[x.id]=x;out.push(x.id)}});(B||[]).forEach(function(x){if(x&&x.id&&!del[x.id]){if(!m[x.id])out.push(x.id);m[x.id]=x}});return out.map(function(id){return m[id]})}
+  var r=Object.assign({},sv);
+  r.alunos=byId(sv.alunos,lc.alunos);r.turmas=byId(sv.turmas,lc.turmas);
+  r.caixa=byId(sv.caixa,lc.caixa);
+  r.pag={};[sv.pag||{},lc.pag||{}].forEach(function(P){Object.keys(P).forEach(function(k){if(!del[k])r.pag[k]=Object.assign({},r.pag[k]||{},P[k])})});
+  r.cham=Object.assign({},sv.cham||{},lc.cham||{});
+  var hs={},H=[];(lc.hist||[]).concat(sv.hist||[]).forEach(function(h){var k=h.q+"|"+h.a+"|"+h.t;if(!hs[k]){hs[k]=1;H.push(h)}});r.hist=H.sort(function(a,b){return a.q<b.q?1:-1});
+  r.apagados=Object.keys(del).slice(-500);r.site=lc.site||sv.site;
+  return norm(r);
+}
 function save(){
   if(saving){again=true;return}saving=true;
   api("save",{escola:E(),site:siteOut(),rev:S.rev}).then(function(r){
     saving=false;
     if(r.ok){S.rev=r.rev;setSt("","Salvo");}
-    else if(r.conflito){S.rev=r.rev;if(r.escola)S.escola=norm(r.escola);setSt("","Salvo");toast("Alguém mudou os dados em outro aparelho. Carreguei a versão mais nova: confira e faça de novo a última alteração.");render()}
+    else if(r.conflito){S.rev=r.rev;if(r.escola){S.escola=mergeEscola(norm(r.escola),E())}render();setSt("saving","Salvando…");setTimeout(save,50)}
     else if(r.sair){logout(true)}
     else{setSt("err","Não salvou · tentando de novo");setTimeout(save,5000)}
     if(again){again=false;save()}
@@ -968,7 +981,7 @@ function alunoSheet(id,pre){
         touch();closeSh();render();toast(novo?a.nome+" matriculada(o) ✦":"Salvo");
       };
       if($("al-del"))$("al-del").onclick=function(){
-        if(this.dataset.sure){var i=E().alunos.indexOf(a);E().alunos.splice(i,1);delete E().pag[a.id];touch();closeSh();render();toast(a.nome+" excluída(o)",function(){E().alunos.splice(i,0,a);touch();render()});return}
+        if(this.dataset.sure){var i=E().alunos.findIndex(function(x){return x.id===a.id});if(i<0){closeSh();render();return}var del=E().alunos.splice(i,1)[0],pg=E().pag[a.id];delete E().pag[a.id];(E().apagados=E().apagados||[]).push(a.id);touch();closeSh();render();toast(a.nome+" excluída(o)",function(){E().alunos.splice(i,0,del);if(pg)E().pag[a.id]=pg;E().apagados=(E().apagados||[]).filter(function(z){return z!==a.id});touch();render()});return}
         this.dataset.sure=1;this.className="btn red";this.innerHTML="Toque de novo para excluir";
       };
     });
@@ -1030,7 +1043,7 @@ function turmaSheet(id){
         if(!id){t.id=uid();E().turmas.push(t)}
         Object.assign(t,{nome:n,idadeMin:+val("t-a")||"",idadeMax:+val("t-b")||"",dias:[].map.call(sh.querySelectorAll("#t-d [aria-pressed=true]"),function(b){return +b.dataset.d}),hIni:val("t-hi"),hFim:val("t-hf"),cap:val("t-c"),valor:val("t-v"),desc:$("t-p").value.trim(),site:$("t-s").checked,status:(sh.querySelector("#t-st [aria-pressed=true]")||{dataset:{s:"auto"}}).dataset.s,cor:(sh.querySelector("#t-cor [aria-pressed=true]")||{dataset:{c:t.cor}}).dataset.c});
         touch();closeSh();render();toast("Turma salva");};
-      if($("t-del"))$("t-del").onclick=function(){if(ativosNa(t.id).length){toast("Mova os alunos desta turma antes de excluir.");return}if(!this.dataset.sure){this.dataset.sure=1;this.className="btn red";this.textContent="Toque de novo para excluir";return}E().turmas.splice(E().turmas.indexOf(t),1);touch();closeSh();render()};
+      if($("t-del"))$("t-del").onclick=function(){if(ativosNa(t.id).length){toast("Mova os alunos desta turma antes de excluir.");return}if(!this.dataset.sure){this.dataset.sure=1;this.className="btn red";this.textContent="Toque de novo para excluir";return}var ti=E().turmas.findIndex(function(x){return x.id===t.id});if(ti>=0)E().turmas.splice(ti,1);(E().apagados=E().apagados||[]).push(t.id);touch();closeSh();render()};
     });
 }
 
@@ -1215,7 +1228,7 @@ AFTER.caixa=function(){if($("cx-csv"))$("cx-csv").onclick=function(){var k=S.cxM
 document.addEventListener("click",function(e){
   var b=e.target.closest("[data-cx],[data-lanc],[data-cxdel]");if(!b)return;
   if(b.dataset.cx){S.cxMes=addM(S.cxMes,+b.dataset.cx);render();return}
-  if(b.dataset.cxdel){var C=E().caixa,i=C.findIndex(function(c){return c.id===b.dataset.cxdel}),old=C[i];C.splice(i,1);touch();render();toast("Lançamento apagado",function(){C.splice(i,0,old);touch();render()});return}
+  if(b.dataset.cxdel){var C=E().caixa,i=C.findIndex(function(c){return c.id===b.dataset.cxdel}),old=C[i];if(i<0)return;C.splice(i,1);(E().apagados=E().apagados||[]).push(old.id);touch();render();toast("Lançamento apagado",function(){E().caixa.splice(i,0,old);E().apagados=(E().apagados||[]).filter(function(z){return z!==old.id});touch();render()});return}
   var tp=b.dataset.lanc,cats=tp==="e"?CAT_E:CAT_S,f="Pix",cat=cats[0];
   openSh(shHead(tp==="e"?"Lançar <em>entrada</em>":"Lançar <em>despesa</em>")+'<form class="frm" id="lf"><div class="fld"><span>Categoria</span><div class="chips" id="l-cat">'+cats.map(function(c,i){return '<button type="button" class="chip" aria-pressed="'+(i===0)+'">'+c+'</button>'}).join("")+'</div></div><div class="fld"><label for="l-d">Descrição</label><input id="l-d" placeholder="'+(tp==="e"?"Ex.: ingressos do espetáculo":"Ex.: aluguel da sala")+'"></div><div class="g2"><div class="fld"><label for="l-v">Valor</label><input id="l-v" inputmode="decimal" placeholder="0,00" required></div><div class="fld"><label for="l-dt">Data</label><input id="l-dt" type="date" value="'+today()+'"></div></div><div class="fld"><span>Forma</span><div class="chips" id="l-f">'+FORMAS.map(function(x){return '<button type="button" class="chip" aria-pressed="'+(x===f)+'">'+x+'</button>'}).join("")+'</div></div><div class="foot"><button class="btn '+(tp==="e"?"ok":"red")+'" type="submit">Salvar</button></div></form>',function(sh){
     ["#l-cat","#l-f"].forEach(function(id){sh.querySelectorAll(id+" .chip").forEach(function(c){c.onclick=function(){sh.querySelectorAll(id+" .chip").forEach(function(x){x.setAttribute("aria-pressed",x===c)})}})});
