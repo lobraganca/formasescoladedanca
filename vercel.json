@@ -2,6 +2,17 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/((?!em-breve|logo-ink\\.png|favicon-64\\.png).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "(www\\.)?formasescoladedanca\\.com\\.br"
+        }
+      ],
+      "destination": "/em-breve",
+      "permanent": false
+    },
+    {
       "source": "/admin",
       "destination": "/adm",
       "permanent": false
