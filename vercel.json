@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "redirects": [
     {
-      "source": "/((?!em-breve|logo-ink\\.png|favicon-64\\.png).*)",
+      "source": "/((?!em-breve).*)",
       "has": [
         {
           "type": "host",
