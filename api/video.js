@@ -2,8 +2,8 @@ import { handleUpload } from "@vercel/blob/client";
 import { del } from "@vercel/blob";
 import { dbReady, pipeline } from "./_db.js";
 
-// Vídeos enviados pela Área da Irene, direto do celular para o Vercel Blob.
-//  - o celular pede uma autorização aqui (com o código de sessão da Irene) e envia o arquivo direto para o Blob
+// Vídeos enviados pela Área da professora, direto do celular para o Vercel Blob.
+//  - o celular pede uma autorização aqui (com o código de sessão da professora) e envia o arquivo direto para o Blob
 //  - { acao: "apagar", tok, url } apaga um vídeo enviado
 const MAX = 600 * 1024 * 1024; // 600 MB por vídeo
 

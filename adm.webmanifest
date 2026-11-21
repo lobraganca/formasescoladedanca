@@ -1,8 +1,8 @@
 {
   "id": "/adm",
-  "name": "Formas Escola de Dança · Área da Irene",
-  "short_name": "Formas",
-  "description": "Alunos, turmas, chamada, mensalidades, fila de espera e Camarim da Formas Escola de Dança.",
+  "name": "Área da escola",
+  "short_name": "Escola",
+  "description": "Alunos, turmas, chamada, mensalidades, fila de espera e Camarim da escola.",
   "start_url": "/adm",
   "scope": "/",
   "display": "standalone",

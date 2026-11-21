@@ -1,6 +1,6 @@
 import { dbReady, pipeline } from "./_db.js";
 
-// Entrega as fotos enviadas pela Área da Irene. Ficam no cache da Vercel por 1 ano.
+// Entrega as fotos enviadas pela Área da professora. Ficam no cache da Vercel por 1 ano.
 export default async function handler(req, res) {
   const id = String(req.query?.id || "").replace(/[^a-f0-9]/g, "").slice(0, 20);
   if (!id || !dbReady()) return res.status(404).end();

@@ -1,8 +1,9 @@
 import crypto from "node:crypto";
 import { dbReady, dbMissing, pipeline, dayKey, V, credOk, falhasLogin, limparFalhas } from "./_db.js";
+import { limparEscolaAntiga } from "./site.js";
 import { vapid, notify } from "./_push.js";
 
-// Área da Irene (/adm). Tudo aqui pede login (ou o código "manter conectado").
+// Área da professora (/adm). Tudo aqui pede login (ou o código "manter conectado").
 //  login  → confere login e senha e devolve um código de sessão
 //  load   → dados da escola + fila de espera + pedidos do Camarim + contatos do site
 //  save   → grava a escola (alunos, turmas, chamadas, mensalidades) e a parte pública do site
@@ -51,6 +52,7 @@ async function main(req, res) {
   if (b.acao === "sair") { await pipeline([["DEL", `fm:sess:${tok}`]]); return res.status(200).json({ ok: true }); }
 
   if (b.acao === "load") {
+    try { await limparEscolaAntiga(); } catch {}
     const [esc, rev, site, le, es, pe] = await pipeline([["GET", "fm:escola"], ["GET", "fm:rev"], ["GET", "fm:site"], ["HVALS", "fm:leads"], ["HVALS", "fm:espera"], ["HVALS", "fm:pedidos"]]);
     const list = (a) => (a || []).map(safe).filter(Boolean).sort((x, y) => (x.quando < y.quando ? -1 : 1));
     return res.status(200).json({ ok: true, escola: safe(esc), rev: +rev || 0, site: safe(site), leads: list(le), espera: list(es), pedidos: list(pe) });

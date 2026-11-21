@@ -52,7 +52,7 @@ export default async function handler(req, res) {
       };
     }
     if (existe) {
-      // atualização (ex.: começou a preencher e depois enviou): mantém data e situação já marcadas pela Irene
+      // atualização (ex.: começou a preencher e depois enviou): mantém data e situação já marcadas pela professora
       const [raw] = await pipeline([["HGET", key, id]]);
       const old = safe(raw) || {};
       item = { ...old, ...item, quando: old.quando || item.quando, status: old.status || item.status, contatado: old.contatado || "", pago: old.pago || item.pago };

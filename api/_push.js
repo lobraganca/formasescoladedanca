@@ -1,9 +1,9 @@
 import { pipeline } from "./_db.js";
 
-// Avisos no celular da Irene (Web Push). As chaves são criadas sozinhas na primeira vez
+// Avisos no celular da professora (Web Push). As chaves são criadas sozinhas na primeira vez
 // e ficam guardadas no banco (fm:vapid). Cada celular que ligou os avisos fica em fm:push.
 const safe = (s) => { try { return JSON.parse(s); } catch { return null; } };
-// carregado só quando precisa: se der qualquer problema, o resto da área da Irene continua funcionando
+// carregado só quando precisa: se der qualquer problema, o resto da área da professora continua funcionando
 let WP = null;
 const wp = async () => (WP || (WP = (await import("web-push")).default));
 
@@ -26,7 +26,7 @@ export async function notify(title, body, url = "/adm") {
     if (Array.isArray(flat)) for (let i = 0; i < flat.length; i += 2) subs.push([flat[i], safe(flat[i + 1])]);
     if (!subs.length) return 0;
     const k = await vapid();
-    const opts = { TTL: 86400, urgency: "high", vapidDetails: { subject: "https://formasescoladedanca.com.br", publicKey: k.publicKey, privateKey: k.privateKey } };
+    const opts = { TTL: 86400, urgency: "high", vapidDetails: { subject: "https://bale-escola.vercel.app", publicKey: k.publicKey, privateKey: k.privateKey } };
     const payload = JSON.stringify({ title, body, url });
     const dead = [];
     let ok = 0;

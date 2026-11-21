@@ -73,7 +73,7 @@ export async function limparFalhas(ip) {
   try { await pipeline([["DEL", `fm:login:${String(ip || "?").replace(/[^\w.:-]/g, "").slice(0, 60)}`]]); } catch {}
 }
 
-// Login da Área da Irene. Para trocar, crie ADMIN_USER e ADMIN_PASS nas variáveis da Vercel.
+// Login da Área da professora. Para trocar, crie ADMIN_USER e ADMIN_PASS nas variáveis da Vercel.
 const semAcento = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
 export function credOk(user, pass) {
   const U = semAcento(process.env.ADMIN_USER || "balé");
