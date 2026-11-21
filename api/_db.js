@@ -74,8 +74,9 @@ export async function limparFalhas(ip) {
 }
 
 // Login da Área da Irene. Para trocar, crie ADMIN_USER e ADMIN_PASS nas variáveis da Vercel.
+const semAcento = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
 export function credOk(user, pass) {
-  const U = String(process.env.ADMIN_USER || "irene").trim().toLowerCase();
-  const P = String(process.env.ADMIN_PASS || "123456789").trim();
-  return String(user || "").trim().toLowerCase() === U && String(pass || "").trim() === P;
+  const U = semAcento(process.env.ADMIN_USER || "balé");
+  const P = String(process.env.ADMIN_PASS || "123").trim();
+  return semAcento(user) === U && String(pass || "").trim() === P;
 }

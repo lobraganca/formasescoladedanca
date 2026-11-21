@@ -634,7 +634,7 @@ h1 em,h2 em,h3 em{font-style:normal;background:var(--grad);-webkit-background-cl
    em qualquer aparelho. Na prévia ou sem banco: modo de teste (só neste aparelho).
    ============================================================ */
 var API=(/^https?:$/.test(location.protocol)&&!/claude|anthropic|usercontent|localhost|127\.0\.0\.1/.test(location.host))?"/api":"";
-var TEST_USER="irene",TEST_PASS="123456789";
+var TEST_USER="bale",TEST_PASS="123";
 var LS_E="formas-escola-v1",LS_SITE="formas-site-v1",LS_INBOX="formas-inbox-v1",LS_TOK="formasAdmTok";
 var DIAS=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"],DIASL=["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
 var MESES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
@@ -1450,7 +1450,7 @@ if("serviceWorker" in navigator&&API)navigator.serviceWorker.register("/adm-sw.j
 $("lshow").onclick=function(){var p=$("lp");p.type=p.type==="password"?"text":"password";this.textContent=p.type==="password"?"Mostrar":"Esconder"};
 $("lform").onsubmit=function(ev){ev.preventDefault();var u=val("lu"),p=$("lp").value,e=$("lerr");e.hidden=true;$("lgo").disabled=true;$("lgo").textContent="Entrando…";
   function fail(m){e.textContent=m;e.hidden=false;$("lgo").disabled=false;$("lgo").textContent="Entrar"}
-  function testLogin(){if(u.toLowerCase()===TEST_USER&&p===TEST_PASS){S.test=true;S.tok="teste";try{if($("lkeep").checked)localStorage.setItem(LS_TOK,"teste")}catch(x){}start()}else fail("Login ou senha incorretos.")}
+  function testLogin(){if(u.normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim().toLowerCase()===TEST_USER&&p===TEST_PASS){S.test=true;S.tok="teste";try{if($("lkeep").checked)localStorage.setItem(LS_TOK,"teste")}catch(x){}start()}else fail("Login ou senha incorretos.")}
   if(!API){testLogin();return}
   api("login",{user:u,pass:p,lembrar:$("lkeep").checked}).then(function(r){
     if(r.ok){S.tok=r.tok;S.test=false;try{localStorage.setItem(LS_TOK,r.tok)}catch(x){}if(!$("lkeep").checked)sessionStorage.setItem("formasTmp","1");start()}
