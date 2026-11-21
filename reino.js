@@ -22,7 +22,7 @@ const SPRITE = /[?&]sprite=1/.test(location.search); // só para gerar as imagen
 let R;
 try { R = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: SPRITE, preserveDrawingBuffer: true, powerPreference: "high-performance" }); }
 catch (e) { host.classList.add("no3d"); window.dispatchEvent(new Event("reino-fail")); throw e; }
-R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.6 : 2));
+R.setPixelRatio(Math.min(devicePixelRatio || 1, MOB ? 1.6 : 1.5));
 R.outputColorSpace = THREE.SRGBColorSpace;
 R.toneMapping = THREE.ACESFilmicToneMapping;
 R.toneMappingExposure = .8;
@@ -461,7 +461,7 @@ function sparkleBurst(y = 1.3, n = 60, tint = null) {
 }
 
 let composer = null, bokeh = null;
-if (!MOB && !/[?&]nobokeh/.test(location.search)) {
+if (!MOB && /[?&]bokeh/.test(location.search)) {
   composer = new EffectComposer(R, new THREE.WebGLRenderTarget(256, 256, { type: THREE.HalfFloatType, samples: 4 }));
   composer.addPass(new RenderPass(scene, cam));
   try { bokeh = new BokehPass(scene, cam, { focus: 8, aperture: .0008, maxblur: .004 }); composer.addPass(bokeh); } catch (e) { bokeh = null; }
@@ -626,7 +626,7 @@ const GOV = { ema: 16, n: 0, lvl: 0, t0: performance.now() };
 function govern(dt) {
   if (dt > 200) return; GOV.ema = GOV.ema * .95 + dt * .05; GOV.n++;
   if (GOV.n < 90 || performance.now() - GOV.t0 < 2500) return;
-  if (GOV.ema > 30 && GOV.lvl < 2) {
+  if (GOV.ema > 24 && GOV.lvl < 2) {
     GOV.lvl++; GOV.n = 0; GOV.t0 = performance.now(); GOV.ema = 16;
     if (GOV.lvl === 1 && composer) { composer = null; }
     else { GOV.lvl = 2; R.setPixelRatio(Math.min(devicePixelRatio || 1, 1.4)); resize(); }
